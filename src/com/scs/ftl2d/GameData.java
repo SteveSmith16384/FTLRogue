@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Unit;
+import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class GameData {
@@ -12,7 +13,8 @@ public class GameData {
 	public AbstractMapSquare[][] map;
 	public List<Unit> units = new ArrayList<>();
 	public List<String> msgs = new ArrayList<>();
-	
+	private List<AbstractEvent> currentEvents = new ArrayList<>();
+
 	public int turnNo = 0;
 	public float oxygenLevel = 100f;
 	public float engineTemp = 0f;

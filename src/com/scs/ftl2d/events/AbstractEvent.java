@@ -1,9 +1,16 @@
 package com.scs.ftl2d.events;
 
-public abstract class AbstractEvent {
+import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.Entity;
 
-	public AbstractEvent() {
-		super();
+public abstract class AbstractEvent extends Entity {
+
+	public AbstractEvent(Main main) {
+		super(main);
 	}
+
+	
+	public abstract void init();
+
 
 }

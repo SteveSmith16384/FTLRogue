@@ -47,7 +47,7 @@ public abstract class AbstractMapSquare extends Entity {
 			return new MapSquareOxyGen(main, code);
 
 		case MAP_ENGINES:
-			return new MapSquareFloor(main, code); // todo
+			return new MapSquareEngine(main, code);
 
 		case MAP_DOOR:
 			return new MapSquareDoor(main, code);

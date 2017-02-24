@@ -8,6 +8,7 @@ public abstract class DrawableEntity extends Entity {
 	
 	// Z levels
 	public static final int Z_UNIT = 10;
+	public static final int Z_ITEM = 1;
 	public static final int Z_FLOOR = 0;
 	
 	public int x, y, z;

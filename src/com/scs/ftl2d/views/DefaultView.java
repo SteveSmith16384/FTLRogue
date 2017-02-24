@@ -41,7 +41,7 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 
 
 	@Override
-	public void drawScreen(GameData gameData, Unit currentUnit) throws IOException {
+	public void drawPlayersShipScreen(GameData gameData, Unit currentUnit) throws IOException {
 		screen.startScreen();
 		screen.clear();
 
@@ -55,14 +55,6 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 			}			
 		}
 		
-		// Draw entities
-		/*for (Entity e : gameData.entities) {
-			if (e instanceof DrawableEntity) {
-				DrawableEntity de = (DrawableEntity)e;
-				screen.setCharacter(de.x, de.y, new TextCharacter(de.getChar()));
-			}
-		}*/
-
 		// Draw stats
 		tGraphics.putString(gameData.getWidth()+2, 0, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, 1, "Shields: " + (int)gameData.shieldLevel + "%");
@@ -88,15 +80,16 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 
 
 	@Override
-	public char getInput() throws IOException {
+	public KeyStroke getInput() throws IOException {
 		KeyStroke ks = screen.readInput();
-		Character c = ks.getCharacter();
+		/*Character c = ks.getCharacter();
 		if (c != null) {
 			return c.charValue();
 		}
 		else {
 			return '?';
-		}
+		}*/
+		return ks;
 	}
 	
 
@@ -110,7 +103,6 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -139,7 +131,6 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -153,7 +144,6 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	

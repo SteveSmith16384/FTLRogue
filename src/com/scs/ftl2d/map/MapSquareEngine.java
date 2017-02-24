@@ -2,11 +2,12 @@ package com.scs.ftl2d.map;
 
 import com.scs.ftl2d.Main;
 
-public class MapSquareWall extends AbstractMapSquare {
+public class MapSquareEngine extends AbstractMapSquare {
 
-	public MapSquareWall(Main main, int code) {
+	public MapSquareEngine(Main main, int code) {
 		super(main, code);
 	}
+
 
 	@Override
 	public boolean isTraversable() {
@@ -15,8 +16,9 @@ public class MapSquareWall extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return '#';
+		return 'E';
 	}
+
 
 	@Override
 	public void process() {

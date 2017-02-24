@@ -2,9 +2,9 @@ package com.scs.ftl2d.events;
 
 import com.scs.ftl2d.Main;
 
-public class EnemyShipEvent extends AbstractEvent {
+public class AlienOnBoardEvent extends AbstractEvent {
 
-	public EnemyShipEvent(Main main) {
+	public AlienOnBoardEvent(Main main) {
 		super(main);
 	}
 
@@ -14,7 +14,6 @@ public class EnemyShipEvent extends AbstractEvent {
 		
 	}
 
-	
 	@Override
 	public void process() {
 		// TODO Auto-generated method stub

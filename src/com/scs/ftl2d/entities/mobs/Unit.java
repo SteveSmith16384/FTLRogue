@@ -1,10 +1,10 @@
-package com.scs.ftl2d.entities;
+package com.scs.ftl2d.entities.mobs;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.map.MapSquareReplicator;
-
 
 public class Unit extends AbstractMob {
 
@@ -29,8 +29,9 @@ public class Unit extends AbstractMob {
 			main.addMsg(this.getName() + " is suffocating!");
 		}
 
+		this.incFood(-0.25f);
 		// Are we next to a replicator?
-		if (this.food < 100) {
+		if (this.food < 99f) {
 			MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
 			if (sqr != null) {
 				this.incFood(10);
@@ -38,7 +39,6 @@ public class Unit extends AbstractMob {
 			}
 		}
 
-		this.incFood(-0.25f);
 		if (this.food <= 0) {
 			main.addMsg(this.getName() + " is starving!");
 			this.incHealth(-5, "starvation");
@@ -50,6 +50,7 @@ public class Unit extends AbstractMob {
 		AbstractMapSquare sq = this.getSq();
 		if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
 			this.incHealth(1, "");
+			main.addMsg(this.getName() + " is healing");
 		}
 
 	}

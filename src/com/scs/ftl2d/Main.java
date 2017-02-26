@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.io.IOException;
 
 import com.googlecode.lanterna.input.KeyStroke;
-import com.scs.ftl2d.entities.Unit;
+import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.ArrayMap;
 import com.scs.ftl2d.modules.AbstractModule;
@@ -15,6 +15,10 @@ import com.scs.ftl2d.views.DefaultView;
 
 FTL
 Keep it simple at first!
+
+STORY
+
+
 
 SHIP AREAS
 DONE medi-bay: heal player
@@ -32,20 +36,22 @@ UNIT ROLES
 Medic: heal others
 mechanic: repair stuff
 Weapons: take control of exterior weapons
-Saboteur
+Saboteur?
 
 
 SHIP STATS
-DONE Oxygen level
-Engine temp
-Damage (by area)
-Shield Level
-Energy
-Fuel
+Oxygen level
+Damage (by area) TODO
+Shield Level TODO
+Energy TODO
+Fuel TODO - Determines whips range;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Hull damage TODO
+Engine temp?
 
 
 GAMEPLAY
-Overlays - damage overlay, oxygen overlay
+Show unit status - eating, moving, repairing, nothing
+Overlays - damage, oxygen, unit routes
 Google ranged combat in rogues
 Background/foreground colours
 All units can do all actions, but specialists are better
@@ -68,6 +74,9 @@ Randomly generate maps
 Scroll map
 Man weapon console to shoot
 Units get tired
+Missions
+Load/save
+Choose where to fly to
 
 
 EVENTS
@@ -76,6 +85,10 @@ Boarded by enemies
 Meteor storm
 Aliens invade ship
 Installations break down
+
+
+MISSIONS
+Deliver alien egg
 
 
 LATER
@@ -90,12 +103,15 @@ public class Main {
 	private KeyStroke lastChar;
 	private AbstractModule currentModule;
 	
-	public Main(IGameView _view) throws IOException {
-		view = _view;
+	public Main() throws IOException {
+		createGameData();
+
+		currentModule = new PlayersShipModule(this);
+		currentModule.init();
+
+		view = new DefaultView();
 		view.init();
 
-		createGameData();
-		currentModule = new PlayersShipModule(this);
 		mainGameLoop();
 	}
 
@@ -117,7 +133,7 @@ public class Main {
 		// Create player's units
 		for (int i=0 ; i<mapdata.getNumUnits() ; i++) {
 			Point p = mapdata.getUnitStart(i);
-			Unit unit = new Unit(this, (i+"").charAt(0), p.x, p.y, "Unit " + (i+1), 0);
+			Unit unit = new Unit(this, ((i+1)+"").charAt(0), p.x, p.y, "Unit " + (i+1), 0);
 			this.gameData.units.add(unit);
 			gameData.map[p.x][p.y].items.add(unit);
 		}
@@ -129,6 +145,7 @@ public class Main {
 	private void mainGameLoop() {
 		while (!stopNow) {
 			try {
+				this.currentModule.drawScreen(view);
 				lastChar = view.getInput();
 				//System.out.println(c + " pressed");
 				this.addMsg("Key '" + lastChar + "' pressed");
@@ -166,7 +183,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			new Main(new DefaultView());
+			new Main();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

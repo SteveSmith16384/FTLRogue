@@ -10,6 +10,12 @@ public class MapSquareTeleporter extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Teleporter";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return true;
 	}

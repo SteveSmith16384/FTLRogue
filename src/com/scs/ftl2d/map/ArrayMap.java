@@ -9,7 +9,7 @@ import com.scs.ftl2d.ILevelData;
 
 public class ArrayMap implements ILevelData {
 
-	int[][] data = new int[][]{ // data[9][0] == 1
+	private int[][] data = new int[][]{ // data[9][0] == 1
 			// Player starts looking upwards
 			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0},

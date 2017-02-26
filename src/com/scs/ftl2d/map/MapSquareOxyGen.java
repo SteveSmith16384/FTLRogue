@@ -10,6 +10,12 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Oxy-Gen";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

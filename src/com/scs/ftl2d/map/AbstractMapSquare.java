@@ -1,13 +1,16 @@
 package com.scs.ftl2d.map;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
 
-public abstract class AbstractMapSquare extends Entity {
+public abstract class AbstractMapSquare extends Entity implements Comparator<DrawableEntity> {
 
 	// Map codes
 	public static final int MAP_NOTHING = 0;
@@ -24,7 +27,8 @@ public abstract class AbstractMapSquare extends Entity {
 	public int type = MAP_NOTHING;
 	public boolean onFire = false;
 	public float damage_pcent = 0;
-	public List<DrawableEntity> items = new ArrayList<>(); // todo - sort
+	//public List<DrawableEntity> items = new ArrayList<>(); // todo - sort
+	public Queue<DrawableEntity> items = new PriorityQueue<DrawableEntity>(10, this);
 
 	public static AbstractMapSquare Factory(Main main, int code) {
 		switch (code) {
@@ -55,6 +59,9 @@ public abstract class AbstractMapSquare extends Entity {
 		case MAP_REPLICATOR:
 			return new MapSquareReplicator(main, code);
 
+		case MAP_CONTROL_PANEL:
+			return new MapSquareControlPanel(main, code);
+
 		default:
 			throw new RuntimeException("Unknown type: " + code);
 		}
@@ -70,6 +77,8 @@ public abstract class AbstractMapSquare extends Entity {
 	
 	protected abstract char getFloorChar();
 	
+	public abstract String getName();
+	
 	protected void processItems() {
 		for (DrawableEntity de : this.items) {
 			de.process();
@@ -81,11 +90,19 @@ public abstract class AbstractMapSquare extends Entity {
 			return this.getFloorChar();
 		} else {
 			// todo
-			return items.get(0).getChar();
+			return items.peek().getChar();//.get(0).getChar();
 		}
 	}
 	
 	public float getHealth() {
 		return 100 - this.damage_pcent;
 	}
+
+	
+	@Override
+	public int compare(DrawableEntity arg0, DrawableEntity arg1) {
+		return arg0.z - arg1.z;
+	}
+
+
 }

@@ -31,4 +31,10 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 
 	}
 
+
+	@Override
+	public String getName() {
+		return "Control Panel";
+	}
+
 }

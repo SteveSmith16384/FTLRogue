@@ -10,6 +10,12 @@ public class MapSquareMediBay extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Medi-Bay";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

@@ -8,6 +8,13 @@ public class MapSquareFloor extends AbstractMapSquare {
 		super(main, code);
 	}
 
+
+	@Override
+	public String getName() {
+		return "Floor";
+	}
+
+
 	@Override
 	public boolean isTraversable() {
 		return true;

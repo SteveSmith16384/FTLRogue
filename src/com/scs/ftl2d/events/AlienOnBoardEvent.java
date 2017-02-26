@@ -8,11 +8,6 @@ public class AlienOnBoardEvent extends AbstractEvent {
 		super(main);
 	}
 
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void process() {

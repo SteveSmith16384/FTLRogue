@@ -10,6 +10,12 @@ public class MapSquareEngine extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Engine";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

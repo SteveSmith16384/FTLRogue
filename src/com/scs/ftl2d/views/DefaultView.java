@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -16,7 +17,7 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Unit;
+import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class DefaultView implements IGameView, MouseListener, MouseMotionListener {
@@ -31,7 +32,10 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 	
 	@Override
 	public void init() throws IOException {
-		terminal = new DefaultTerminalFactory().createTerminal();
+		DefaultTerminalFactory fac = new DefaultTerminalFactory();
+		fac.setInitialTerminalSize(new TerminalSize(70, 50));
+		terminal = fac.createTerminal();
+		//terminal.
 		SwingTerminalFrame stf = (SwingTerminalFrame)terminal;
 		stf.addMouseListener(this);
 		stf.addMouseMotionListener(this);
@@ -58,7 +62,7 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 		// Draw stats
 		tGraphics.putString(gameData.getWidth()+2, 0, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, 1, "Shields: " + (int)gameData.shieldLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, 2, "Engine Temp: " + (int)gameData.engineTemp + "o");
+		//tGraphics.putString(gameData.getWidth()+2, 2, "Engine Temp: " + (int)gameData.engineTemp + "o");
 		tGraphics.putString(gameData.getWidth()+2, 3, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, 4, "Fuel: " + gameData.fuel);
 		

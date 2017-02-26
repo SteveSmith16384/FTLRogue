@@ -10,6 +10,12 @@ public class MapSquareReplicator extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Replicator";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

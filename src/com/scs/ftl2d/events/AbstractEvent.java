@@ -10,7 +10,7 @@ public abstract class AbstractEvent extends Entity {
 	}
 
 	
-	public abstract void init();
+	//public abstract void init();
 
 
 }

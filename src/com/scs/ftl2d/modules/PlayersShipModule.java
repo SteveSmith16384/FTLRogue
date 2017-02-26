@@ -8,8 +8,9 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Unit;
+import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
+import com.scs.ftl2d.events.EnemyShipEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
 /*
  * 
@@ -19,8 +20,9 @@ Numbers - select unit
 Arrows - move unit
 c - close door
 e - Use equipment TODO
+g - Goto TODO
 k - show Key TODO
-l - Launch ship TODO
+m - move TODO
 n - Nothing
 o - open door
 s - shoot TODO
@@ -32,6 +34,7 @@ Numbers - Players units
 A - OxyGen (air)
 C - Control panel
 E - Engines
+e - Egg
 F - On fire
 M - Medibay
 m - Medikit
@@ -48,6 +51,7 @@ Background colour of installations shows damage
 public class PlayersShipModule extends AbstractModule {
 
 	private Unit currentUnit;
+	private List<AbstractEvent> currentEvents = new ArrayList<>();
 
 	public PlayersShipModule(Main main) {
 		super(main);
@@ -71,13 +75,17 @@ public class PlayersShipModule extends AbstractModule {
 				sq.process();
 			}			
 		}
-		
+
 		for(AbstractEvent ev : this.currentEvents) {
 			ev.process();
 		}
+
+		if (this.currentEvents.size() == 0) {
+			this.currentEvents.add(new EnemyShipEvent(main));
+		}
 	}
-	
-	
+
+
 	private void selectUnit(int i) {
 		currentUnit = main.gameData.units.get(i);
 		main.addMsg("You are in control of " + this.currentUnit.getName());
@@ -98,81 +106,87 @@ public class PlayersShipModule extends AbstractModule {
 	public boolean processInput(KeyStroke ks) {
 		if (ks.getKeyType() == KeyType.ArrowUp) {
 			this.currentUnit.attemptMove(0, -1);
+			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowDown) {
 			this.currentUnit.attemptMove(0, 1);
+			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowLeft) {
 			this.currentUnit.attemptMove(-1, 0);
+			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowRight) {
 			this.currentUnit.attemptMove(1, 0);
+			return true;
 		} else {
-			char c = ks.getCharacter();
-			switch (c) {
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				int i = Integer.parseInt(c+"");
-				this.selectUnit(i-1);
-				break;
+			if (ks != null) {
+				char c = ks.getCharacter();
+				switch (c) {
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					int i = Integer.parseInt(c+"");
+					this.selectUnit(i-1);
+					return false;
 
-			case 'n':
-			{
-				/*int pos = this.gameData.units.indexOf(this.currentUnit);
+				case 'n':
+				{
+					/*int pos = this.gameData.units.indexOf(this.currentUnit);
 			if (pos >= this.gameData.units.size()) {
 				this.currentUnit = this.gameData.units.get(0);
 			} else {
 				this.currentUnit = this.gameData.units.get(pos+1);
 			}
 			return false;*/
-				main.addMsg("You do nothing");
-				return true;
-			}
+					main.addMsg("You do nothing");
+					return true;
+				}
 
-			case 'p':
-			{
-				/*int pos = this.gameData.units.indexOf(this.currentUnit);
+				case 'p':
+				{
+					/*int pos = this.gameData.units.indexOf(this.currentUnit);
 			if (pos <= 0) {
 				this.currentUnit = this.gameData.units.get(this.gameData.units.size()-1);
 			} else {
 				this.currentUnit = this.gameData.units.get(pos-1);
 			}*/
-				return false;
-			}
+					return false;
+				}
 
-			case 'w':
-				return true;
+				case 'w':
+					return true;
 
-			case 'a':
-				//this.currentUnit.attemptMove(-1, 0);
-				return true;
+				case 'a':
+					//this.currentUnit.attemptMove(-1, 0);
+					return true;
 
-			case 's':
-				//this.currentUnit.attemptMove(0, 1);
-				return true;
+				case 's':
+					//this.currentUnit.attemptMove(0, 1);
+					return true;
 
-			case 'd':
-				//this.currentUnit.attemptMove(1, 0);
-				return true;
+				case 'd':
+					//this.currentUnit.attemptMove(1, 0);
+					return true;
 
-			case 'o':
-				this.currentUnit.openDoor();
-				return true;
+				case 'o':
+					this.currentUnit.openDoor();
+					return true;
 
-			case 'c':
-				this.currentUnit.closeDoor();
-				return true;
+				case 'c':
+					this.currentUnit.closeDoor();
+					return true;
 
-			case 'u':
-				this.currentUnit.useConsole();
-				return true;
+				case 'u':
+					this.currentUnit.useConsole();
+					return true;
 
-			default:
-				main.addMsg("Unknown key " + c);
+				default:
+					main.addMsg("Unknown key " + c);
+				}
 			}
 		}
 		return false;

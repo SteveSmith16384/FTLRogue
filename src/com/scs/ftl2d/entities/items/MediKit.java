@@ -1,6 +1,7 @@
-package com.scs.ftl2d.entities;
+package com.scs.ftl2d.entities.items;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.DrawableEntity;
 
 public class MediKit extends DrawableEntity {
 

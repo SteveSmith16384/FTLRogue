@@ -1,11 +1,15 @@
-package com.scs.ftl2d.entities;
+package com.scs.ftl2d.entities.mobs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareDoor;
+
+import ssmith.astar.WayPoints;
 
 public abstract class AbstractMob extends DrawableEntity {
 	
@@ -18,6 +22,8 @@ public abstract class AbstractMob extends DrawableEntity {
 	public String name;
 	public int side;
 	public List<Entity> equipment = new ArrayList<>();
+	public String manualRoute;
+	public WayPoints astarRoute;
 
 	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side) {
 		super(main, _x, _y, _z);
@@ -63,6 +69,8 @@ public abstract class AbstractMob extends DrawableEntity {
 					// todo - fight
 				}
 			}
+		} else {
+			main.addMsg(newsq.getName() + " is in the way");
 		}
 		return false;
 	}

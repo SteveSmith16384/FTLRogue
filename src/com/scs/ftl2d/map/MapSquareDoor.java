@@ -1,10 +1,11 @@
 package com.scs.ftl2d.map;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.DrawableEntity;
 
 public class MapSquareDoor extends AbstractMapSquare {
 
-	private static final int CLOSE_DURATION = 2;
+	private static final int CLOSE_DURATION = 4;
 
 	private boolean isOpen = false;
 	private int closeTimer;
@@ -19,6 +20,12 @@ public class MapSquareDoor extends AbstractMapSquare {
 		if (b) {
 			closeTimer = CLOSE_DURATION;
 		}
+	}
+
+
+	@Override
+	public String getName() {
+		return "Door";
 	}
 
 
@@ -43,7 +50,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 	public void process() {
 		processItems();
 
-		if (!this.isOpen) {
+		if (this.isOpen) {
 			if (this.items.size() == 0) {
 				this.closeTimer--;
 				if (closeTimer <= 0) {

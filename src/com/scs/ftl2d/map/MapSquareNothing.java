@@ -10,6 +10,12 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 
 	@Override
+	public String getName() {
+		return "Nothing";
+	}
+
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

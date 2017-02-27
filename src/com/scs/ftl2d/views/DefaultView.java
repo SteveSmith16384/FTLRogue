@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.util.List;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
@@ -20,27 +21,20 @@ import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
-public class DefaultView implements IGameView, MouseListener, MouseMotionListener {
+public class DefaultView implements IGameView {
 
 	private Terminal terminal;
 	private Screen screen;
 
-	public DefaultView() {
-
-	}
-
-	
-	@Override
-	public void init() throws IOException {
+	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
 		fac.setInitialTerminalSize(new TerminalSize(70, 50));
 		terminal = fac.createTerminal();
 		//terminal.
 		SwingTerminalFrame stf = (SwingTerminalFrame)terminal;
-		stf.addMouseListener(this);
-		stf.addMouseMotionListener(this);
 		screen = new TerminalScreen(terminal);
-		
+
+
 	}
 
 
@@ -58,18 +52,21 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 				screen.setCharacter(x, y, new TextCharacter(sq.getChar()));
 			}			
 		}
-		
+
 		// Draw stats
 		tGraphics.putString(gameData.getWidth()+2, 0, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, 1, "Shields: " + (int)gameData.shieldLevel + "%");
+		tGraphics.putString(gameData.getWidth()+2, 1, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 		//tGraphics.putString(gameData.getWidth()+2, 2, "Engine Temp: " + (int)gameData.engineTemp + "o");
 		tGraphics.putString(gameData.getWidth()+2, 3, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, 4, "Fuel: " + gameData.fuel);
-		
+
 		// Draw current unit
 		tGraphics.putString(gameData.getWidth()+2, 6, "Unit: " + currentUnit.getName());
 		tGraphics.putString(gameData.getWidth()+2, 7, "Health: " + (int)currentUnit.health + "%");
 		tGraphics.putString(gameData.getWidth()+2, 8, "Food: " + (int)currentUnit.food);
+
+		// Todo - list other units and status
 
 		// Messages
 		int y = gameData.getHeight()+2;
@@ -77,7 +74,7 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 			tGraphics.putString(0, y, s);
 			y++;
 		}
-		
+
 		screen.refresh();
 
 	}
@@ -95,62 +92,32 @@ public class DefaultView implements IGameView, MouseListener, MouseMotionListene
 		}*/
 		return ks;
 	}
-	
+
 
 	@Override
 	public void close() throws IOException {
 		screen.close();
 		terminal.close();
-		
+
 	}
 
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		
+	public void drawConsoleScreen(List<String> lines) throws IOException {
+		screen.startScreen();
+		screen.clear();
+
+		TextGraphics tGraphics = screen.newTextGraphics();
+		int y = 0;
+		for (String s : lines) {
+			tGraphics.putString(0, y, lines.get(0));
+			y++;
+		}
+
+		screen.refresh();
+
 	}
 
 
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		Main.p("Mouse Moved");
-
-		
-	}
-
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		Main.p("Mouse Clicked");
-		
-	}
-
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		Main.p("Mouse Entered");
-		
-	}
-
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		
-	}
-
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		Main.p("Mouse Pressed");
-		
-	}
-
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		
-	}
-	
-	
 
 }

@@ -27,8 +27,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public int type = MAP_NOTHING;
 	public boolean onFire = false;
 	public float damage_pcent = 0;
-	//public List<DrawableEntity> items = new ArrayList<>(); // todo - sort
-	public Queue<DrawableEntity> items = new PriorityQueue<DrawableEntity>(10, this);
+	public Queue<DrawableEntity> items = new PriorityQueue<DrawableEntity>(10, this); // todo - rename
 
 	public static AbstractMapSquare Factory(Main main, int code) {
 		switch (code) {

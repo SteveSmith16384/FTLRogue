@@ -28,4 +28,14 @@ public abstract class DrawableEntity extends Entity {
 	public AbstractMapSquare getSq() {
 		return main.gameData.map[x][y];
 	}
+	
+	
+	public boolean canSee(DrawableEntity de) {
+		return true; // todo
+	}
+	
+	
+	public float distanceTo(DrawableEntity de) {
+		return (float) Math.sqrt((this.x-de.x)*(this.x-de.x) + this.y-de.y)*(this.y-de.y);
+	}
 }

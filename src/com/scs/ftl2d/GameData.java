@@ -7,19 +7,25 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.missions.AbstractMission;
 
 public class GameData {
 
 	public AbstractMapSquare[][] map;
+	public StarmapData starmap = new StarmapData();
 	public List<Unit> units = new ArrayList<>();
 	public List<String> msgs = new ArrayList<>();
 
+	public List<AbstractEvent> currentEvents = new ArrayList<>();
+	public List<AbstractMission> currentMissions = new ArrayList<>();
+
 	public int turnNo = 0;
+	public int creds = 500;
 	public float oxygenLevel = 100f;
-	//public float engineTemp = 0f;
 	public float fuel = 50;
 	public float shieldLevel = 100f;
 	public float weaponLevel = 100f;
+	public float hullDamage = 0f;
 
 
 	public int getWidth() {

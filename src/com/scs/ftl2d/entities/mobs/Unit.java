@@ -5,6 +5,7 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.map.MapSquareReplicator;
+import com.scs.ftl2d.modules.InitialConsoleModule;
 
 public class Unit extends AbstractMob {
 
@@ -69,7 +70,8 @@ public class Unit extends AbstractMob {
 	public void useConsole() {
 		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
-			// todo
+			// todo - check if they are docked
+			main.setModule(new InitialConsoleModule(main));
 		}		
 	}
 

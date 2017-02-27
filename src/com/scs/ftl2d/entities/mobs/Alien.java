@@ -16,8 +16,10 @@ public class Alien extends AbstractMob {
 
 	@Override
 	public void process() {
-		// TODO Auto-generated method stub
-		
+		AbstractMob mob = super.getClosestVisibleEnemy();
+		if (mob != null) {
+			this.moveTowards(mob.x, mob.y);
+		}
 	}
 
 }

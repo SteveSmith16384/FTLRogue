@@ -12,11 +12,6 @@ public class StarmapModule extends AbstractModule {
 		super(main);
 	}
 
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void updateGame() {

@@ -12,6 +12,7 @@ import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.events.EnemyShipEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.missions.AbstractMission;
 /*
  * 
 
@@ -25,7 +26,7 @@ k - show Key TODO
 m - move TODO
 n - Nothing
 o - open door
-s - shoot TODO
+s - shoot (at nearest) TODO
 t - teleport TODO
 u - Use console TODO
 
@@ -34,7 +35,7 @@ Numbers - Players units
 A - OxyGen (air)
 C - Control panel
 E - Engines
-e - Egg
+e - Egg (alien)
 F - On fire
 M - Medibay
 m - Medikit
@@ -50,16 +51,14 @@ Background colour of installations shows damage
  */
 public class PlayersShipModule extends AbstractModule {
 
+	public enum InputMode {Normal, DirectionalMovement}
+
 	private Unit currentUnit;
-	private List<AbstractEvent> currentEvents = new ArrayList<>();
+	private InputMode inputMode = InputMode.Normal;
 
 	public PlayersShipModule(Main main) {
 		super(main);
-	}
 
-
-	@Override
-	public void init() {
 		if (this.currentUnit == null) {
 			this.selectUnit(0);
 		}
@@ -76,13 +75,17 @@ public class PlayersShipModule extends AbstractModule {
 			}			
 		}
 
-		for(AbstractEvent ev : this.currentEvents) {
+		for(AbstractEvent ev : main.gameData.currentEvents) {
 			ev.process();
 		}
 
-		if (this.currentEvents.size() == 0) {
-			this.currentEvents.add(new EnemyShipEvent(main));
+		for(AbstractMission m : main.gameData.currentMissions) {
+			m.process();
 		}
+
+		/*if (this.currentEvents.size() == 0) {
+			this.currentEvents.add(new EnemyShipEvent(main));
+		}*/
 	}
 
 
@@ -104,90 +107,95 @@ public class PlayersShipModule extends AbstractModule {
 	 * Returns whether the game should progress a turn
 	 */
 	public boolean processInput(KeyStroke ks) {
-		if (ks.getKeyType() == KeyType.ArrowUp) {
-			this.currentUnit.attemptMove(0, -1);
-			return true;
-		} else if (ks.getKeyType() == KeyType.ArrowDown) {
-			this.currentUnit.attemptMove(0, 1);
-			return true;
-		} else if (ks.getKeyType() == KeyType.ArrowLeft) {
-			this.currentUnit.attemptMove(-1, 0);
-			return true;
-		} else if (ks.getKeyType() == KeyType.ArrowRight) {
-			this.currentUnit.attemptMove(1, 0);
-			return true;
-		} else {
-			if (ks != null) {
-				char c = ks.getCharacter();
-				switch (c) {
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					int i = Integer.parseInt(c+"");
-					this.selectUnit(i-1);
-					return false;
+		if (inputMode == InputMode.Normal) {
+			if (ks.getKeyType() == KeyType.ArrowUp) {
+				this.currentUnit.attemptMove(0, -1);
+				return true;
+			} else if (ks.getKeyType() == KeyType.ArrowDown) {
+				this.currentUnit.attemptMove(0, 1);
+				return true;
+			} else if (ks.getKeyType() == KeyType.ArrowLeft) {
+				this.currentUnit.attemptMove(-1, 0);
+				return true;
+			} else if (ks.getKeyType() == KeyType.ArrowRight) {
+				this.currentUnit.attemptMove(1, 0);
+				return true;
+			} else {
+				if (ks != null) {
+					char c = ks.getCharacter();
+					switch (c) {
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						int i = Integer.parseInt(c+"");
+						this.selectUnit(i-1);
+						return false;
 
-				case 'n':
-				{
-					/*int pos = this.gameData.units.indexOf(this.currentUnit);
+					case 'n':
+					{
+						/*int pos = this.gameData.units.indexOf(this.currentUnit);
 			if (pos >= this.gameData.units.size()) {
 				this.currentUnit = this.gameData.units.get(0);
 			} else {
 				this.currentUnit = this.gameData.units.get(pos+1);
 			}
 			return false;*/
-					main.addMsg("You do nothing");
-					return true;
-				}
+						main.addMsg("You do nothing");
+						return true;
+					}
 
-				case 'p':
-				{
-					/*int pos = this.gameData.units.indexOf(this.currentUnit);
+					case 'p':
+					{
+						/*int pos = this.gameData.units.indexOf(this.currentUnit);
 			if (pos <= 0) {
 				this.currentUnit = this.gameData.units.get(this.gameData.units.size()-1);
 			} else {
 				this.currentUnit = this.gameData.units.get(pos-1);
 			}*/
-					return false;
-				}
+						return false;
+					}
 
-				case 'w':
-					return true;
+					case 'w':
+						return true;
 
-				case 'a':
-					//this.currentUnit.attemptMove(-1, 0);
-					return true;
+					case 'a':
+						//this.currentUnit.attemptMove(-1, 0);
+						return true;
 
-				case 's':
-					//this.currentUnit.attemptMove(0, 1);
-					return true;
+					case 's':
+						//this.currentUnit.attemptMove(0, 1);
+						return true;
 
-				case 'd':
-					//this.currentUnit.attemptMove(1, 0);
-					return true;
+					case 'd':
+						//this.currentUnit.attemptMove(1, 0);
+						return true;
 
-				case 'o':
-					this.currentUnit.openDoor();
-					return true;
+					case 'o':
+						this.currentUnit.openDoor();
+						return true;
 
-				case 'c':
-					this.currentUnit.closeDoor();
-					return true;
+					case 'c':
+						this.currentUnit.closeDoor();
+						return true;
 
-				case 'u':
-					this.currentUnit.useConsole();
-					return true;
+					case 'u':
+						this.currentUnit.useConsole();
+						return true;
 
-				default:
-					main.addMsg("Unknown key " + c);
+					default:
+						main.addMsg("Unknown key " + c);
+					}
 				}
 			}
+		} else if (inputMode == InputMode.DirectionalMovement) {
+			char c = ks.getCharacter();
+			this.currentUnit.manualRoute = this.currentUnit.manualRoute + c;
 		}
 		return false;
 	}

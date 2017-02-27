@@ -3,15 +3,16 @@ package com.scs.ftl2d.entities.mobs;
 import java.util.ArrayList;
 import java.util.List;
 
+import ssmith.astar.WayPoints;
+
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareDoor;
 
-import ssmith.astar.WayPoints;
-
 public abstract class AbstractMob extends DrawableEntity {
+
+	public enum Status {Moving, Waiting, Eating, Repairing}
 	
 	// Sides
 	public static final int SIDE_PLAYER = 0;
@@ -21,19 +22,20 @@ public abstract class AbstractMob extends DrawableEntity {
 	public float health = 100f;
 	public String name;
 	public int side;
-	public List<Entity> equipment = new ArrayList<>();
-	public String manualRoute;
+	public List<DrawableEntity> equipment = new ArrayList<>();
+	public String manualRoute = "";
 	public WayPoints astarRoute;
+	public Status status = Status.Waiting;
 
 	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side) {
 		super(main, _x, _y, _z);
-		
+
 		theChar = c;
 		name = _name;
 		side = _side;
 
 	}
-	
+
 
 	public String getName() {
 		return name;
@@ -108,10 +110,35 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	private void died(String reason) {
 		main.addMsg(this.getName() + " has died of " + reason);
-		// todo - remove from list if ours
+		for(DrawableEntity eq : this.equipment) {
+			super.getSq().items.add(eq); // Drop the equipment
+		}
+		main.gameData.units.remove(this); // Remove from list if ours
+		this.getSq().items.remove(this); // Remove us
 	}
 
 
+	public AbstractMob getClosestVisibleEnemy() {
+		AbstractMob closest = null;
+		float distance = 9999;
+		
+		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
+			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = main.gameData.map[x][y];
+				for (DrawableEntity e : sq.items) {
+					if (e instanceof AbstractMob) {
+						AbstractMob m = (AbstractMob)e;
+						if (m.side != this.side) {
+							Line l = new Line(this.x, this.y)
+						}
+					}
+				}
+			}			
+		}
+		
+		return closest;
+
+	}
 
 
 }

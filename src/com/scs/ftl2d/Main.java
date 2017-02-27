@@ -17,7 +17,11 @@ FTL
 Keep it simple at first!
 
 STORY
-
+Start
+Choose mission, buy sell etc..
+Choose ships destination
+Fly there, maybe get intercepted on the way or rnd event happens
+Repeat
 
 
 SHIP AREAS
@@ -44,7 +48,7 @@ Oxygen level
 Damage (by area) TODO
 Shield Level TODO
 Energy TODO
-Fuel TODO - Determines whips range;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Fuel TODO - Determines ships range
 Hull damage TODO
 Engine temp?
 
@@ -77,6 +81,7 @@ Units get tired
 Missions
 Load/save
 Choose where to fly to
+LOS
 
 
 EVENTS
@@ -85,6 +90,8 @@ Boarded by enemies
 Meteor storm
 Aliens invade ship
 Installations break down
+Solar flare
+Encounter empty hulk
 
 
 MISSIONS
@@ -107,10 +114,8 @@ public class Main {
 		createGameData();
 
 		currentModule = new PlayersShipModule(this);
-		currentModule.init();
 
 		view = new DefaultView();
-		view.init();
 
 		mainGameLoop();
 	}
@@ -174,6 +179,11 @@ public class Main {
 		}
 	}
 
+	
+	public void setModule(AbstractModule mod) {
+		this.currentModule = mod;
+	}
+	
 	
 	public static void p(String s) {
 		System.out.println(s);

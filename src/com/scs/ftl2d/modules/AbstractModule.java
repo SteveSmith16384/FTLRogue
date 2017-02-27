@@ -13,9 +13,6 @@ public abstract class AbstractModule {
 	public AbstractModule(Main _main) {
 		main = _main;
 	}
-
-	
-	public abstract void init();
 	
 	public abstract void updateGame();
 

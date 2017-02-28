@@ -1,8 +1,6 @@
 package com.scs.ftl2d.modules;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -10,7 +8,6 @@ import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
-import com.scs.ftl2d.events.EnemyShipEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.missions.AbstractMission;
 /*
@@ -20,6 +17,7 @@ CONTROLS:
 Numbers - select unit
 Arrows - move unit
 c - close door
+d - drop
 e - Use equipment TODO
 g - Goto TODO
 k - show Key TODO
@@ -28,7 +26,7 @@ n - Nothing
 o - open door
 s - shoot (at nearest) TODO
 t - teleport TODO
-u - Use console TODO
+u - Use console
 
 ASCII CODES
 Numbers - Players units
@@ -37,8 +35,10 @@ C - Control panel
 E - Engines
 e - Egg (alien)
 F - On fire
+g - Gun
 M - Medibay
 m - Medikit
+O - Window
 R - Replicator
 T - Teleporter
 . - Floor
@@ -67,6 +67,8 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void updateGame() {
+		main.gameData.turnNo++;
+
 		// Go through map
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {

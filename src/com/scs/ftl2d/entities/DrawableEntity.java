@@ -1,5 +1,8 @@
 package com.scs.ftl2d.entities;
 
+import java.awt.Point;
+
+import com.scs.ftl2d.Line;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
@@ -31,11 +34,22 @@ public abstract class DrawableEntity extends Entity {
 	
 	
 	public boolean canSee(DrawableEntity de) {
-		return true; // todo
+		Line l = new Line(this.x, this.y, de.x, de.y);
+		for (Point p : l) {
+			if (!main.gameData.map[p.x][p.y].isTransparent()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	
 	public float distanceTo(DrawableEntity de) {
 		return (float) Math.sqrt((this.x-de.x)*(this.x-de.x) + this.y-de.y)*(this.y-de.y);
+	}
+	
+	
+	public void remove() {
+		this.getSq().entities.remove(this); // Remove us
 	}
 }

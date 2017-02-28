@@ -2,6 +2,7 @@ package com.scs.ftl2d;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Random;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.entities.mobs.Unit;
@@ -24,12 +25,15 @@ Fly there, maybe get intercepted on the way or rnd event happens
 Repeat
 
 
+QUESTIONS
+
+
+
 SHIP AREAS
 DONE medi-bay: heal player
 Torpedo bay: launch weapon
 Scanners: see what's going on in flying mode
 DONE Oxygen generators
-Gravity generators
 Teleporter
 Bridge?
 Engineering?
@@ -56,7 +60,6 @@ Engine temp?
 GAMEPLAY
 Show unit status - eating, moving, repairing, nothing
 Overlays - damage, oxygen, unit routes
-Google ranged combat in rogues
 Background/foreground colours
 All units can do all actions, but specialists are better
 DONE Oxygen level - slowly goes down
@@ -64,7 +67,6 @@ Fire might spread
 Need to stock up on missiles or something?
 Board enemy ships
 Engines - get ship ready for warp
-Engines can overheat
 Random events - enemy ship turns up, meteor storm
 Stock up on fuel at spacestation
 Have background stories for units
@@ -82,6 +84,7 @@ Missions
 Load/save
 Choose where to fly to
 LOS
+Buy crewmembers
 
 
 EVENTS
@@ -104,6 +107,8 @@ Draw starfield
  */
 public class Main {
 
+	public static final Random RND = new Random();
+	
 	private IGameView view;
 	public GameData gameData;
 	private boolean stopNow = false;
@@ -140,7 +145,7 @@ public class Main {
 			Point p = mapdata.getUnitStart(i);
 			Unit unit = new Unit(this, ((i+1)+"").charAt(0), p.x, p.y, "Unit " + (i+1), 0);
 			this.gameData.units.add(unit);
-			gameData.map[p.x][p.y].items.add(unit);
+			gameData.map[p.x][p.y].entities.add(unit);
 		}
 
 		gameData.msgs.add("Welcome to " + Settings.TITLE);
@@ -166,8 +171,6 @@ public class Main {
 
 
 	private void updateGame() {
-		gameData.turnNo++;
-
 		this.currentModule.updateGame();
 	}
 	

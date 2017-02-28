@@ -16,6 +16,12 @@ public class MapSquareFloor extends AbstractMapSquare {
 
 
 	@Override
+	public boolean isTransparent() {
+		return true;
+	}
+	
+
+	@Override
 	public boolean isTraversable() {
 		return true;
 	}

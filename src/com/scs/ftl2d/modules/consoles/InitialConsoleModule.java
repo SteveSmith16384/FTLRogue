@@ -1,14 +1,20 @@
-package com.scs.ftl2d.modules;
+package com.scs.ftl2d.modules.consoles;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.PlayersShipModule;
 
 public class InitialConsoleModule extends AbstractConsoleModule {
 
 	public InitialConsoleModule(Main main) {
 		super(main);
 
-		addLine("1 - Available Missions");
+		if (main.gameData.currentLocation != null) {
+			addLine("Currently docked at " + main.gameData.currentLocation);
+			addLine("");
+		}
+		addLine("1 - Ship Functions");
+		addLine("2 - Available Missions");
 		addLine("X - Exit");
 	}
 
@@ -18,6 +24,10 @@ public class InitialConsoleModule extends AbstractConsoleModule {
 		char ch = c.getCharacter();
 		switch (ch) {
 		case '1':
+			main.setModule(new ShipFunctionsModule(main));
+			break;
+
+		case '2':
 			main.setModule(new MissionConsoleModule(main));
 			break;
 
@@ -28,7 +38,7 @@ public class InitialConsoleModule extends AbstractConsoleModule {
 		default:
 			addLine("Unknown command");
 		}
-		return false;
+		return true;
 	}
 
 }

@@ -20,6 +20,13 @@ public class MapSquareReplicator extends AbstractMapSquare {
 		return false;
 	}
 
+
+	@Override
+	public boolean isTransparent() {
+		return false;
+	}
+	
+
 	@Override
 	public char getFloorChar() {
 		return 'R';

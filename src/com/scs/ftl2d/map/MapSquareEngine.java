@@ -20,6 +20,13 @@ public class MapSquareEngine extends AbstractMapSquare {
 		return false;
 	}
 
+
+	@Override
+	public boolean isTransparent() {
+		return false;
+	}
+	
+
 	@Override
 	public char getFloorChar() {
 		return 'E';

@@ -3,6 +3,8 @@ package com.scs.ftl2d;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.lanterna.TextCharacter;
+import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
@@ -12,9 +14,10 @@ import com.scs.ftl2d.missions.AbstractMission;
 public class GameData {
 
 	public AbstractMapSquare[][] map;
-	public StarmapData starmap = new StarmapData();
+	public IStarmapData starmap = new StarmapData();
 	public List<Unit> units = new ArrayList<>();
 	public List<String> msgs = new ArrayList<>();
+	public AbstractSpaceLocation currentLocation = null;
 
 	public List<AbstractEvent> currentEvents = new ArrayList<>();
 	public List<AbstractMission> currentMissions = new ArrayList<>();
@@ -56,7 +59,7 @@ public class GameData {
 
 	public Unit getUnitAt(int x, int y) {
 		//List<DrawableEntity> list = map[x][y].items;
-		for (DrawableEntity de : map[x][y].items) {
+		for (DrawableEntity de : map[x][y].entities) {
 			if (de instanceof Unit) {
 				Unit unit = (Unit)  de;
 				return unit;
@@ -73,4 +76,16 @@ public class GameData {
 		}
 	}
 
+
+	public AbstractMapSquare getMapSquare(int _type) {
+		for (int y=0 ; y<getHeight() ; y++) {
+			for (int x=0 ; x<getWidth() ; x++) {
+				AbstractMapSquare sq = map[x][y];
+				if (sq.type == _type) {
+					return sq;
+				}
+			}			
+		}
+		return null;
+	}
 }

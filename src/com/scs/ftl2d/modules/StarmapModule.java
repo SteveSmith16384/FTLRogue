@@ -15,19 +15,16 @@ public class StarmapModule extends AbstractModule {
 
 	@Override
 	public void updateGame() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean processInput(KeyStroke c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

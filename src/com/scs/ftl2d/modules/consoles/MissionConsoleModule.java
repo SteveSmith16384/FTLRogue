@@ -1,9 +1,10 @@
-package com.scs.ftl2d.modules;
+package com.scs.ftl2d.modules.consoles;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.missions.AbstractMission;
 import com.scs.ftl2d.missions.TransportEggMission;
+import com.scs.ftl2d.modules.PlayersShipModule;
 
 public class MissionConsoleModule extends AbstractConsoleModule {
 
@@ -24,7 +25,7 @@ public class MissionConsoleModule extends AbstractConsoleModule {
 			// todo - get missions from current docked location
 			addLine("1 - Transport Egg");
 			addLine("X - Exit");
-			
+
 		}
 
 	}
@@ -32,28 +33,31 @@ public class MissionConsoleModule extends AbstractConsoleModule {
 
 	@Override
 	public boolean processInput(KeyStroke c) {
-		char ch = c.getCharacter();
-		switch (ch) {
-		case '1':
-			mission = new TransportEggMission(main);
-			this.clearLines();
-			break;
+		if (c.getCharacter() != null) {
+			char ch = c.getCharacter();
+			switch (ch) {
+			case '1':
+				mission = new TransportEggMission(main);
+				this.clearLines();
+				break;
 
-		case 'y':
-			if (mission != null) {
-				mission.accepted();
-				main.gameData.currentMissions.add(mission);
-				main.setModule(new InitialConsoleModule(main));
-				mission = null;
+			case 'y':
+				if (mission != null) {
+					mission.accepted();
+					main.gameData.currentMissions.add(mission);
+					main.setModule(new InitialConsoleModule(main));
+					mission = null;
+				}
+				break;
+				
+			case 'X':
+				main.setModule(new PlayersShipModule(main));
+				break;
+
+			default:
+				addLine("Unknown command");
 			}
-
-		case 'X':
-			main.setModule(new PlayersShipModule(main));
-			break;
-
-		default:
-			addLine("Unknown command");
 		}
-		return false;
+		return true;
 	}
 }

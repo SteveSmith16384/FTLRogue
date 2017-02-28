@@ -34,6 +34,13 @@ public class MapSquareDoor extends AbstractMapSquare {
 	}
 
 	
+
+	@Override
+	public boolean isTransparent() {
+		return false;
+	}
+	
+
 	@Override
 	public boolean isTraversable() {
 		return isOpen;
@@ -51,7 +58,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 		processItems();
 
 		if (this.isOpen) {
-			if (this.items.size() == 0) {
+			if (this.entities.size() == 0) {
 				this.closeTimer--;
 				if (closeTimer <= 0) {
 					this.isOpen = false;

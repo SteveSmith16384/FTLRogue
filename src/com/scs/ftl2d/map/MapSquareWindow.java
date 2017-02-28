@@ -2,14 +2,16 @@ package com.scs.ftl2d.map;
 
 import com.scs.ftl2d.Main;
 
-/**
- * This allows weapons to be fired etc...
- *
- */
-public class MapSquareControlPanel extends AbstractMapSquare {
+public class MapSquareWindow extends AbstractMapSquare {
 
-	public MapSquareControlPanel(Main main, int code) {
+	public MapSquareWindow(Main main, int code) {
 		super(main, code);
+	}
+
+
+	@Override
+	public String getName() {
+		return "Window";
 	}
 
 
@@ -17,7 +19,7 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 	public boolean isTraversable() {
 		return false;
 	}
-	
+
 
 	@Override
 	public boolean isTransparent() {
@@ -27,20 +29,13 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return 'C';
+		return 'O';
 	}
-
 
 	@Override
 	public void process() {
 		processItems();
 
-	}
-
-
-	@Override
-	public String getName() {
-		return "Control Panel";
 	}
 
 }

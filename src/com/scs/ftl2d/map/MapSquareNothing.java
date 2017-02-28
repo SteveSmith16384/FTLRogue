@@ -20,6 +20,13 @@ public class MapSquareNothing extends AbstractMapSquare {
 		return false;
 	}
 
+
+	@Override
+	public boolean isTransparent() {
+		return true;
+	}
+	
+
 	@Override
 	public char getFloorChar() {
 		return ' ';

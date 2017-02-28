@@ -1,8 +1,6 @@
 package com.scs.ftl2d.map;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -27,7 +25,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public int type = MAP_NOTHING;
 	public boolean onFire = false;
 	public float damage_pcent = 0;
-	public Queue<DrawableEntity> items = new PriorityQueue<DrawableEntity>(10, this); // todo - rename
+	public Queue<DrawableEntity> entities = new PriorityQueue<DrawableEntity>(10, this);
 
 	public static AbstractMapSquare Factory(Main main, int code) {
 		switch (code) {
@@ -74,22 +72,23 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	
 	public abstract boolean isTraversable();
 	
+	public abstract boolean isTransparent();
+	
 	protected abstract char getFloorChar();
 	
 	public abstract String getName();
 	
 	protected void processItems() {
-		for (DrawableEntity de : this.items) {
+		for (DrawableEntity de : this.entities) {
 			de.process();
 		}
 	}
 	
 	public char getChar() {
-		if (items.size() == 0) {
+		if (entities.size() == 0) {
 			return this.getFloorChar();
 		} else {
-			// todo
-			return items.peek().getChar();//.get(0).getChar();
+			return entities.peek().getChar();
 		}
 	}
 	
@@ -100,7 +99,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	
 	@Override
 	public int compare(DrawableEntity arg0, DrawableEntity arg1) {
-		return arg0.z - arg1.z;
+		return arg1.z - arg0.z;
 	}
 
 

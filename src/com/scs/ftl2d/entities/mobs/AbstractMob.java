@@ -1,21 +1,20 @@
 package com.scs.ftl2d.entities.mobs;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.scs.ftl2d.Line;
+import ssmith.astar.WayPoints;
+
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareDoor;
-
-import ssmith.astar.WayPoints;
 
 public abstract class AbstractMob extends DrawableEntity {
 
 	public enum Status {Moving, Waiting, Eating, Repairing}
-	
+
 	// Sides
 	public static final int SIDE_PLAYER = 0;
 	public static final int SIDE_ALIEN = 1;
@@ -28,6 +27,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public String manualRoute = "";
 	public WayPoints astarRoute;
 	public Status status = Status.Waiting;
+	public Entity currentItem;
 
 	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side) {
 		super(main, _x, _y, _z);
@@ -54,17 +54,26 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
+	public boolean moveTowards(int x, int y) {
+		return attemptMove(Integer.signum(x-this.x), Integer.signum(y-this.y));
+	}
+	
+	
 	public boolean attemptMove(int offx, int offy) {
+		if (offx == 0 && offy == 0) {
+			return false;
+		}
+		
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
 		if (newsq.isTraversable()) {
 			Unit other = main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				AbstractMapSquare oldsq = main.gameData.map[x][y];
-				oldsq.items.remove(this);
+				oldsq.entities.remove(this);
 
 				x += offx;
 				y += offy;
-				newsq.items.add(this);
+				newsq.entities.add(this);
 				return true;
 			} else {
 				if (this.side == other.side) {
@@ -113,34 +122,37 @@ public abstract class AbstractMob extends DrawableEntity {
 	private void died(String reason) {
 		main.addMsg(this.getName() + " has died of " + reason);
 		for(DrawableEntity eq : this.equipment) {
-			super.getSq().items.add(eq); // Drop the equipment
+			super.getSq().entities.add(eq); // Drop the equipment
 		}
 		main.gameData.units.remove(this); // Remove from list if ours
-		this.getSq().items.remove(this); // Remove us
+		super.remove();
 	}
 
 
 	public AbstractMob getClosestVisibleEnemy() {
 		AbstractMob closest = null;
-		float distance = 9999;
-		
+		float closestDistance = 9999;
+
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = main.gameData.map[x][y];
-				for (DrawableEntity e : sq.items) {
+				for (DrawableEntity e : sq.entities) {
 					if (e instanceof AbstractMob) {
 						AbstractMob m = (AbstractMob)e;
 						if (m.side != this.side) {
-							Line l = new Line(this.x, this.y, m.x, m.y);
-							for (Point p :l) {
-								
+							float dist = this.distanceTo(m); 
+							if (dist < closestDistance) {
+								if (this.canSee(m)) {
+									closest = m;
+									closestDistance = dist;
+								}
 							}
 						}
 					}
 				}
 			}			
 		}
-		
+
 		return closest;
 
 	}

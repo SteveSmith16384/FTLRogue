@@ -1,4 +1,4 @@
-package com.scs.ftl2d.modules;
+package com.scs.ftl2d.modules.consoles;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
+import com.scs.ftl2d.modules.AbstractModule;
 
 public abstract class AbstractConsoleModule extends AbstractModule {
 
@@ -22,7 +23,6 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 	@Override
 	public void updateGame() {
-		// TODO Auto-generated method stub
 		
 	}
 

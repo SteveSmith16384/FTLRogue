@@ -16,6 +16,12 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 
 
 	@Override
+	public boolean isTransparent() {
+		return false;
+	}
+	
+
+	@Override
 	public boolean isTraversable() {
 		return false;
 	}

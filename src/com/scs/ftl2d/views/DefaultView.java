@@ -1,8 +1,5 @@
 package com.scs.ftl2d.views;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,7 +14,6 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
-import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
@@ -83,13 +79,6 @@ public class DefaultView implements IGameView {
 	@Override
 	public KeyStroke getInput() throws IOException {
 		KeyStroke ks = screen.readInput();
-		/*Character c = ks.getCharacter();
-		if (c != null) {
-			return c.charValue();
-		}
-		else {
-			return '?';
-		}*/
 		return ks;
 	}
 
@@ -110,7 +99,7 @@ public class DefaultView implements IGameView {
 		TextGraphics tGraphics = screen.newTextGraphics();
 		int y = 0;
 		for (String s : lines) {
-			tGraphics.putString(0, y, lines.get(0));
+			tGraphics.putString(0, y, s);
 			y++;
 		}
 

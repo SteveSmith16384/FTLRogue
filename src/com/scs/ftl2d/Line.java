@@ -2,9 +2,10 @@ package com.scs.ftl2d;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Line {//implements Iterable<Point> {
+public class Line implements Iterable<Point> {
 	
 	private List<Point> points;
 	public List<Point> getPoints() { return points; }
@@ -35,6 +36,11 @@ public class Line {//implements Iterable<Point> {
 				y0 += sy;
 			}
 		}
+	}
+
+	@Override
+	public Iterator<Point> iterator() {
+		return points.iterator();
 	}
 
 }

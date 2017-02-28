@@ -1,14 +1,16 @@
 package com.scs.ftl2d.entities.mobs;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import ssmith.astar.WayPoints;
-
+import com.scs.ftl2d.Line;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareDoor;
+
+import ssmith.astar.WayPoints;
 
 public abstract class AbstractMob extends DrawableEntity {
 
@@ -129,7 +131,10 @@ public abstract class AbstractMob extends DrawableEntity {
 					if (e instanceof AbstractMob) {
 						AbstractMob m = (AbstractMob)e;
 						if (m.side != this.side) {
-							Line l = new Line(this.x, this.y)
+							Line l = new Line(this.x, this.y, m.x, m.y);
+							for (Point p :l) {
+								
+							}
 						}
 					}
 				}

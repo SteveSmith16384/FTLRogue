@@ -9,7 +9,7 @@ public class ShipFunctionsModule extends AbstractConsoleModule {
 		super(main);
 		
 		this.addLine("L - Launch Ship");
-		//todo this.addLine("M - View Current Missions");
+		//this.addLine("M - View Current Missions");
 		this.addLine("X - Return");
 	}
 

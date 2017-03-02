@@ -37,7 +37,7 @@ public class ArrayMap implements ILevelData {
 	
 	public ArrayMap() {
 		// Add walls
-		for (int y=0 ; y<getDepth() ; y++) {
+		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {
 				//Main.p(x + "," + y);
 				if (data[x][y] == 0) {
@@ -73,7 +73,7 @@ public class ArrayMap implements ILevelData {
 
 
 	@Override
-	public int getDepth() {
+	public int getHeight() {
 		return data.length;
 	}
 

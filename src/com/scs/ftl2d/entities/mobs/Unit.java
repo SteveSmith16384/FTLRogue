@@ -1,19 +1,23 @@
 package com.scs.ftl2d.entities.mobs;
 
+import java.io.IOException;
+
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.map.MapSquareReplicator;
-import com.scs.ftl2d.modules.consoles.InitialConsoleModule;
+import com.scs.ftl2d.modules.consoles.CommandConsole;
 
 public class Unit extends AbstractMob {
 
 	public float food = 100f;
+	public float tiredness = 0;
+	public Status status = Status.Waiting;
 
-	public Unit(Main main, char c, int x, int y, String _name, int _side) {
-		super(main, x, y, DrawableEntity.Z_UNIT, c, _name, _side);
-
+	public Unit(Main main, char c, int x, int y, int _side) throws IOException {
+		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), _side, 20, 5, 5);
 	}
 
 
@@ -24,36 +28,106 @@ public class Unit extends AbstractMob {
 
 
 	@Override
-	public void process() {
-		main.gameData.incOxygenLevel(-0.1f);
-		if (main.gameData.oxygenLevel <= 0) {
-			main.addMsg(this.getName() + " is suffocating!");
-		}
+	public void process(int pass) {
+		if (pass == 1) {
+			status = Status.Waiting;
 
-		this.incFood(-0.25f);
-		// Are we next to a replicator?
-		if (this.food < 99f) {
-			MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
-			if (sqr != null) {
-				this.incFood(10);
-				this.main.addMsg(this.getName() + " eats some food");
+			// Can we see anything to shoot at?
+			if (this != this.main.gameData.currentUnit) {
+				checkForShooting();
 			}
-		}
 
-		if (this.food <= 0) {
-			main.addMsg(this.getName() + " is starving!");
-			this.incHealth(-5, "starvation");
-		} else if (this.food < 20) {
-			main.addMsg(this.getName() + " is hungry");
-		}
 
-		// Are we on a medibay?
-		AbstractMapSquare sq = this.getSq();
-		if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
-			this.incHealth(1, "");
-			main.addMsg(this.getName() + " is healing");
-		}
+			this.incFood(-0.25f);
+			// Are we next to a replicator?
+			if (status == Status.Waiting) {
+				if (this.food < 99f) {
+					MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
+					if (sqr != null) {
+						if (main.gameData.totalPower > 0) {
+							main.gameData.powerUsedPerTurn += 1f;
+							this.incFood(10);
+							this.main.addMsg(this.getName() + " eats some food");
+							status = Status.Eating;
+						}
+					}
+				}
+			}
 
+			if (this.food <= 0) {
+				main.addMsg(this.getName() + " is starving!");
+				this.incHealth(-5, "starvation");
+			} else if (this.food < 20) {
+				main.addMsg(this.getName() + " is hungry");
+			}
+
+			// Are we on a medibay?
+			if (status == Status.Waiting) {
+				AbstractMapSquare sq = this.getSq();
+				if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
+					if (main.gameData.totalPower > 0) {
+						main.gameData.powerUsedPerTurn += 1f;
+						this.incHealth(1, "");
+						main.addMsg(this.getName() + " is healing");
+						status = Status.Healing;
+					}
+				}
+			}
+
+			// Repair something
+			if (status == Status.Waiting) {
+				AbstractMapSquare sqr = main.gameData.findAdjacentDamagedMapSquare(x, y);
+				if (sqr != null) {
+					sqr.damage_pcent += Main.RND.nextInt(5) + 1;
+					this.main.addMsg(this.getName() + " repairs the " + sqr.getName());
+					status = Status.Repairing;
+				}
+			}
+
+			// Moving
+			if (status == Status.Waiting && this != this.main.gameData.currentUnit) {
+				if (manualRoute.length() > 0) {
+					processManualRoute(manualRoute.substring(0, 1));
+					manualRoute = manualRoute.substring(1);
+				}				
+			}
+			
+			
+			if (status == Status.Waiting) {
+				this.incTiredness(-1f);
+			}
+
+		} else if (pass == 2) {
+			main.gameData.incOxygenLevel(-0.1f);
+			if (main.gameData.oxygenLevel <= 0) {
+				main.addMsg(this.getName() + " is suffocating!");
+			}
+
+		}
+	}
+
+
+	private void processManualRoute(String dir) {
+		switch (dir.toLowerCase()) {
+		case "u":
+		case "n":
+			this.moveTowards(0, -1);
+			break;
+		case "d":
+		case "s":
+			this.moveTowards(0, 1);
+			break;
+		case "l":
+		case "w":
+			this.moveTowards(-1, 0);
+			break;
+		case "r":
+		case "e":
+			this.moveTowards(1, 0);
+			break;
+		default:
+			main.addMsg("Unknown movement char: " + dir);
+		}
 	}
 
 
@@ -70,9 +144,34 @@ public class Unit extends AbstractMob {
 	public void useConsole() {
 		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
-			main.setModule(new InitialConsoleModule(main));
+			main.setModule(new CommandConsole(main));
 		}		
 	}
 
+
+	public void checkForShooting() {
+		if (this.currentItem != null) {
+			AbstractItem i = (AbstractItem)this.currentItem;
+			if (i.canShoot()) {
+				for (AbstractMob mob : AbstractMob.AllMobs) {
+					if (mob.side != this.side) {
+						if (this.canSee(mob)) {
+							// todo
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public void incTiredness(float f) {
+		this.tiredness += f;
+		if (this.tiredness > 100f) {
+			this.tiredness = 100f;
+		} else if (this.tiredness <= 0) {
+			this.tiredness = 0;
+		}
+	}
 
 }

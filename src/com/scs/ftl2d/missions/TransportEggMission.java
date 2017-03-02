@@ -12,7 +12,7 @@ public class TransportEggMission extends AbstractMission {
 	public TransportEggMission(Main main) {
 		super(main);
 		
-		destination = main.gameData.starmap.getRandomLocation(main.gameData.currentLocation);
+		//destination = main.gameData.starmap.getRandomLocation(main.gameData.currentLocation);
 	}
 
 
@@ -38,8 +38,7 @@ public class TransportEggMission extends AbstractMission {
 
 
 	@Override
-	public void process() {
-		// todo - mission complete?
+	public void process(int pass) {
 		
 	}
 	

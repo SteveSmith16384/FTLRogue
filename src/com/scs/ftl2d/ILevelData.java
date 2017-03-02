@@ -6,9 +6,9 @@ public interface ILevelData {
 
 	int getWidth();
 	
-	int getDepth();
+	int getHeight();
 	
-	int getCodeForSquare(int x, int z);
+	int getCodeForSquare(int x, int y);
 	
 	int getNumUnits();
 	

@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.modules.AbstractModule;
 
 public abstract class AbstractConsoleModule extends AbstractModule {
@@ -26,10 +24,12 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 		
 	}
 
+	
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
 		view.drawConsoleScreen(lines);
 	}
+	
 	
 	public void addLine(String s) {
 		this.lines.add(s);

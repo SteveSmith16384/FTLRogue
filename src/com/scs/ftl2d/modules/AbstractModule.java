@@ -18,5 +18,5 @@ public abstract class AbstractModule {
 
 	public abstract void drawScreen(IGameView view) throws IOException;
 	
-	public abstract boolean processInput(KeyStroke c);
+	public abstract boolean processInput(KeyStroke ks);
 }

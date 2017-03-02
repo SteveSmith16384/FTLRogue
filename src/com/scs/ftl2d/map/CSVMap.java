@@ -14,43 +14,45 @@ public class CSVMap implements ILevelData {
 	private int[][] data;
 	
 	public CSVMap(String file) throws IOException {
-		Path path = FileSystems.getDefault().getPath("./data/maps", "file");
+		Path path = FileSystems.getDefault().getPath("./data/maps", file);
 		List<String> lines = Files.readAllLines(path);
 			
 		data = new int[lines.get(0).split("\t").length][lines.size()];
+		int y=0;
 		for (String line :  lines) {
-			
+			String tokens[] = line.split("\t");
+			int x = 0;
+			for (String t : tokens) {
+				data[x][y] = Integer.parseInt(t);
+				x++;
+			}
+			y++;
 		}
 	}
 
 	@Override
 	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return data.length;
 	}
 
 	@Override
-	public int getDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getHeight() {
+		return data[0].length;
 	}
 
 	@Override
-	public int getCodeForSquare(int x, int z) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getCodeForSquare(int x, int y) {
+		return data[x][y];
 	}
 
 	@Override
 	public int getNumUnits() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 4;
 	}
 
 	@Override
 	public Point getUnitStart(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return null; // todo
 	}
 
 }

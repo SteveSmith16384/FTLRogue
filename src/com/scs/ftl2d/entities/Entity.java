@@ -11,7 +11,7 @@ public abstract class Entity {
 	}
 	
 	
-	public abstract void process();
+	public abstract void process(int pass);
 
 
 }

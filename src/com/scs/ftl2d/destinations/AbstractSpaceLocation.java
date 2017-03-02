@@ -16,7 +16,7 @@ public class AbstractSpaceLocation extends Entity {
 
 	
 	@Override
-	public void process() {
+	public void process(int pass) {
 		
 	}
 

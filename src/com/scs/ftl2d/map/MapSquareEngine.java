@@ -34,9 +34,14 @@ public class MapSquareEngine extends AbstractMapSquare {
 
 
 	@Override
-	public void process() {
-		processItems();
-
+	public void process(int pass) {
+		processItems(pass);
+		
+		if (pass == 2) {
+			if (main.gameData.shipFlying) {
+				main.gameData.shipSpeed += (2f * this.getHealth()) / 100;
+			}
+		}
 	}
 
 }

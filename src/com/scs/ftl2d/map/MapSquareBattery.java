@@ -2,16 +2,16 @@ package com.scs.ftl2d.map;
 
 import com.scs.ftl2d.Main;
 
-public class MapSquareOxyGen extends AbstractMapSquare {
+public class MapSquareBattery extends AbstractMapSquare {
 
-	public MapSquareOxyGen(Main main, int code) {
+	public MapSquareBattery(Main main, int code) {
 		super(main, code);
 	}
 
 
 	@Override
 	public String getName() {
-		return "Oxy-Gen";
+		return "Battery";
 	}
 
 
@@ -28,7 +28,7 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return 'A';
+		return 'B';
 	}
 
 
@@ -37,10 +37,7 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 		processItems(pass);
 
 		if (pass == 1) {
-			main.gameData.incOxygenLevel((2f * this.getHealth()) / 100);
-			if (this.damage_pcent > 0) {
-				main.gameData.powerUsedPerTurn += 1f;
-			}
+			main.gameData.powerGainedPerTurn += (2f * this.getHealth() / 100);
 		}
 	}
 

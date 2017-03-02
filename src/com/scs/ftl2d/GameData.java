@@ -1,9 +1,10 @@
 package com.scs.ftl2d;
 
+import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.lanterna.TextCharacter;
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
@@ -13,11 +14,14 @@ import com.scs.ftl2d.missions.AbstractMission;
 
 public class GameData {
 
+	public Main main;
+
 	public AbstractMapSquare[][] map;
-	public IStarmapData starmap = new StarmapData();
 	public List<Unit> units = new ArrayList<>();
 	public List<String> msgs = new ArrayList<>();
 	public AbstractSpaceLocation currentLocation = null;
+
+	public Unit currentUnit;
 
 	public List<AbstractEvent> currentEvents = new ArrayList<>();
 	public List<AbstractMission> currentMissions = new ArrayList<>();
@@ -25,10 +29,63 @@ public class GameData {
 	public int turnNo = 0;
 	public int creds = 500;
 	public float oxygenLevel = 100f;
-	public float fuel = 50;
-	public float shieldLevel = 100f;
-	public float weaponLevel = 100f;
 	public float hullDamage = 0f;
+
+	public int shieldPowerLevel = 33;
+	public int weaponPowerLevel = 33;
+	public int enginePowerLevel = 33;
+
+	public float totalPower = 0;
+	public float powerGainedPerTurn = 0;
+	public float powerUsedPerTurn = 0;
+
+	public boolean shipLightsOn = true;
+	
+	public boolean shipFlying = false;
+	public float shipSpeed;
+	public float distanceToDest;
+
+
+	public GameData(Main _main, ILevelData mapdata) throws IOException {
+		main = _main;
+
+		map = new AbstractMapSquare[mapdata.getWidth()][mapdata.getHeight()];
+		for (int y=0 ; y<mapdata.getHeight() ; y++) {
+			for (int x=0 ; x<mapdata.getWidth() ; x++) {
+				int code = mapdata.getCodeForSquare(x, y);
+				map[x][y] = AbstractMapSquare.Factory(main, code);
+			}			
+		}
+
+		// Create player's units
+		for (int i=0 ; i<mapdata.getNumUnits() ; i++) {
+			Point p = mapdata.getUnitStart(i);
+			Unit unit = new Unit(main, ((i+1)+"").charAt(0), p.x, p.y, 0);
+			units.add(unit);
+			map[p.x][p.y].entities.add(unit);
+		}
+
+		recalcVisibleSquares();
+
+	}
+
+
+	public void recalcVisibleSquares() {
+		for (int y=0 ; y<getHeight() ; y++) {
+			for (int x=0 ; x<getWidth() ; x++) {
+				if (map[x][y].visible != AbstractMapSquare.VisType.Hidden) {
+					this.map[x][y].visible = AbstractMapSquare.VisType.Seen;
+				}
+				for (Unit unit : this.units) {
+					if (unit.canSee(x, y)) {
+						this.map[x][y].visible = AbstractMapSquare.VisType.Visible;
+						break;
+					}					
+				}
+			}			
+		}
+
+	}
 
 
 	public int getWidth() {
@@ -46,6 +103,22 @@ public class GameData {
 			for (int x2=x-1 ; x2<=x+1 ; x2++) {
 				try {
 					if (map[x2][y2].type == _type) {
+						return map[x2][y2];
+					}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					// Do nothing
+				}
+			}
+		}
+		return null;
+	}
+
+
+	public AbstractMapSquare findAdjacentDamagedMapSquare(int x, int y) {
+		for (int y2=y-1 ; y2<=y+1 ; y2++) {
+			for (int x2=x-1 ; x2<=x+1 ; x2++) {
+				try {
+					if (map[x2][y2].damage_pcent > 0) {
 						return map[x2][y2];
 					}
 				} catch (ArrayIndexOutOfBoundsException ex) {

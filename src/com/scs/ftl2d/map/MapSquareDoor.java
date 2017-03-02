@@ -1,7 +1,6 @@
 package com.scs.ftl2d.map;
 
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.DrawableEntity;
 
 public class MapSquareDoor extends AbstractMapSquare {
 
@@ -15,11 +14,17 @@ public class MapSquareDoor extends AbstractMapSquare {
 	}
 
 
-	public void setOpen(boolean b) {
-		this.isOpen = b;
-		if (b) {
+	public boolean setOpen(boolean b) {
+		boolean res = false;
+		if (main.gameData.totalPower > 0) {
+			main.gameData.powerUsedPerTurn += 1f;
+			this.isOpen = b;
+			res = true;
+		}
+		if (isOpen) {
 			closeTimer = CLOSE_DURATION;
 		}
+		return res;
 	}
 
 
@@ -33,36 +38,42 @@ public class MapSquareDoor extends AbstractMapSquare {
 		return this.isOpen;
 	}
 
-	
+
 
 	@Override
 	public boolean isTransparent() {
 		return false;
 	}
-	
+
 
 	@Override
 	public boolean isTraversable() {
 		return isOpen;
 	}
 
-	
+
 	@Override
 	public char getFloorChar() {
 		return isOpen ? '\'' : '+';
 	}
 
-	
-	@Override
-	public void process() {
-		processItems();
 
-		if (this.isOpen) {
-			if (this.entities.size() == 0) {
-				this.closeTimer--;
-				if (closeTimer <= 0) {
-					this.isOpen = false;
+	@Override
+	public void process(int pass) {
+		processItems(pass);
+
+		if (pass == 2) {
+			if (this.isOpen) {
+				if (this.entities.size() == 0) {
+					this.closeTimer--;
+					if (closeTimer <= 0) {
+						this.setOpen(false);
+					}
 				}
+			} else {
+				/*if (main.gameData.totalPower <= 0) {
+					this.isOpen = true; // Auto-open, don't check power
+				}*/
 			}
 		}
 	}

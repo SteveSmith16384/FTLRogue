@@ -12,8 +12,7 @@ public class EnemyShipEvent extends AbstractEvent {
 
 
 	@Override
-	public void process() {
-		// TODO Auto-generated method stub
+	public void process(int pass) {
 
 	}
 

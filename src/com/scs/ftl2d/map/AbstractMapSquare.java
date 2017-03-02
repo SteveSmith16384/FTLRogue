@@ -1,14 +1,16 @@
 package com.scs.ftl2d.map;
 
 import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
+
+import ssmith.util.SortedArrayList;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
 
 public abstract class AbstractMapSquare extends Entity implements Comparator<DrawableEntity> {
+
+	public enum VisType {Hidden, Seen, Visible};
 
 	// Map codes
 	public static final int MAP_NOTHING = 0;
@@ -23,9 +25,14 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_CONTROL_PANEL = 9;
 
 	public int type = MAP_NOTHING;
+	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
+	public boolean hasOxygen = true; // todo - calculate
+	public boolean isOpenToSpace = false; // todo - calculate
 	public float damage_pcent = 0;
-	public Queue<DrawableEntity> entities = new PriorityQueue<DrawableEntity>(10, this);
+
+	//public Queue<DrawableEntity> entities = new PriorityQueue<DrawableEntity>(10, this);
+	public SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
 
 	public static AbstractMapSquare Factory(Main main, int code) {
 		switch (code) {
@@ -78,19 +85,26 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	
 	public abstract String getName();
 	
-	protected void processItems() {
+	protected void processItems(int pass) {
+		if (!this.hasOxygen) {
+			this.onFire = false;
+		}
+		
 		for (DrawableEntity de : this.entities) {
-			de.process();
+			de.process(pass);
 		}
 	}
 	
 	public char getChar() {
-		if (entities.size() == 0) {
+		if (this.visible == VisType.Hidden) {
+			return ' ';
+		} else if (entities.size() == 0 || this.visible == VisType.Seen) {
 			return this.getFloorChar();
 		} else {
-			return entities.peek().getChar();
+			return entities.get(0).getChar();//.peek().getChar();
 		}
 	}
+	
 	
 	public float getHealth() {
 		return 100 - this.damage_pcent;
@@ -98,8 +112,8 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 	
 	@Override
-	public int compare(DrawableEntity arg0, DrawableEntity arg1) {
-		return arg1.z - arg0.z;
+	public int compare(DrawableEntity de1, DrawableEntity de2) {
+		return de2.z - de1.z;
 	}
 
 

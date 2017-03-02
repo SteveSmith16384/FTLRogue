@@ -22,7 +22,6 @@ public class MissionConsoleModule extends AbstractConsoleModule {
 			addLine(mission.getDescription());
 			addLine("Do you accept? (y/n)");
 		} else {
-			// todo - get missions from current docked location
 			addLine("1 - Transport Egg");
 			addLine("X - Exit");
 

@@ -34,8 +34,8 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 
 	@Override
-	public void process() {
-		processItems();
+	public void process(int pass) {
+		processItems(pass);
 
 	}
 

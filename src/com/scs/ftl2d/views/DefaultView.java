@@ -11,9 +11,10 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
+import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
@@ -26,11 +27,7 @@ public class DefaultView implements IGameView {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
 		fac.setInitialTerminalSize(new TerminalSize(70, 50));
 		terminal = fac.createTerminal();
-		//terminal.
-		SwingTerminalFrame stf = (SwingTerminalFrame)terminal;
 		screen = new TerminalScreen(terminal);
-
-
 	}
 
 
@@ -42,6 +39,7 @@ public class DefaultView implements IGameView {
 		TextGraphics tGraphics = screen.newTextGraphics();
 
 		// Draw map
+		gameData.recalcVisibleSquares();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
@@ -50,22 +48,47 @@ public class DefaultView implements IGameView {
 		}
 
 		// Draw stats
-		tGraphics.putString(gameData.getWidth()+2, 0, "Turn " + gameData.turnNo);
-		tGraphics.putString(gameData.getWidth()+2, 1, "Shields: " + (int)gameData.shieldLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, 1, "Hull Dmg: " + (int)gameData.hullDamage + "%");
-		//tGraphics.putString(gameData.getWidth()+2, 2, "Engine Temp: " + (int)gameData.engineTemp + "o");
-		tGraphics.putString(gameData.getWidth()+2, 3, "Oxygen: " + (int)gameData.oxygenLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, 4, "Fuel: " + gameData.fuel);
+		int y=0;
+		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
+		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerLevel + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
-		// Draw current unit
-		tGraphics.putString(gameData.getWidth()+2, 6, "Unit: " + currentUnit.getName());
-		tGraphics.putString(gameData.getWidth()+2, 7, "Health: " + (int)currentUnit.health + "%");
-		tGraphics.putString(gameData.getWidth()+2, 8, "Food: " + (int)currentUnit.food);
+		y++;
+		tGraphics.putString(gameData.getWidth()+2, y++, "POWER");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Total Power: " + (int)gameData.totalPower);
+		tGraphics.putString(gameData.getWidth()+2, y++, "Power Gain: " + (int)gameData.powerGainedPerTurn);
+		tGraphics.putString(gameData.getWidth()+2, y++, "Power Used: " + (int)gameData.powerUsedPerTurn);
 
-		// Todo - list other units and status
+		// Draw units
+		y++;
+		tGraphics.putString(gameData.getWidth()+2, y++, "CREW");
+		for (Unit unit : gameData.units) {
+			StringBuilder str = new StringBuilder();
+			if (unit == currentUnit) {
+				str.append("*");
+			}
+			str.append(unit.getName()).append(" ");
+			str.append("H:" + unit.health + "%").append(" ");
+			str.append("F:" + (int)unit.food);
+			tGraphics.putString(gameData.getWidth()+2, y++, str.toString());
+		}
+
+		// Say what items the unit is near 
+		StringBuffer itemlist = new StringBuffer();
+		for (DrawableEntity de : gameData.currentUnit.getSq().entities){
+			if (de instanceof AbstractItem) {
+				itemlist.append(de.getName() + "; ");
+			}
+		}
+		if (itemlist.length() > 0) {
+			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());
+
+		}
+
 
 		// Messages
-		int y = gameData.getHeight()+2;
+		y = gameData.getHeight()+2;
 		for (String s : gameData.msgs) {
 			tGraphics.putString(0, y, s);
 			y++;

@@ -1,5 +1,9 @@
 package com.scs.ftl2d.entities.mobs;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,32 +17,58 @@ import com.scs.ftl2d.map.MapSquareDoor;
 
 public abstract class AbstractMob extends DrawableEntity {
 
-	public enum Status {Moving, Waiting, Eating, Repairing}
+	public enum Status {Waiting, Moving, Eating, Repairing, Healing}
+
+	public static List<AbstractMob> AllMobs = new ArrayList<>();
+
 
 	// Sides
 	public static final int SIDE_PLAYER = 0;
 	public static final int SIDE_ALIEN = 1;
+	public static final int SIDE_ENEMY_SHIP = 2;
 
 	public char theChar;
-	public float health = 100f;
 	public String name;
 	public int side;
 	public List<DrawableEntity> equipment = new ArrayList<>();
 	public String manualRoute = "";
 	public WayPoints astarRoute;
-	public Status status = Status.Waiting;
 	public Entity currentItem;
 
-	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side) {
+	// Stats
+	public float health = 100f;
+	public int att;
+	public int def;
+
+	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _att, int _def) {
 		super(main, _x, _y, _z);
 
 		theChar = c;
 		name = _name;
 		side = _side;
+		
+		health = hlth;
+		att = _att;
+		def = _def;
 
+		AllMobs.add(this);
 	}
 
+	
+	public static String GetRandomName() throws IOException {
+		Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
+		List<String> lines = Files.readAllLines(path);
+		int i = Main.RND.nextInt(lines.size());
+		return lines.get(i);
+	}
+	
+	
+	public void remove() {
+		AllMobs.remove(this);
+		super.remove();
+	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -77,17 +107,32 @@ public abstract class AbstractMob extends DrawableEntity {
 				return true;
 			} else {
 				if (this.side == other.side) {
-					main.addMsg(other.getName() + " is in the way");
+					addMsgIfOurs(other.getName() + " is in the way");
 				} else {
 					// todo - fight
 				}
 			}
 		} else {
-			main.addMsg(newsq.getName() + " is in the way");
+			addMsgIfOurs(newsq.getName() + " is in the way");
 		}
 		return false;
 	}
 
+	
+	public void meleeCombat(AbstractMob other) {
+		int tot = Math.max(0, this.att - other.def);
+		int dam = Main.RND.nextInt(tot)+1;
+		other.incHealth(-dam, this.getName());
+		
+	}
+	
+	
+	protected void addMsgIfOurs(String s) {
+		if (this.side == SIDE_PLAYER) {
+			main.addMsg(s);
+		}
+	}
+	
 
 	public void openDoor() {
 		MapSquareDoor sq = (MapSquareDoor)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
@@ -125,14 +170,14 @@ public abstract class AbstractMob extends DrawableEntity {
 			super.getSq().entities.add(eq); // Drop the equipment
 		}
 		main.gameData.units.remove(this); // Remove from list if ours
-		super.remove();
+		remove();
 	}
 
 
 	public AbstractMob getClosestVisibleEnemy() {
 		AbstractMob closest = null;
 		float closestDistance = 9999;
-
+		
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = main.gameData.map[x][y];

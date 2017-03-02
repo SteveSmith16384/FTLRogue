@@ -1,0 +1,92 @@
+FTL
+Keep it simple at first!
+
+STORY - EPISODE 1
+Start - get mission to transport egg
+Fly to planet
+Get intercepted on the way
+
+
+POWER
+Player can set values for shields/engines etc...
+The player has a certain number of powerpoints per turn (depending on batteries)
+If they allocate more power than they get, overall power will drop
+If power reaches zero, everything stops
+
+SPEED
+Speed is determined by the number of engines (affected by damage) * power to batteries
+
+
+SHIP AREAS
+DONE medi-bay: heal player
+Torpedo bay: launch weapon
+LATER Scanners: see what's going on in flying mode
+DONE Oxygen generators
+Teleporter
+Bridge 
+
+
+UNIT SKILLS
+Medic: heal others
+mechanic: repair stuff
+Weapons: take control of exterior weapons
+Saboteur?
+
+
+GAMEPLAY
+Fire may start when ship hit
+Walls may be destroyed causing oxygen loss
+Show help/key of visible interesting squares
+DONE Interior lights go dark if no power
+Doors not open if vacuum
+Overlays - damage, oxygen, unit routes
+Background/foreground colours
+Fire might spread
+Board enemy ships
+Random events - enemy ship turns up, meteor storm
+Units move randomly when oxygen low
+Randomly generate maps
+Man weapon console to shoot
+Units get tired
+Load/save
+DONE LOS
+Put items on map
+
+
+EVENTS
+Enemy ship off starboard bow
+Boarded by enemies
+Meteor storm
+Aliens invade ship
+Installations break down
+Solar flare
+Encounter empty hulk
+
+
+LATER
+All units can do all actions, but specialists are better
+Buy crewmembers
+Can board and take control of enemy ships
+Need to stock up on missiles or something?
+Scroll map
+Stock up on fuel at spacestation
+Have background stories for units
+LATER Engines leak coolant if no power
+LATER Units wear spacesuit to go into non-oxygen areas
+Draw starfield
+Hover mouse over square to identify
+Fly ship around space map
+Trade with space station
+Encounter other ships when moving around in space
+Engines - get ship ready for warp
+Send out mayday signal
+Receive mayday signal
+LATER Sleeping quarters
+LATER Fuel TODO - Determines ships range
+Choose where to fly to
+
+
+MISSIONS
+Deliver alien egg
+
+

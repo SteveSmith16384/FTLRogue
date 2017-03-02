@@ -3,16 +3,16 @@ package com.scs.ftl2d.entities.items;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 
-public class Gun extends AbstractItem {
+public class Knife extends AbstractItem {
 
-	public Gun(Main main) {
+	public Knife(Main main) {
 		super(main, -1, -1, DrawableEntity.Z_ITEM);
 	}
 	
 
 	@Override
 	public char getChar() {
-		return 'g';
+		return 'k';
 	}
 
 	
@@ -24,19 +24,14 @@ public class Gun extends AbstractItem {
 
 
 	@Override
-	public int getShotValue() {
+	public int getMeleeValue() {
 		return 10;
 	}
 	
-	@Override
-	public boolean canShoot() {
-		return true;
-	}
-
 
 	@Override
 	public String getName() {
-		return "Gun";
+		return "Knife";
 	}
 
 }

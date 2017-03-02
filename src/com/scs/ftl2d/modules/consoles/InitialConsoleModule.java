@@ -14,7 +14,7 @@ public class InitialConsoleModule extends AbstractConsoleModule {
 			addLine("");
 		}
 		addLine("1 - Ship Functions");
-		addLine("2 - Available Missions");
+		//addLine("2 - Available Missions");
 		addLine("X - Exit");
 	}
 

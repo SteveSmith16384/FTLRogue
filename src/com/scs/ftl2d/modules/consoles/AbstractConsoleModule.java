@@ -13,7 +13,8 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 	private static final int MAX_LINES = 10;
 	
 	private List<String> lines = new ArrayList<>();
-	
+	protected String command = "";
+
 	public AbstractConsoleModule(Main main) {
 		super(main);
 	}
@@ -27,9 +28,9 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 	
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawConsoleScreen(lines);
+		view.drawConsoleScreen(lines, command);
 	}
-	
+
 	
 	public void addLine(String s) {
 		this.lines.add(s);

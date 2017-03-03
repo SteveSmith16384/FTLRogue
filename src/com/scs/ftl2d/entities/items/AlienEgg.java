@@ -25,7 +25,7 @@ public class AlienEgg extends AbstractItem {
 		if (pass == 2) {
 			if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
 				Alien a = new Alien(main, this.x, this.y);
-				this.getSq().entities.add(a);
+				this.getSq().addEntity(a);
 				this.remove();
 				
 				if (Settings.DEBUG || this.seenByPlayer()) {

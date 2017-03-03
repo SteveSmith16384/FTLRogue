@@ -1,10 +1,13 @@
 package com.scs.ftl2d.views;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
@@ -23,6 +26,8 @@ public class DefaultView implements IGameView {
 	private Terminal terminal;
 	private Screen screen;
 
+	private Map<TextCharacter, String> seenSquares = new HashMap<>();
+
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
 		fac.setInitialTerminalSize(new TerminalSize(70, 50));
@@ -39,11 +44,17 @@ public class DefaultView implements IGameView {
 		TextGraphics tGraphics = screen.newTextGraphics();
 
 		// Draw map
-		gameData.recalcVisibleSquares();
+		seenSquares.clear();
+		gameData.recalcVisibleSquares(); // todo - only call this if map or units changed
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
-				screen.setCharacter(x, y, new TextCharacter(sq.getChar()));
+				//screen.setCharacter(x, y, new TextCharacter(sq.getChar()));
+				TextCharacter tc = sq.getChar();
+				screen.setCharacter(x, y, tc);
+				if (!seenSquares.containsKey(tc)) {
+					seenSquares.put(tc, sq.getName());
+				}
 			}			
 		}
 
@@ -60,6 +71,14 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Power Gain: " + (int)gameData.powerGainedPerTurn);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Power Used: " + (int)gameData.powerUsedPerTurn);
 
+		// Draw mapsquares key
+		y++;
+		for (TextCharacter tc : this.seenSquares.keySet()) {
+			tGraphics.setCharacter(gameData.getWidth()+2, y, tc);
+			tGraphics.putString(gameData.getWidth()+4, y, this.seenSquares.get(tc));
+			y++;
+		}
+
 		// Draw units
 		y++;
 		tGraphics.putString(gameData.getWidth()+2, y++, "CREW");
@@ -69,26 +88,25 @@ public class DefaultView implements IGameView {
 				str.append("*");
 			}
 			str.append(unit.getName()).append(" ");
-			str.append("H:" + unit.health + "%").append(" ");
+			str.append("H:" + (int)unit.health + "%").append(" ");
 			str.append("F:" + (int)unit.food);
 			tGraphics.putString(gameData.getWidth()+2, y++, str.toString());
 		}
 
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
-		for (DrawableEntity de : gameData.currentUnit.getSq().entities){
+		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()){
 			if (de instanceof AbstractItem) {
 				itemlist.append(de.getName() + "; ");
 			}
 		}
 		if (itemlist.length() > 0) {
 			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());
-
 		}
 
 
 		// Messages
-		y = gameData.getHeight()+2;
+		y = Math.max(y, gameData.getHeight()+2);
 		for (String s : gameData.msgs) {
 			tGraphics.putString(0, y, s);
 			y++;
@@ -115,17 +133,20 @@ public class DefaultView implements IGameView {
 
 
 	@Override
-	public void drawConsoleScreen(List<String> lines) throws IOException {
+	public void drawConsoleScreen(List<String> lines, String cmd) throws IOException {
 		screen.startScreen();
 		screen.clear();
-
+		
 		TextGraphics tGraphics = screen.newTextGraphics();
+		tGraphics.setForegroundColor(TextColor.ANSI.GREEN);
 		int y = 0;
 		for (String s : lines) {
 			tGraphics.putString(0, y, s);
 			y++;
 		}
-
+		y++;
+		tGraphics.putString(0, y, "> " + cmd + "_");
+		
 		screen.refresh();
 
 	}

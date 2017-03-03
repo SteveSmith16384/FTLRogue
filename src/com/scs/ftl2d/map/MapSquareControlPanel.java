@@ -1,11 +1,9 @@
 package com.scs.ftl2d.map;
 
+import java.awt.Color;
+
 import com.scs.ftl2d.Main;
 
-/**
- * This allows weapons to be fired etc...
- *
- */
 public class MapSquareControlPanel extends AbstractMapSquare {
 
 	public MapSquareControlPanel(Main main, int code) {
@@ -41,6 +39,12 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 	@Override
 	public String getName() {
 		return "Control Panel";
+	}
+
+
+	@Override
+	protected Color getBackgroundColour() {
+		return Color.gray;
 	}
 
 }

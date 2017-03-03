@@ -1,9 +1,14 @@
 package com.scs.ftl2d.map;
 
+import java.awt.Color;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 import ssmith.util.SortedArrayList;
 
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
@@ -27,12 +32,15 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
+	public boolean hasSmoke = false;
 	public boolean hasOxygen = true; // todo - calculate
-	public boolean isOpenToSpace = false; // todo - calculate
 	public float damage_pcent = 0;
+	
+	private static TextCharacter hiddenChar = new TextCharacter(' ', TextColor.ANSI.BLACK, TextColor.ANSI.BLACK); 
+	private TextCharacter seenChar; 
+	private TextCharacter visibleChar; 
 
-	//public Queue<DrawableEntity> entities = new PriorityQueue<DrawableEntity>(10, this);
-	public SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
+	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
 
 	public static AbstractMapSquare Factory(Main main, int code) {
 		switch (code) {
@@ -75,6 +83,8 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public AbstractMapSquare(Main _main, int _code) {
 		super(_main);
 		type = _code;
+		
+		this.calcChars();
 	}
 	
 	public abstract boolean isTraversable();
@@ -82,6 +92,8 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public abstract boolean isTransparent();
 	
 	protected abstract char getFloorChar();
+	
+	protected abstract Color getBackgroundColour();
 	
 	public abstract String getName();
 	
@@ -95,14 +107,34 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		}
 	}
 	
-	public char getChar() {
+	public TextCharacter getChar() {
 		if (this.visible == VisType.Hidden) {
-			return ' ';
-		} else if (entities.size() == 0 || this.visible == VisType.Seen) {
-			return this.getFloorChar();
+			return hiddenChar;//' ';
+		} else if (this.visible == VisType.Seen) { // entities.size() == 0 || 
+			return this.seenChar;//..getFloorChar();
 		} else {
-			return entities.get(0).getChar();//.peek().getChar();
+			return this.visibleChar;// entities.get(0).getChar();//.peek().getChar();
 		}
+	}
+	
+	
+	private void calcChars() {
+		Color backgroundCol = this.getBackgroundColour();
+		if (this.damage_pcent > 0) {
+			int num = (int)(this.damage_pcent / 10)+1; 
+			for (int i=0 ; i<num ; i++) {
+				backgroundCol = backgroundCol.darker();
+			}
+		}
+		TextColor backgroundTC = new TextColor.RGB(backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue());
+		seenChar = new TextCharacter(this.getFloorChar(), TextColor.ANSI.WHITE, backgroundTC);
+		
+		// Visible char
+		char c = this.getFloorChar();
+		if (this.entities.size() > 0) {
+			c = entities.get(0).getChar();
+		}
+		visibleChar = new TextCharacter(c, TextColor.ANSI.WHITE, backgroundTC);
 	}
 	
 	
@@ -116,5 +148,31 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		return de2.z - de1.z;
 	}
 
+	
+	public void addEntity(DrawableEntity de) {
+		this.entities.add(de);
+		this.calcChars();
+	}
+
+	
+	public void removeEntity(DrawableEntity de) {
+		this.entities.remove(de);
+		this.calcChars();
+	}
+	
+	
+	public DrawableEntity getEntity(int i) {
+		return this.entities.get(i);
+	}
+	
+	
+	public List<DrawableEntity> getEntities() {
+		return this.entities;
+	}
+	
+	
+	public Iterator<DrawableEntity> getIterator() {
+		return this.entities.iterator();
+	}
 
 }

@@ -99,17 +99,17 @@ public abstract class AbstractMob extends DrawableEntity {
 			Unit other = main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				AbstractMapSquare oldsq = main.gameData.map[x][y];
-				oldsq.entities.remove(this);
+				oldsq.removeEntity(this);
 
 				x += offx;
 				y += offy;
-				newsq.entities.add(this);
+				newsq.addEntity(this);
 				return true;
 			} else {
 				if (this.side == other.side) {
 					addMsgIfOurs(other.getName() + " is in the way");
 				} else {
-					// todo - fight
+					this.meleeCombat(other);
 				}
 			}
 		} else {
@@ -167,7 +167,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	private void died(String reason) {
 		main.addMsg(this.getName() + " has died of " + reason);
 		for(DrawableEntity eq : this.equipment) {
-			super.getSq().entities.add(eq); // Drop the equipment
+			super.getSq().addEntity(eq); // Drop the equipment
 		}
 		main.gameData.units.remove(this); // Remove from list if ours
 		remove();
@@ -181,7 +181,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = main.gameData.map[x][y];
-				for (DrawableEntity e : sq.entities) {
+				for (DrawableEntity e : sq.getEntities()) {
 					if (e instanceof AbstractMob) {
 						AbstractMob m = (AbstractMob)e;
 						if (m.side != this.side) {

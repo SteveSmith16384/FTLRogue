@@ -20,18 +20,18 @@ Arrows - move unit
 c - close door
 d - drop
 e - Use equipment
-g - Goto TODO
+g - Goto LATER
 h - Help TODO
 i - inventory
-k - show Key TODO
-m - move TODO
+k - ke TODO
+m - move
 n - Nothing
 o - open door
 p - Pick up
 s - shoot (at nearest) TODO
-t - teleport TODO
+t - teleport LATER
 u - Use console
-w - wear TODO
+w - wear LATER
 
 ASCII CODES
 Numbers - Players units
@@ -43,6 +43,7 @@ e - Egg (alien)
 F - On fire
 g - Gun
 k - knife
+L - Airlock
 M - Medibay
 m - Medikit
 O - Window
@@ -52,7 +53,7 @@ T - Teleporter
 +' - Door (open/closed)
 
 COLOURS
-Mapsquares: TODO
+Mapsquares:
 Background colour of installations shows type
 Foreground colour shows damage
 
@@ -174,7 +175,7 @@ public class PlayersShipModule extends AbstractModule {
 					main.gameData.currentUnit.attemptMove(1, 0);
 					return true;
 				} else {
-					if (ks != null) {
+					if (ks != null && ks.getCharacter() != null) {
 						char c = ks.getCharacter();
 						switch (c) {
 						case '1':
@@ -206,6 +207,11 @@ public class PlayersShipModule extends AbstractModule {
 							showInventory();
 							return false;
 
+						case 'm':
+							inputMode = InputMode.DirectionalMovement;
+							main.addMsg("Enter directions.  Press X to return to normal mode");
+							return false;
+							
 						case 'n':
 						{
 							main.addMsg("You do nothing");
@@ -240,7 +246,11 @@ public class PlayersShipModule extends AbstractModule {
 				}
 			} else if (inputMode == InputMode.DirectionalMovement) {
 				char c = ks.getCharacter();
-				main.gameData.currentUnit.manualRoute = main.gameData.currentUnit.manualRoute + c;
+				if (c != 'x') {
+					main.gameData.currentUnit.manualRoute = main.gameData.currentUnit.manualRoute + c;
+				} else {
+					inputMode = InputMode.Normal;
+				}
 			} else if (inputMode == InputMode.Pickup) {
 				char c = ks.getCharacter();
 				switch (c) {
@@ -254,9 +264,9 @@ public class PlayersShipModule extends AbstractModule {
 				case '8':
 				case '9':
 					int i = Integer.parseInt(c+"");
-					DrawableEntity de = main.gameData.currentUnit.getSq().entities.get(i);
+					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i);
 					if (de.canBePickedUp()) {
-						main.gameData.currentUnit.getSq().entities.remove(de);
+						main.gameData.currentUnit.getSq().removeEntity(de);
 						main.gameData.currentUnit.equipment.add(de);
 						main.addMsg("You pick up the " + de.getName());
 					} else {
@@ -279,7 +289,7 @@ public class PlayersShipModule extends AbstractModule {
 					int i = Integer.parseInt(c+"");
 					DrawableEntity de = main.gameData.currentUnit.equipment.get(i);
 					main.gameData.currentUnit.equipment.remove(de);
-					main.gameData.currentUnit.getSq().entities.add(de);
+					main.gameData.currentUnit.getSq().addEntity(de);
 					main.addMsg("You drop the " + de.getName());
 				}
 				inputMode = InputMode.Normal;
@@ -315,7 +325,7 @@ public class PlayersShipModule extends AbstractModule {
 	private void pickupMenu() {
 		main.addMsg("What to pick up?");
 		int i=0;
-		for (DrawableEntity de : main.gameData.currentUnit.getSq().entities) {
+		for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
 			if (de.canBePickedUp()) {
 				main.addMsg(i + ":" + de.getName());
 			}

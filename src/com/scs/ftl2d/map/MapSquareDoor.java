@@ -1,5 +1,9 @@
 package com.scs.ftl2d.map;
 
+import java.awt.Color;
+
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.ftl2d.Main;
 
 public class MapSquareDoor extends AbstractMapSquare {
@@ -64,7 +68,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 
 		if (pass == 2) {
 			if (this.isOpen) {
-				if (this.entities.size() == 0) {
+				if (this.getEntities().isEmpty()) {
 					this.closeTimer--;
 					if (closeTimer <= 0) {
 						this.setOpen(false);
@@ -77,5 +81,13 @@ public class MapSquareDoor extends AbstractMapSquare {
 			}
 		}
 	}
+
+	
+	@Override
+	protected Color getBackgroundColour() {
+		return Color.blue;
+	}
+
+
 
 }

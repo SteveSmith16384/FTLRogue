@@ -79,6 +79,6 @@ public abstract class DrawableEntity extends Entity {
 
 
 	public void remove() {
-		this.getSq().entities.remove(this); // Remove us
+		this.getSq().removeEntity(this); // Remove us
 	}
 }

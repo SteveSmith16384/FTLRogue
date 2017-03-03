@@ -6,8 +6,6 @@ import com.scs.ftl2d.Main;
 
 public class CommandConsole extends AbstractConsoleModule {
 
-	private String command = "";
-
 	public CommandConsole(Main main) {
 		super(main);
 
@@ -37,6 +35,10 @@ public class CommandConsole extends AbstractConsoleModule {
 		if (ks.getKeyType() == KeyType.Enter) {
 			processCommand();
 			command = "";
+		} else if (ks.getKeyType() == KeyType.Backspace) {
+			if (command.length() > 0) {
+				command = command.substring(0, command.length()-1);
+			}
 		} else {
 			command = command + ks.getCharacter();
 		}
@@ -50,29 +52,29 @@ public class CommandConsole extends AbstractConsoleModule {
 			switch (tokens[0].toLowerCase()) {
 			case "shields":
 				super.clearLines();
-				main.gameData.shieldPowerLevel = Integer.parseInt(tokens[0]);
-				main.addMsg("Shields now at " + main.gameData.shieldPowerLevel);
+				main.gameData.shieldPowerLevel = Integer.parseInt(tokens[1]);
+				super.addLine("Shields now at " + main.gameData.shieldPowerLevel);
 				break;
 
 			case "engines":
 				super.clearLines();
-				main.gameData.enginePowerLevel = Integer.parseInt(tokens[0]);
-				main.addMsg("Engines now at " + main.gameData.enginePowerLevel);
+				main.gameData.enginePowerLevel = Integer.parseInt(tokens[1]);
+				super.addLine("Engines now at " + main.gameData.enginePowerLevel);
 				break;
 
 			case "weapons":
 				super.clearLines();
-				main.gameData.weaponPowerLevel = Integer.parseInt(tokens[0]);
-				main.addMsg("Weapons now at " + main.gameData.weaponPowerLevel);
+				main.gameData.weaponPowerLevel = Integer.parseInt(tokens[1]);
+				super.addLine("Weapons now at " + main.gameData.weaponPowerLevel);
 				break;
 
 			case "launch":
 				super.clearLines();
 				if (!main.gameData.shipFlying) {
 					main.gameData.shipFlying = true;
-					main.addMsg("The ship has been launched!");
+					super.addLine("The ship has been launched!");
 				} else {
-					main.addMsg("The ship has already been launched.");
+					super.addLine("The ship has already been launched.");
 				}
 				break;
 
@@ -87,18 +89,18 @@ public class CommandConsole extends AbstractConsoleModule {
 				boolean on = tokens[1].equalsIgnoreCase("on");
 				main.gameData.shipLightsOn = on;
 				if (on) {
-					main.addMsg("The ship lights are now on.");
+					super.addLine("The ship lights are now on.");
 				} else {
-					main.addMsg("The ship lights are now off.");
+					super.addLine("The ship lights are now off.");
 				}
 				break;
 
 			}
-			showMenu();
 		} catch (Exception ex) {
 			super.addLine("Unable to understand: " + ex.getMessage());
 			ex.printStackTrace();
 		}
+		showMenu();
 	}
 
 }

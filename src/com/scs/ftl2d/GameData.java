@@ -35,7 +35,7 @@ public class GameData {
 	public int weaponPowerLevel = 33;
 	public int enginePowerLevel = 33;
 
-	public float totalPower = 0;
+	public float totalPower = 100;
 	public float powerGainedPerTurn = 0;
 	public float powerUsedPerTurn = 0;
 
@@ -62,10 +62,10 @@ public class GameData {
 			Point p = mapdata.getUnitStart(i);
 			Unit unit = new Unit(main, ((i+1)+"").charAt(0), p.x, p.y, 0);
 			units.add(unit);
-			map[p.x][p.y].entities.add(unit);
+			map[p.x][p.y].addEntity(unit);
 		}
 
-		recalcVisibleSquares();
+		//recalcVisibleSquares();
 
 	}
 
@@ -132,7 +132,7 @@ public class GameData {
 
 	public Unit getUnitAt(int x, int y) {
 		//List<DrawableEntity> list = map[x][y].items;
-		for (DrawableEntity de : map[x][y].entities) {
+		for (DrawableEntity de : map[x][y].getEntities()) {
 			if (de instanceof Unit) {
 				Unit unit = (Unit)  de;
 				return unit;

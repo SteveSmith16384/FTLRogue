@@ -8,11 +8,9 @@ import com.scs.ftl2d.entities.mobs.Unit;
 
 public interface IGameView {
 
-	//void init() throws IOException;
-
 	void drawPlayersShipScreen(GameData gameData, Unit currentUnit) throws IOException;
 	
-	void drawConsoleScreen(List<String> lines) throws IOException;
+	void drawConsoleScreen(List<String> lines, String cmd) throws IOException;
 	
 	KeyStroke getInput() throws IOException;
 

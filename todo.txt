@@ -13,33 +13,20 @@ The player has a certain number of powerpoints per turn (depending on batteries)
 If they allocate more power than they get, overall power will drop
 If power reaches zero, everything stops
 
+
 SPEED
 Speed is determined by the number of engines (affected by damage) * power to batteries
 
 
-SHIP AREAS
-DONE medi-bay: heal player
-Torpedo bay: launch weapon
-LATER Scanners: see what's going on in flying mode
-DONE Oxygen generators
-Teleporter
-Bridge 
-
-
-UNIT SKILLS
-Medic: heal others
-mechanic: repair stuff
-Weapons: take control of exterior weapons
-Saboteur?
-
-
 GAMEPLAY
+AddWalls not working quite right
+Design screen layout
+Console - select attack enemy ship
 Fire may start when ship hit
 Walls may be destroyed causing oxygen loss
 Show help/key of visible interesting squares
 DONE Interior lights go dark if no power
 Doors not open if vacuum
-Overlays - damage, oxygen, unit routes
 Background/foreground colours
 Fire might spread
 Board enemy ships
@@ -51,6 +38,7 @@ Units get tired
 Load/save
 DONE LOS
 Put items on map
+Make console green
 
 
 EVENTS
@@ -84,9 +72,22 @@ Receive mayday signal
 LATER Sleeping quarters
 LATER Fuel TODO - Determines ships range
 Choose where to fly to
+Self-destruct
+Smoke
+grenades
+Overlays - damage, oxygen, unit routes
+LATER Scanners: see what's going on in flying mode
+Torpedo bay: launch weapon
 
 
 MISSIONS
 Deliver alien egg
+
+
+UNIT SKILLS
+Medic: heal others
+mechanic: repair stuff
+Weapons: take control of exterior weapons
+Saboteur?
 
 

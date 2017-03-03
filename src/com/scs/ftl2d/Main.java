@@ -34,7 +34,7 @@ public class Main {
 
 	private void createGameData() throws IOException {
 		gameData = new GameData(this, new CSVMap("map1.csv"));//ArrayMap());
-
+		gameData.recalcVisibleSquares();
 		gameData.msgs.add("Welcome to " + Settings.TITLE);
 	}
 

@@ -1,5 +1,8 @@
 package com.scs.ftl2d.map;
 
+import java.awt.Color;
+
+import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
 
 public class MapSquareEngine extends AbstractMapSquare {
@@ -43,5 +46,12 @@ public class MapSquareEngine extends AbstractMapSquare {
 			}
 		}
 	}
+
+
+	@Override
+	protected Color getBackgroundColour() {
+		return Color.orange;
+	}
+
 
 }

@@ -1,5 +1,9 @@
 package com.scs.ftl2d.map;
 
+import java.awt.Color;
+
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.ftl2d.Main;
 
 public class MapSquareMediBay extends AbstractMapSquare {
@@ -37,5 +41,13 @@ public class MapSquareMediBay extends AbstractMapSquare {
 		processItems(pass);
 
 	}
+
+
+	@Override
+	protected Color getBackgroundColour() {
+		return Color.red;
+	}
+
+
 
 }

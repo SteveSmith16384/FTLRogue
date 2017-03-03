@@ -164,7 +164,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	private void died(String reason) {
+	public void died(String reason) {
 		main.addMsg(this.getName() + " has died of " + reason);
 		for(DrawableEntity eq : this.equipment) {
 			super.getSq().addEntity(eq); // Drop the equipment

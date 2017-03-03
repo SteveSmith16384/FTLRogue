@@ -65,8 +65,8 @@ public class PlayersShipModule extends AbstractModule {
 
 	private InputMode inputMode = InputMode.Normal;
 
-	public PlayersShipModule(Main main) {
-		super(main);
+	public PlayersShipModule(Main main, AbstractModule prev) {
+		super(main, prev);
 
 		if (main.gameData.currentUnit == null) {
 			this.selectUnit(0);

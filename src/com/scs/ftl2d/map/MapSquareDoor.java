@@ -2,8 +2,6 @@ package com.scs.ftl2d.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.ftl2d.Main;
 
 public class MapSquareDoor extends AbstractMapSquare {
@@ -28,6 +26,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 		if (isOpen) {
 			closeTimer = CLOSE_DURATION;
 		}
+		main.checkOxygen(); // todo - only do if oxygen on one side
 		return res;
 	}
 

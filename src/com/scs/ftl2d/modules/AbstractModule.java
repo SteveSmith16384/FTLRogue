@@ -9,9 +9,13 @@ import com.scs.ftl2d.Main;
 public abstract class AbstractModule {
 
 	protected Main main;
+	protected AbstractModule prevModule;
 	
-	public AbstractModule(Main _main) {
+	public AbstractModule(Main _main, AbstractModule _prevModule) {
+		super();
+		
 		main = _main;
+		this.prevModule = _prevModule;
 	}
 	
 	public abstract void updateGame();

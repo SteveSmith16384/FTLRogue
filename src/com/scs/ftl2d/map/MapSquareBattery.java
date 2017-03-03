@@ -2,7 +2,6 @@ package com.scs.ftl2d.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
 
 public class MapSquareBattery extends AbstractMapSquare {

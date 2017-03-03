@@ -25,18 +25,13 @@ Console - select attack enemy ship
 Fire may start when ship hit
 Walls may be destroyed causing oxygen loss
 Show help/key of visible interesting squares
-DONE Interior lights go dark if no power
 Doors not open if vacuum
-Background/foreground colours
 Fire might spread
 Board enemy ships
 Random events - enemy ship turns up, meteor storm
-Units move randomly when oxygen low
 Randomly generate maps
 Man weapon console to shoot
 Units get tired
-Load/save
-DONE LOS
 Put items on map
 Make console green
 
@@ -76,8 +71,10 @@ Self-destruct
 Smoke
 grenades
 Overlays - damage, oxygen, unit routes
-LATER Scanners: see what's going on in flying mode
+Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon
+Units move randomly when oxygen low
+Load/save
 
 
 MISSIONS

@@ -2,12 +2,13 @@ package com.scs.ftl2d.modules.consoles;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.AbstractModule;
 import com.scs.ftl2d.modules.PlayersShipModule;
 
 public class InitialConsoleModule extends AbstractConsoleModule {
 
-	public InitialConsoleModule(Main main) {
-		super(main);
+	public InitialConsoleModule(Main main, AbstractModule prev) {
+		super(main, prev);
 
 		if (main.gameData.currentLocation != null) {
 			addLine("Currently docked at " + main.gameData.currentLocation);
@@ -24,15 +25,15 @@ public class InitialConsoleModule extends AbstractConsoleModule {
 		char ch = c.getCharacter();
 		switch (ch) {
 		case '1':
-			main.setModule(new ShipFunctionsModule(main));
+			main.setModule(new ShipFunctionsModule(main, this));
 			break;
 
 		case '2':
-			main.setModule(new MissionConsoleModule(main));
+			main.setModule(new MissionConsoleModule(main, this));
 			break;
 
 		case 'X':
-			main.setModule(new PlayersShipModule(main));
+			main.setModule(new PlayersShipModule(main, this));
 			break;
 
 		default:

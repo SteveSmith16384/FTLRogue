@@ -3,11 +3,12 @@ package com.scs.ftl2d.modules.consoles;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.AbstractModule;
 
 public class CommandConsole extends AbstractConsoleModule {
 
-	public CommandConsole(Main main) {
-		super(main);
+	public CommandConsole(Main main, AbstractModule prev) {
+		super(main, prev);
 
 		showMenu();		
 	}
@@ -24,6 +25,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		}
 		super.addLine("'airlock open/close' to open or close the main airlock");
 		super.addLine("'lights on/off' to turn the ship's lights on or off");
+		super.addLine("'exit' to return");
 		super.addLine("");
 		int powerDiff = (int)((main.gameData.powerGainedPerTurn - main.gameData.powerUsedPerTurn) * 60f);
 		super.addLine("Ship power is currently changing by " + powerDiff  + " per minute");
@@ -93,8 +95,13 @@ public class CommandConsole extends AbstractConsoleModule {
 				} else {
 					super.addLine("The ship lights are now off.");
 				}
+				main.gameData.recalcVisibleSquares();
 				break;
 
+			case "exit":
+			case "x":
+				this.main.setModule(this.prevModule);
+				break;
 			}
 		} catch (Exception ex) {
 			super.addLine("Unable to understand: " + ex.getMessage());

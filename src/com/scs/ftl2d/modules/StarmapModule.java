@@ -8,8 +8,8 @@ import com.scs.ftl2d.Main;
 
 public class StarmapModule extends AbstractModule {
 
-	public StarmapModule(Main main) {
-		super(main);
+	public StarmapModule(Main main, AbstractModule prev) {
+		super(main, prev);
 	}
 
 

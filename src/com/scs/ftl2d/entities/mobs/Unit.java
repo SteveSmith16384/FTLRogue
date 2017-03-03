@@ -144,7 +144,7 @@ public class Unit extends AbstractMob {
 	public void useConsole() {
 		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
-			main.setModule(new CommandConsole(main));
+			main.setModule(new CommandConsole(main, main.getCurrentModule()));
 		}		
 	}
 

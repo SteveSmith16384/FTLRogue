@@ -4,14 +4,15 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.missions.AbstractMission;
 import com.scs.ftl2d.missions.TransportEggMission;
+import com.scs.ftl2d.modules.AbstractModule;
 import com.scs.ftl2d.modules.PlayersShipModule;
 
 public class MissionConsoleModule extends AbstractConsoleModule {
 
 	private AbstractMission mission;
 
-	public MissionConsoleModule(Main main) {
-		super(main);
+	public MissionConsoleModule(Main main, AbstractModule prev) {
+		super(main, prev);
 
 	}
 
@@ -44,13 +45,13 @@ public class MissionConsoleModule extends AbstractConsoleModule {
 				if (mission != null) {
 					mission.accepted();
 					main.gameData.currentMissions.add(mission);
-					main.setModule(new InitialConsoleModule(main));
+					main.setModule(new InitialConsoleModule(main, this));
 					mission = null;
 				}
 				break;
 				
 			case 'X':
-				main.setModule(new PlayersShipModule(main));
+				main.setModule(this.prevModule);
 				break;
 
 			default:

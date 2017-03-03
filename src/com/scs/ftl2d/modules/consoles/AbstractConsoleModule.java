@@ -15,8 +15,8 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 	private List<String> lines = new ArrayList<>();
 	protected String command = "";
 
-	public AbstractConsoleModule(Main main) {
-		super(main);
+	public AbstractConsoleModule(Main main, AbstractModule prev) {
+		super(main, prev);
 	}
 
 

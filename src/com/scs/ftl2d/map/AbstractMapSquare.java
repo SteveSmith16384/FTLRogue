@@ -12,6 +12,7 @@ import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
+import com.scs.ftl2d.entities.mobs.AbstractMob;
 
 public abstract class AbstractMapSquare extends Entity implements Comparator<DrawableEntity> {
 
@@ -100,6 +101,14 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	protected void processItems(int pass) {
 		if (!this.hasOxygen) {
 			this.onFire = false;
+			// Kill any units
+			for (DrawableEntity de : this.entities) {
+				if (de instanceof AbstractMob) {
+					AbstractMob am = (AbstractMob)de;
+					am.died("asphyxiation");
+				}
+			}
+			this.entities.clear();
 		}
 		
 		for (DrawableEntity de : this.entities) {
@@ -110,10 +119,10 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public TextCharacter getChar() {
 		if (this.visible == VisType.Hidden) {
 			return hiddenChar;//' ';
-		} else if (this.visible == VisType.Seen) { // entities.size() == 0 || 
-			return this.seenChar;//..getFloorChar();
+		} else if (this.visible == VisType.Seen) { 
+			return this.seenChar;
 		} else {
-			return this.visibleChar;// entities.get(0).getChar();//.peek().getChar();
+			return this.visibleChar;
 		}
 	}
 	

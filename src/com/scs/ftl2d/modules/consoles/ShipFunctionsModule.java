@@ -2,11 +2,12 @@ package com.scs.ftl2d.modules.consoles;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.AbstractModule;
 
 public class ShipFunctionsModule extends AbstractConsoleModule {
 
-	public ShipFunctionsModule(Main main) {
-		super(main);
+	public ShipFunctionsModule(Main main, AbstractModule prev) {
+		super(main, prev);
 		
 		this.addLine("L - Launch Ship");
 		//this.addLine("M - View Current Missions");
@@ -22,7 +23,7 @@ public class ShipFunctionsModule extends AbstractConsoleModule {
 				break;
 
 			case 'x':
-				main.setModule(new InitialConsoleModule(main));
+				main.setModule(this.prevModule);
 				break;
 
 			default:

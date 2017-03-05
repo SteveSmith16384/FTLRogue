@@ -31,8 +31,8 @@ public class GameData {
 	public float oxygenLevel = 100f;
 	public float hullDamage = 0f;
 
-	public int shieldPowerLevel = 33;
-	public int weaponPowerLevel = 33;
+	public int shieldPowerLevelPcent = 33;
+	public int weaponPowerPcent = 33;
 	public int enginePowerLevel = 33;
 
 	public float totalPower = 100;

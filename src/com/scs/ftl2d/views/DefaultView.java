@@ -62,7 +62,7 @@ public class DefaultView implements IGameView {
 		int y=0;
 		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerLevel + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerLevelPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
 		y++;

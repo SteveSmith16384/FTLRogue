@@ -19,6 +19,10 @@ Speed is determined by the number of engines (affected by damage) * power to bat
 
 
 GAMEPLAY
+Say "no power"
+Process game at start
+Not enough power!
+Wall key showing dupes
 AddWalls not working quite right
 Design screen layout
 Console - select attack enemy ship

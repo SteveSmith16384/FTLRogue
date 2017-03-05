@@ -103,7 +103,7 @@ public class PlayersShipModule extends AbstractModule {
 		}
 
 		// POWER
-		gameData.powerUsedPerTurn += gameData.shieldPowerLevel;
+		gameData.powerUsedPerTurn += gameData.shieldPowerLevelPcent;
 		gameData.powerUsedPerTurn += gameData.enginePowerLevel;
 
 		gameData.totalPower += gameData.powerGainedPerTurn;

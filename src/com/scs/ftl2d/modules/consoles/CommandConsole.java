@@ -17,9 +17,9 @@ public class CommandConsole extends AbstractConsoleModule {
 	private void showMenu() {
 		super.addLine("Please enter a command: ");
 		super.addLine("");
-		super.addLine("'shields <number>' to set shield level (currently " + (int)main.gameData.shieldPowerLevel + ")");
+		super.addLine("'shields <number>' to set shield level (currently " + (int)main.gameData.shieldPowerLevelPcent + ")");
 		super.addLine("'engines <number>' to set engine level (currently " + (int)main.gameData.enginePowerLevel + ")");
-		super.addLine("'weapons <number>' to set weapon level (currently " + (int)main.gameData.weaponPowerLevel + ")");
+		super.addLine("'weapons <number>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + ")");
 		if (!main.gameData.shipFlying) {
 			super.addLine("'launch' to launch the ship");
 		}
@@ -54,8 +54,8 @@ public class CommandConsole extends AbstractConsoleModule {
 			switch (tokens[0].toLowerCase()) {
 			case "shields":
 				super.clearLines();
-				main.gameData.shieldPowerLevel = Integer.parseInt(tokens[1]);
-				super.addLine("Shields now at " + main.gameData.shieldPowerLevel);
+				main.gameData.shieldPowerLevelPcent = Integer.parseInt(tokens[1]);
+				super.addLine("Shields now at " + main.gameData.shieldPowerLevelPcent);
 				break;
 
 			case "engines":
@@ -66,8 +66,8 @@ public class CommandConsole extends AbstractConsoleModule {
 
 			case "weapons":
 				super.clearLines();
-				main.gameData.weaponPowerLevel = Integer.parseInt(tokens[1]);
-				super.addLine("Weapons now at " + main.gameData.weaponPowerLevel);
+				main.gameData.weaponPowerPcent = Integer.parseInt(tokens[1]);
+				super.addLine("Weapons now at " + main.gameData.weaponPowerPcent);
 				break;
 
 			case "launch":

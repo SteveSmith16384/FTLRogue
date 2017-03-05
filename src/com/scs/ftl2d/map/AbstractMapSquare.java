@@ -29,6 +29,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_WALL = 7;
 	public static final int MAP_REPLICATOR = 8;
 	public static final int MAP_CONTROL_PANEL = 9;
+	public static final int MAP_BATTERY = 10;
 
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
@@ -74,6 +75,9 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 		case MAP_CONTROL_PANEL:
 			return new MapSquareControlPanel(main, code);
+
+		case MAP_BATTERY:
+			return new MapSquareBattery(main, code);
 
 		default:
 			throw new RuntimeException("Unknown type: " + code);
@@ -135,14 +139,16 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 				backgroundCol = backgroundCol.darker();
 			}
 		}
-		TextColor backgroundTC = new TextColor.RGB(backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue());
-		seenChar = new TextCharacter(this.getFloorChar(), TextColor.ANSI.WHITE, backgroundTC);
+		Color backgroundColSeen = this.getBackgroundColour().darker();
+		TextColor backgroundTC2 = new TextColor.RGB(backgroundColSeen.getRed(), backgroundColSeen.getGreen(), backgroundColSeen.getBlue());
+		seenChar = new TextCharacter(this.getFloorChar(), TextColor.ANSI.WHITE, backgroundTC2);
 		
 		// Visible char
 		char c = this.getFloorChar();
 		if (this.entities.size() > 0) {
 			c = entities.get(0).getChar();
 		}
+		TextColor backgroundTC = new TextColor.RGB(backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue());
 		visibleChar = new TextCharacter(c, TextColor.ANSI.WHITE, backgroundTC);
 	}
 	

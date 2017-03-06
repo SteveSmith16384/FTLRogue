@@ -170,6 +170,9 @@ public abstract class AbstractMob extends DrawableEntity {
 			super.getSq().addEntity(eq); // Drop the equipment
 		}
 		main.gameData.units.remove(this); // Remove from list if ours
+		if (main.gameData.units.isEmpty()) {
+			// todo - game over
+		}
 		remove();
 	}
 

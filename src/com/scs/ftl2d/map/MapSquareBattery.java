@@ -6,10 +6,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareBattery extends AbstractMapSquare {
 	
-	//private static TextCharacter FloorChar = new TextCharacter('B', TextColor.);
-	
-	public MapSquareBattery(Main main, int code) {
-		super(main, code);
+	public MapSquareBattery(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

@@ -6,8 +6,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareFloor extends AbstractMapSquare {
 
-	public MapSquareFloor(Main main, int code) {
-		super(main, code);
+	public MapSquareFloor(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 
@@ -21,7 +21,7 @@ public class MapSquareFloor extends AbstractMapSquare {
 	public boolean isTransparent() {
 		return true;
 	}
-	
+
 
 	@Override
 	public boolean isTraversable() {
@@ -30,15 +30,19 @@ public class MapSquareFloor extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return '.';
+		if (this.hasOxygen) {
+			return '.';
+		} else {
+			return ' ';
+		}
 	}
 
 	@Override
 	public void process(int pass) {
 		processItems(pass);
 	}
-	
-	
+
+
 	@Override
 	protected Color getBackgroundColour() {
 		return Color.darkGray;

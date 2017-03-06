@@ -26,7 +26,7 @@ public class DefaultView implements IGameView {
 	private Terminal terminal;
 	private Screen screen;
 
-	private Map<TextCharacter, String> seenSquares = new HashMap<>();
+	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
@@ -45,7 +45,7 @@ public class DefaultView implements IGameView {
 
 		// Draw map
 		seenSquares.clear();
-		gameData.recalcVisibleSquares(); // todo - only call this if map or units changed
+		gameData.recalcVisibleSquares();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
@@ -53,7 +53,7 @@ public class DefaultView implements IGameView {
 				TextCharacter tc = sq.getChar();
 				screen.setCharacter(x, y, tc);
 				if (!seenSquares.containsKey(tc)) {
-					seenSquares.put(tc, sq.getName());
+					seenSquares.put(sq.getName(), tc);
 				}
 			}			
 		}
@@ -63,19 +63,20 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerLevelPcent + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
 		y++;
 		tGraphics.putString(gameData.getWidth()+2, y++, "POWER");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Total Power: " + (int)gameData.totalPower);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Power Gain: " + (int)gameData.powerGainedPerTurn);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Power Used: " + (int)gameData.powerUsedPerTurn);
+		tGraphics.putString(gameData.getWidth()+2, y++, "Power Gain/t: " + (int)gameData.powerGainedPerTurn);
+		tGraphics.putString(gameData.getWidth()+2, y++, "Power Used/t: " + (int)gameData.powerUsedPerTurn);
 
 		// Draw mapsquares key
 		y++;
-		for (TextCharacter tc : this.seenSquares.keySet()) {
-			tGraphics.setCharacter(gameData.getWidth()+2, y, tc);
-			tGraphics.putString(gameData.getWidth()+4, y, this.seenSquares.get(tc));
+		for (String tc : this.seenSquares.keySet()) {
+			tGraphics.setCharacter(gameData.getWidth()+2, y, this.seenSquares.get(tc));
+			tGraphics.putString(gameData.getWidth()+4, y, tc);
 			y++;
 		}
 

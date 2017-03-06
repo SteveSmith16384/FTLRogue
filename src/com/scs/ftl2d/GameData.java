@@ -33,18 +33,19 @@ public class GameData {
 
 	public int shieldPowerLevelPcent = 33;
 	public int weaponPowerPcent = 33;
-	public int enginePowerLevel = 33;
+	public int enginePowerLevel = 0;
 
 	public float totalPower = 100;
 	public float powerGainedPerTurn = 0;
 	public float powerUsedPerTurn = 0;
 
 	public boolean shipLightsOn = true;
-	
+
 	public boolean shipFlying = false;
 	public float shipSpeed;
 	public float distanceToDest;
 
+	public float weaponTemp = 0;
 
 	public GameData(Main _main, ILevelData mapdata) throws IOException {
 		main = _main;
@@ -53,7 +54,7 @@ public class GameData {
 		for (int y=0 ; y<mapdata.getHeight() ; y++) {
 			for (int x=0 ; x<mapdata.getWidth() ; x++) {
 				int code = mapdata.getCodeForSquare(x, y);
-				map[x][y] = AbstractMapSquare.Factory(main, code);
+				map[x][y] = AbstractMapSquare.Factory(main, code, x, y);
 			}			
 		}
 
@@ -160,5 +161,24 @@ public class GameData {
 			}			
 		}
 		return null;
+	}
+
+
+	public List<AbstractMapSquare> getAdjacentSquares(int x, int y) {
+		List<AbstractMapSquare> list = new ArrayList<>();
+
+		for (int y2=y-1 ; y2<=y+1 ; y2++) {
+			for (int x2=x-1 ; x2<=x+1 ; x2++) {
+				try {
+					if (x2 != x && y2 != y) {
+						list.add(map[x2][y2]);
+					}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					// Do nothing
+				}
+			}
+		}		
+
+		return list;
 	}
 }

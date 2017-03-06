@@ -8,8 +8,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareWindow extends AbstractMapSquare {
 
-	public MapSquareWindow(Main main, int code) {
-		super(main, code);
+	public MapSquareWindow(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

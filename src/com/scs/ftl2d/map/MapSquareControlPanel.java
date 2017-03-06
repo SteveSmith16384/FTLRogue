@@ -6,8 +6,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareControlPanel extends AbstractMapSquare {
 
-	public MapSquareControlPanel(Main main, int code) {
-		super(main, code);
+	public MapSquareControlPanel(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

@@ -8,8 +8,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareTeleporter extends AbstractMapSquare {
 
-	public MapSquareTeleporter(Main main, int code) {
-		super(main, code);
+	public MapSquareTeleporter(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

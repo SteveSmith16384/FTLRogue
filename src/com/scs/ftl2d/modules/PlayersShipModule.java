@@ -19,18 +19,18 @@ Numbers - select unit
 Arrows - move unit
 c - close door
 d - drop
-e - Use equipment
 g - Goto LATER
 h - Help TODO
 i - inventory
-k - ke TODO
+k - keys TODO
+l - log in to console
 m - move
 n - Nothing
 o - open door
 p - Pick up
-s - shoot (at nearest) TODO
+s - shoot
 t - teleport LATER
-u - Use console
+u - Use TODO
 w - wear LATER
 
 ASCII CODES
@@ -102,10 +102,17 @@ public class PlayersShipModule extends AbstractModule {
 			}
 		}
 
-		// POWER
-		gameData.powerUsedPerTurn += gameData.shieldPowerLevelPcent;
-		gameData.powerUsedPerTurn += gameData.enginePowerLevel;
+		gameData.weaponTemp -= 1;
+		if (gameData.weaponTemp < 0) {
+			gameData.weaponTemp = 0;
+		}
 
+
+		// POWER
+		gameData.powerUsedPerTurn += (gameData.shieldPowerLevelPcent / 10);
+		if (gameData.shipFlying) {
+			gameData.powerUsedPerTurn += (gameData.enginePowerLevel / 10);
+		}
 		gameData.totalPower += gameData.powerGainedPerTurn;
 		gameData.totalPower -= gameData.powerUsedPerTurn;
 		if (gameData.totalPower < 0) {
@@ -199,13 +206,13 @@ public class PlayersShipModule extends AbstractModule {
 							this.dropMenu();
 							return false;
 
-						case 'e': // Use equipment
-							this.useEquipmentMenu();
-							return false;
-
 						case 'i': // Inventory
 							showInventory();
 							return false;
+
+						case 'l':
+							main.gameData.currentUnit.useConsole();
+							return true;
 
 						case 'm':
 							inputMode = InputMode.DirectionalMovement;
@@ -232,9 +239,9 @@ public class PlayersShipModule extends AbstractModule {
 							this.main.gameData.currentUnit.checkForShooting();
 							return true;
 
-						case 'u':
-							main.gameData.currentUnit.useConsole();
-							return true;
+						case 'u': // Use equipment
+							this.useEquipmentMenu();
+							return false;
 
 						case 'w':
 							return true;

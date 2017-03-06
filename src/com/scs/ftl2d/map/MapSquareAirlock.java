@@ -4,14 +4,11 @@ import java.awt.Color;
 
 import com.scs.ftl2d.Main;
 
-public class MapSquareDoor extends AbstractMapSquare {
-
-	private static final int CLOSE_DURATION = 4;
+public class MapSquareAirlock extends AbstractMapSquare {
 
 	private boolean isOpen = false;
-	private int closeTimer;
 
-	public MapSquareDoor(Main main, int code, int x, int y) {
+	public MapSquareAirlock(Main main, int code, int x, int y) {
 		super(main, code, x, y);
 	}
 
@@ -23,17 +20,14 @@ public class MapSquareDoor extends AbstractMapSquare {
 			this.isOpen = b;
 			res = true;
 		}
-		if (isOpen) {
-			closeTimer = CLOSE_DURATION;
-		}
-		main.checkOxygen(); // todo - only do if oxygen on one side
+		// main.checkOxygen(); No; do that once all open
 		return res;
 	}
 
 
 	@Override
 	public String getName() {
-		return "Door";
+		return "Airlock";
 	}
 
 
@@ -64,29 +58,13 @@ public class MapSquareDoor extends AbstractMapSquare {
 	@Override
 	public void process(int pass) {
 		processItems(pass);
-
-		if (pass == 2) {
-			if (this.isOpen) {
-				if (this.getEntities().isEmpty()) {
-					this.closeTimer--;
-					if (closeTimer <= 0) {
-						this.setOpen(false);
-					}
-				}
-			} else {
-				/*if (main.gameData.totalPower <= 0) {
-					this.isOpen = true; // Auto-open, don't check power
-				}*/
-			}
-		}
 	}
 
 	
 	@Override
 	protected Color getBackgroundColour() {
-		return Color.blue;
+		return Color.white;
 	}
-
 
 
 }

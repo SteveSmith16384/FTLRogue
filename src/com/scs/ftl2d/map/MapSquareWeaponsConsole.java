@@ -2,22 +2,12 @@ package com.scs.ftl2d.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.ftl2d.Main;
 
-public class MapSquareNothing extends AbstractMapSquare {
+public class MapSquareWeaponsConsole extends AbstractMapSquare {
 
-	public MapSquareNothing(Main main, int code, int x, int y) {
+	public MapSquareWeaponsConsole(Main main, int code, int x, int y) {
 		super(main, code, x, y);
-		
-		this.hasOxygen = false;
-	}
-
-
-	@Override
-	public String getName() {
-		return "Space";
 	}
 
 
@@ -25,7 +15,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 	public boolean isTraversable() {
 		return false;
 	}
-
+	
 
 	@Override
 	public boolean isTransparent() {
@@ -35,7 +25,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return ' ';
+		return 'W';
 	}
 
 
@@ -47,9 +37,14 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 
 	@Override
-	protected Color getBackgroundColour() {
-		return Color.black;
+	public String getName() {
+		return "Weapons Control";
 	}
 
+
+	@Override
+	protected Color getBackgroundColour() {
+		return Color.gray;
+	}
 
 }

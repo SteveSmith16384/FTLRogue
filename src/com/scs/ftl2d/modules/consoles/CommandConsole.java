@@ -3,6 +3,8 @@ package com.scs.ftl2d.modules.consoles;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.map.MapSquareAirlock;
 import com.scs.ftl2d.modules.AbstractModule;
 
 public class CommandConsole extends AbstractConsoleModule {
@@ -83,7 +85,16 @@ public class CommandConsole extends AbstractConsoleModule {
 			case "airlock":
 				super.clearLines();
 				boolean open = tokens[1].equalsIgnoreCase("open");
-				// todo
+				for (int y=0 ; y<main.gameData.getHeight() ; y++) {
+					for (int x=0 ; x<main.gameData.getWidth() ; x++) {
+						AbstractMapSquare sq = main.gameData.map[x][y];
+						if (sq instanceof MapSquareAirlock) {
+							MapSquareAirlock al = (MapSquareAirlock)sq;
+							al.setOpen(open);
+						}
+					}			
+				}
+				main.checkOxygen();
 				break;
 
 			case "lights":

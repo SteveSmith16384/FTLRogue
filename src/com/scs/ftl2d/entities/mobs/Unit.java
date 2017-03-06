@@ -8,6 +8,7 @@ import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.map.MapSquareReplicator;
+import com.scs.ftl2d.map.MapSquareWeaponsConsole;
 import com.scs.ftl2d.modules.consoles.CommandConsole;
 
 public class Unit extends AbstractMob {
@@ -91,8 +92,8 @@ public class Unit extends AbstractMob {
 					manualRoute = manualRoute.substring(1);
 				}				
 			}
-			
-			
+
+
 			if (status == Status.Waiting) {
 				this.incTiredness(-1f);
 			}
@@ -145,7 +146,18 @@ public class Unit extends AbstractMob {
 		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
 			main.setModule(new CommandConsole(main, main.getCurrentModule()));
-		}		
+		} else {
+			if (main.gameData.currentLocation != null) {
+				MapSquareWeaponsConsole wsq = (MapSquareWeaponsConsole)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_WEAPON_CONSOLE);
+				if (wsq != null) {
+					if (main.gameData.weaponTemp <= 0) {
+						main.fireShipsWeapons();
+					}
+				}
+			} else {
+				main.addMsg("There is nothing to shoot at.");
+			}
+		}
 	}
 
 
@@ -163,8 +175,8 @@ public class Unit extends AbstractMob {
 			}
 		}
 	}
-	
-	
+
+
 	public void incTiredness(float f) {
 		this.tiredness += f;
 		if (this.tiredness > 100f) {

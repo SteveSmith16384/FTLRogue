@@ -15,29 +15,28 @@ If power reaches zero, everything stops
 
 
 SPEED
-Speed is determined by the number of engines (affected by damage) * power to batteries
+Speed is determined by the number of engines (affected by damage) * power to engines
 
 
 GAMEPLAY
+Random events - enemy ship turns up, meteor storm
+Man weapon console to shoot
+Shoot lasers from defined weapons points
+Add airlock to map
+Add weapons console to map
+Add weapon points to map
+Show stars moving when ship launched
+Weapon console - press key to fire weapons.  Weapons have reload time.
 Say "no power"
-Process game at start
-Not enough power!
-Wall key showing dupes
 AddWalls not working quite right
 Design screen layout
-Console - select attack enemy ship
+Give msglog a background colour
 Fire may start when ship hit
 Walls may be destroyed causing oxygen loss
-Show help/key of visible interesting squares
 Doors not open if vacuum
 Fire might spread
 Board enemy ships
-Random events - enemy ship turns up, meteor storm
-Randomly generate maps
-Man weapon console to shoot
-Units get tired
 Put items on map
-Make console green
 
 
 EVENTS
@@ -77,8 +76,12 @@ grenades
 Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon
+Randomly generate maps
 Units move randomly when oxygen low
 Load/save
+Cloaking device
+Escape shuttle
+Units get tired - sleep in bed to regen
 
 
 MISSIONS

@@ -2,13 +2,12 @@ package com.scs.ftl2d.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
 
 public class MapSquareEngine extends AbstractMapSquare {
 
-	public MapSquareEngine(Main main, int code) {
-		super(main, code);
+	public MapSquareEngine(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 
@@ -42,7 +41,10 @@ public class MapSquareEngine extends AbstractMapSquare {
 		
 		if (pass == 2) {
 			if (main.gameData.shipFlying) {
-				main.gameData.shipSpeed += (2f * this.getHealth()) / 100;
+				float speed = (10f * this.getHealth()) / 100f;
+				speed = (speed * main.gameData.enginePowerLevel) / 100f;
+				main.gameData.shipSpeed += speed;
+				
 			}
 		}
 	}

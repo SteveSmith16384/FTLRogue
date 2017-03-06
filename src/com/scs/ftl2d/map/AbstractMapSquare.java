@@ -10,6 +10,7 @@ import ssmith.util.SortedArrayList;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
@@ -30,13 +31,15 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_REPLICATOR = 8;
 	public static final int MAP_CONTROL_PANEL = 9;
 	public static final int MAP_BATTERY = 10;
+	public static final int MAP_WEAPON_CONSOLE = 11;
 
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
 	public boolean hasSmoke = false;
-	public boolean hasOxygen = true; // todo - calculate
+	public boolean hasOxygen = true;
 	public float damage_pcent = 0;
+	public int x, y;
 	
 	private static TextCharacter hiddenChar = new TextCharacter(' ', TextColor.ANSI.BLACK, TextColor.ANSI.BLACK); 
 	private TextCharacter seenChar; 
@@ -44,40 +47,40 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
 
-	public static AbstractMapSquare Factory(Main main, int code) {
+	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {
 		case MAP_NOTHING:
-			return new MapSquareNothing(main, code);
+			return new MapSquareNothing(main, code, x, y);
 
 		case MAP_FLOOR:
-			return new MapSquareFloor(main, code);
+			return new MapSquareFloor(main, code, x, y);
 
 		case MAP_WALL:
-			return new MapSquareWall(main, code);
+			return new MapSquareWall(main, code, x, y);
 
 		case MAP_TELEPORTER:
-			return new MapSquareTeleporter(main, code);
+			return new MapSquareTeleporter(main, code, x, y);
 
 		case MAP_MEDIBAY:
-			return new MapSquareMediBay(main, code);
+			return new MapSquareMediBay(main, code, x, y);
 
 		case MAP_OXYGEN_GEN:
-			return new MapSquareOxyGen(main, code);
+			return new MapSquareOxyGen(main, code, x, y);
 
 		case MAP_ENGINES:
-			return new MapSquareEngine(main, code);
+			return new MapSquareEngine(main, code, x, y);
 
 		case MAP_DOOR:
-			return new MapSquareDoor(main, code);
+			return new MapSquareDoor(main, code, x, y);
 
 		case MAP_REPLICATOR:
-			return new MapSquareReplicator(main, code);
+			return new MapSquareReplicator(main, code, x, y);
 
 		case MAP_CONTROL_PANEL:
-			return new MapSquareControlPanel(main, code);
+			return new MapSquareControlPanel(main, code, x, y);
 
 		case MAP_BATTERY:
-			return new MapSquareBattery(main, code);
+			return new MapSquareBattery(main, code, x, y);
 
 		default:
 			throw new RuntimeException("Unknown type: " + code);
@@ -85,9 +88,12 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	}
 	
 	
-	public AbstractMapSquare(Main _main, int _code) {
+	public AbstractMapSquare(Main _main, int _code, int _x, int _y) {
 		super(_main);
+		
 		type = _code;
+		x = _x;
+		y = _y;
 		
 		this.calcChars();
 	}

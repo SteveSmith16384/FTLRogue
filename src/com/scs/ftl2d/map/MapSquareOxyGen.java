@@ -6,8 +6,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareOxyGen extends AbstractMapSquare {
 
-	public MapSquareOxyGen(Main main, int code) {
-		super(main, code);
+	public MapSquareOxyGen(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

@@ -6,8 +6,8 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareReplicator extends AbstractMapSquare {
 
-	public MapSquareReplicator(Main main, int code) {
-		super(main, code);
+	public MapSquareReplicator(Main main, int code, int x, int y) {
+		super(main, code, x, y);
 	}
 
 

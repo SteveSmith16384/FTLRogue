@@ -49,7 +49,6 @@ public class DefaultView implements IGameView {
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
-				//screen.setCharacter(x, y, new TextCharacter(sq.getChar()));
 				TextCharacter tc = sq.getChar();
 				screen.setCharacter(x, y, tc);
 				if (!seenSquares.containsKey(tc)) {
@@ -108,6 +107,7 @@ public class DefaultView implements IGameView {
 
 		// Messages
 		y = Math.max(y, gameData.getHeight()+2);
+		tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
 		for (String s : gameData.msgs) {
 			tGraphics.putString(0, y, s);
 			y++;

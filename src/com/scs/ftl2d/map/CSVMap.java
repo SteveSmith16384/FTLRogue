@@ -58,7 +58,7 @@ public class CSVMap extends AbstractMap implements ILevelData {
 
 	@Override
 	public int getNumUnits() {
-		return 4;
+		return 1;//4;
 	}
 
 

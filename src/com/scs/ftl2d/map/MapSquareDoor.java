@@ -26,6 +26,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 		if (isOpen) {
 			closeTimer = CLOSE_DURATION;
 		}
+		this.calcChars(); // To update the char
 		main.checkOxygen(); // todo - only do if oxygen on one side
 		return res;
 	}

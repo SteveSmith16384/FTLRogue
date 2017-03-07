@@ -10,6 +10,7 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.map.MapSquareNothing;
 import com.scs.ftl2d.missions.AbstractMission;
 
 public class GameData {
@@ -61,7 +62,7 @@ public class GameData {
 		// Create player's units
 		for (int i=0 ; i<mapdata.getNumUnits() ; i++) {
 			Point p = mapdata.getUnitStart(i);
-			Unit unit = new Unit(main, ((i+1)+"").charAt(0), p.x, p.y, 0);
+			Unit unit = new Unit(main, ((i+1)+"").charAt(0), p.x, p.y);
 			units.add(unit);
 			map[p.x][p.y].addEntity(unit);
 		}
@@ -74,6 +75,11 @@ public class GameData {
 	public void recalcVisibleSquares() {
 		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {
+				// Space is always seen
+				if (map[x][y] instanceof MapSquareNothing) {
+					map[x][y].visible = AbstractMapSquare.VisType.Visible;
+					continue;
+				}
 				if (map[x][y].visible != AbstractMapSquare.VisType.Hidden) {
 					this.map[x][y].visible = AbstractMapSquare.VisType.Seen;
 				}

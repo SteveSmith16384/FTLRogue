@@ -8,8 +8,24 @@ import com.scs.ftl2d.Main;
 
 public class MapSquareNothing extends AbstractMapSquare {
 
+	private char theChar = ' '; // Default
+	
 	public MapSquareNothing(Main main, int code, int x, int y) {
 		super(main, code, x, y);
+		
+		int i = Main.RND.nextInt(10);
+		switch (i) {
+		case 0: 
+			theChar = '.';
+			break;
+		case 1: 
+			theChar = '*';
+			break;
+		default: 
+			theChar = ' ';
+			break;
+		}
+		calcChars();
 		
 		this.hasOxygen = false;
 	}
@@ -35,7 +51,10 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return ' ';
+		if ((int)theChar == 0) { // Not set yet
+			return ' ';
+		}
+		return theChar;
 	}
 
 

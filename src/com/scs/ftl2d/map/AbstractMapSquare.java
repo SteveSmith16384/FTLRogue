@@ -1,6 +1,7 @@
 package com.scs.ftl2d.map;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,6 @@ import ssmith.util.SortedArrayList;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
@@ -40,12 +40,14 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public boolean hasOxygen = true;
 	public float damage_pcent = 0;
 	public int x, y;
-	
+
 	private static TextCharacter hiddenChar = new TextCharacter(' ', TextColor.ANSI.BLACK, TextColor.ANSI.BLACK); 
 	private TextCharacter seenChar; 
 	private TextCharacter visibleChar; 
 
 	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
+	private List<DrawableEntity> entitiesToAdd = new ArrayList<DrawableEntity>();
+	private List<DrawableEntity> entitiesToRemove = new ArrayList<DrawableEntity>();
 
 	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {
@@ -86,29 +88,35 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 			throw new RuntimeException("Unknown type: " + code);
 		}
 	}
-	
-	
+
+
 	public AbstractMapSquare(Main _main, int _code, int _x, int _y) {
 		super(_main);
-		
+
 		type = _code;
 		x = _x;
 		y = _y;
-		
+
 		this.calcChars();
 	}
-	
+
 	public abstract boolean isTraversable();
-	
+
 	public abstract boolean isTransparent();
-	
+
 	protected abstract char getFloorChar();
-	
+
 	protected abstract Color getBackgroundColour();
-	
+
 	public abstract String getName();
-	
+
 	protected void processItems(int pass) {
+		boolean calcChar = this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
+		this.entities.removeAll(this.entitiesToRemove);
+		entitiesToRemove.clear();
+		this.entities.addAll(this.entitiesToAdd);
+		entitiesToAdd.clear();
+
 		if (!this.hasOxygen) {
 			this.onFire = false;
 			// Kill any units
@@ -120,12 +128,23 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 			}
 			this.entities.clear();
 		}
-		
+
 		for (DrawableEntity de : this.entities) {
 			de.process(pass);
 		}
-	}
-	
+
+		calcChar = calcChar || this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
+		this.entities.removeAll(this.entitiesToRemove);
+		entitiesToRemove.clear();
+		this.entities.addAll(this.entitiesToAdd);
+		entitiesToAdd.clear();
+		if (calcChar) {
+			this.calcChars();
+		}
+
+}
+
+
 	public TextCharacter getChar() {
 		if (this.visible == VisType.Hidden) {
 			return hiddenChar;//' ';
@@ -135,63 +154,75 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 			return this.visibleChar;
 		}
 	}
-	
-	
-	private void calcChars() {
-		Color backgroundCol = this.getBackgroundColour();
+
+
+	protected void calcChars() {
+		Color foregroundCol = Color.white;
 		if (this.damage_pcent > 0) {
 			int num = (int)(this.damage_pcent / 10)+1; 
 			for (int i=0 ; i<num ; i++) {
-				backgroundCol = backgroundCol.darker();
+				foregroundCol = foregroundCol.darker();
 			}
 		}
-		Color backgroundColSeen = this.getBackgroundColour().darker();
+		TextColor foregroundTC = new TextColor.RGB(foregroundCol.getRed(), foregroundCol.getGreen(), foregroundCol.getBlue());
+
+		Color backgroundColSeen = this.getBackgroundColour().darker().darker();
 		TextColor backgroundTC2 = new TextColor.RGB(backgroundColSeen.getRed(), backgroundColSeen.getGreen(), backgroundColSeen.getBlue());
-		seenChar = new TextCharacter(this.getFloorChar(), TextColor.ANSI.WHITE, backgroundTC2);
-		
+		seenChar = new TextCharacter(this.getFloorChar(), foregroundTC, backgroundTC2);
+
 		// Visible char
 		char c = this.getFloorChar();
+		boolean isSelectedUnit = false;
 		if (this.entities.size() > 0) {
 			c = entities.get(0).getChar();
+			if (entities.get(0) == main.gameData.currentUnit) {
+				isSelectedUnit = true;
+			}
+		}
+		Color backgroundCol = this.getBackgroundColour();
+		if (isSelectedUnit) {
+			backgroundCol = Color.red;
 		}
 		TextColor backgroundTC = new TextColor.RGB(backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue());
-		visibleChar = new TextCharacter(c, TextColor.ANSI.WHITE, backgroundTC);
+		visibleChar = new TextCharacter(c, foregroundTC, backgroundTC);
 	}
-	
-	
+
+
 	public float getHealth() {
 		return 100 - this.damage_pcent;
 	}
 
-	
+
 	@Override
 	public int compare(DrawableEntity de1, DrawableEntity de2) {
 		return de2.z - de1.z;
 	}
 
-	
+
 	public void addEntity(DrawableEntity de) {
-		this.entities.add(de);
-		this.calcChars();
+		de.x = x;
+		de.y = y;
+		this.entitiesToAdd.add(de);
+		//this.calcChars();
 	}
 
-	
+
 	public void removeEntity(DrawableEntity de) {
-		this.entities.remove(de);
-		this.calcChars();
+		this.entitiesToRemove.add(de);
+		//this.calcChars();
 	}
-	
-	
+
+
 	public DrawableEntity getEntity(int i) {
 		return this.entities.get(i);
 	}
-	
-	
+
+
 	public List<DrawableEntity> getEntities() {
 		return this.entities;
 	}
-	
-	
+
+
 	public Iterator<DrawableEntity> getIterator() {
 		return this.entities.iterator();
 	}

@@ -11,7 +11,8 @@ import ssmith.astar.WayPoints;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.Entity;
+import com.scs.ftl2d.entities.items.AbstractItem;
+import com.scs.ftl2d.entities.items.AbstractRangedWeapon;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareDoor;
 
@@ -30,10 +31,10 @@ public abstract class AbstractMob extends DrawableEntity {
 	public char theChar;
 	public String name;
 	public int side;
-	public List<DrawableEntity> equipment = new ArrayList<>();
+	public List<AbstractItem> equipment = new ArrayList<>();
 	public String manualRoute = "";
 	public WayPoints astarRoute;
-	public Entity currentItem;
+	public AbstractItem currentItem;
 
 	// Stats
 	public float health = 100f;
@@ -55,6 +56,12 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 	
+	@Override
+	public char getChar() {
+		return theChar;
+	}
+
+
 	public static String GetRandomName() throws IOException {
 		Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
 		List<String> lines = Files.readAllLines(path);
@@ -119,6 +126,30 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 	
+	public void checkForShooting() {
+		if (this.currentItem != null) {
+			AbstractItem i = (AbstractItem)this.currentItem;
+			if (i instanceof AbstractRangedWeapon) {
+				/*for (AbstractMob mob : AbstractMob.AllMobs) {
+					if (mob.side != this.side) {
+						if (this.canSee(mob)) {
+						}
+					}
+				}*/
+				AbstractRangedWeapon gun = (AbstractRangedWeapon)i;
+				AbstractMob enemy = getClosestVisibleEnemy();
+				if (enemy != null) {
+				// todo - check range
+					float dist = this.distanceTo(enemy);
+					if (dist <= gun.getRange()) {
+						
+					}
+				}
+			}
+		}
+	}
+
+
 	public void meleeCombat(AbstractMob other) {
 		int tot = Math.max(0, this.att - other.def);
 		int dam = Main.RND.nextInt(tot)+1;
@@ -171,13 +202,14 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		main.gameData.units.remove(this); // Remove from list if ours
 		if (main.gameData.units.isEmpty()) {
-			// todo - game over
+			main.addMsg("GAME OVER!");
+			main.gameStage = 1;
 		}
 		remove();
 	}
 
 
-	public AbstractMob getClosestVisibleEnemy() {
+	protected AbstractMob getClosestVisibleEnemy() {
 		AbstractMob closest = null;
 		float closestDistance = 9999;
 		

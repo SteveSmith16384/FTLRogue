@@ -22,9 +22,9 @@ GAMEPLAY
 Random events - enemy ship turns up, meteor storm
 Man weapon console to shoot
 Shoot lasers from defined weapons points
-Add airlock to map
-Add weapons console to map
-Add weapon points to map
+DONE Add airlock to map
+DONE Add weapons console to map
+DONE Add weapon points to map
 Show stars moving when ship launched
 Weapon console - press key to fire weapons.  Weapons have reload time.
 Say "no power"

@@ -32,6 +32,8 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_CONTROL_PANEL = 9;
 	public static final int MAP_BATTERY = 10;
 	public static final int MAP_WEAPON_CONSOLE = 11;
+	public static final int MAP_AIRLOCK = 12;
+	public static final int MAP_WEAPON_POINT = 13;
 
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;

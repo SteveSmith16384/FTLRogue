@@ -23,7 +23,8 @@ public class Main {
 	private boolean stopNow = false;
 	private KeyStroke lastChar;
 	private AbstractModule currentModule;
-
+	public int gameStage = 0;
+	
 	public Main() throws IOException {
 		createGameData();
 
@@ -118,7 +119,7 @@ public class Main {
 	
 	public void fireShipsWeapons() {
 		this.gameData.weaponTemp += 5;
-		
+		// todo
 	}
 
 	//--------------------------------------------

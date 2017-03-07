@@ -33,7 +33,7 @@ public class MapSquareWall extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		return ' ';
+		return this.damage_pcent > 0 ? '#' : ' ';
 	}
 
 	@Override

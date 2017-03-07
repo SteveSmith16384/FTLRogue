@@ -8,7 +8,7 @@ import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.mobs.Unit;
+import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.missions.AbstractMission;
@@ -19,18 +19,18 @@ Numbers - select unit
 Arrows - move unit
 c - close door
 d - drop
-g - Goto LATER
+g - Goto?
 h - Help TODO
 i - inventory
-k - keys TODO
-l - log in to console
+k - keys?
+l - login to console
 m - move
 n - Nothing
 o - open door
 p - Pick up
-s - shoot
+s - shoot/select (use current item)
 t - teleport LATER
-u - Use TODO
+u - Use, i.e. change to current item
 w - wear LATER
 
 ASCII CODES
@@ -117,6 +117,8 @@ public class PlayersShipModule extends AbstractModule {
 		gameData.totalPower -= gameData.powerUsedPerTurn;
 		if (gameData.totalPower < 0) {
 			gameData.totalPower = 0;
+			gameData.shieldPowerLevelPcent = 0;
+			gameData.enginePowerLevel = 0;
 		} else if (gameData.totalPower > 100) {
 			gameData.totalPower = 100;
 		}
@@ -274,7 +276,7 @@ public class PlayersShipModule extends AbstractModule {
 					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i);
 					if (de.canBePickedUp()) {
 						main.gameData.currentUnit.getSq().removeEntity(de);
-						main.gameData.currentUnit.equipment.add(de);
+						main.gameData.currentUnit.equipment.add((AbstractItem)de);
 						main.addMsg("You pick up the " + de.getName());
 					} else {
 						main.addMsg("You can't pick up the " + de.getName());
@@ -313,7 +315,7 @@ public class PlayersShipModule extends AbstractModule {
 				case '8':
 				case '9':
 					int i = Integer.parseInt(c+"");
-					DrawableEntity de = main.gameData.currentUnit.equipment.get(i);
+					AbstractItem de = main.gameData.currentUnit.equipment.get(i);
 					main.gameData.currentUnit.currentItem = de;
 					main.addMsg("You use the " + de.getName());
 				}

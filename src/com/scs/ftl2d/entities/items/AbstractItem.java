@@ -20,9 +20,9 @@ public abstract class AbstractItem extends DrawableEntity {
 	}
 	
 	
-	public boolean canShoot() {
+	/*public boolean canShoot() {
 		return false;
-	}
+	}*/
 
 	
 	@Override

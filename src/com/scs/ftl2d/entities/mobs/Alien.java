@@ -11,12 +11,6 @@ public class Alien extends AbstractMob {
 	
 
 	@Override
-	public char getChar() {
-		return this.theChar;
-	}
-
-	
-	@Override
 	public void process(int pass) {
 		if (pass == 2) {
 			AbstractMob mob = super.getClosestVisibleEnemy();

@@ -17,14 +17,8 @@ public class Unit extends AbstractMob {
 	public float tiredness = 0;
 	public Status status = Status.Waiting;
 
-	public Unit(Main main, char c, int x, int y, int _side) throws IOException {
-		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), _side, 20, 5, 5);
-	}
-
-
-	@Override
-	public char getChar() {
-		return theChar;
+	public Unit(Main main, char c, int x, int y) throws IOException {
+		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, 5);
 	}
 
 
@@ -156,22 +150,6 @@ public class Unit extends AbstractMob {
 				}
 			} else {
 				main.addMsg("There is nothing to shoot at.");
-			}
-		}
-	}
-
-
-	public void checkForShooting() {
-		if (this.currentItem != null) {
-			AbstractItem i = (AbstractItem)this.currentItem;
-			if (i.canShoot()) {
-				for (AbstractMob mob : AbstractMob.AllMobs) {
-					if (mob.side != this.side) {
-						if (this.canSee(mob)) {
-							// todo
-						}
-					}
-				}
 			}
 		}
 	}

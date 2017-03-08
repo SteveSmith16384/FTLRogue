@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ssmith.astar.IAStarMapInterface;
+
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
@@ -13,7 +15,7 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareNothing;
 import com.scs.ftl2d.missions.AbstractMission;
 
-public class GameData {
+public class GameData implements IAStarMapInterface {
 
 	public Main main;
 
@@ -32,9 +34,9 @@ public class GameData {
 	public float oxygenLevel = 100f;
 	public float hullDamage = 0f;
 
-	public int shieldPowerLevelPcent = 33;
+	public int shieldPowerPcent = 33;
 	public int weaponPowerPcent = 33;
-	public int enginePowerLevel = 0;
+	public int enginePowerPcent = 0;
 
 	public float totalPower = 100;
 	public float powerGainedPerTurn = 0;
@@ -186,5 +188,29 @@ public class GameData {
 		}		
 
 		return list;
+	}
+
+
+	@Override
+	public int getMapWidth() {
+		return this.getWidth();
+	}
+
+
+	@Override
+	public int getMapHeight() {
+		return this.getHeight();
+	}
+
+
+	@Override
+	public boolean isMapSquareTraversable(int x, int z) {
+		return map[x][z].isTraversable();
+	}
+
+
+	@Override
+	public float getMapSquareDifficulty(int x, int z) {
+		return 1;
 	}
 }

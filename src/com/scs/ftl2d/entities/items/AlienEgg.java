@@ -20,17 +20,22 @@ public class AlienEgg extends AbstractItem {
 		return 'e';
 	}
 
+
 	@Override
-	public void process(int pass) {
-		if (pass == 2) {
-			if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
-				Alien a = new Alien(main, this.x, this.y);
-				this.getSq().addEntity(a);
-				this.remove();
-				
-				if (Settings.DEBUG || this.seenByPlayer()) {
-					main.addMsg("THE EGG HAS HATCHED!");
-				}
+	public void preProcess() {
+
+	}
+
+
+	@Override
+	public void process() {
+		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
+			Alien a = new Alien(main, this.x, this.y);
+			this.getSq().addEntity(a);
+			this.remove();
+
+			if (Settings.DEBUG || this.seenByPlayer()) {
+				main.addMsg("THE EGG HAS HATCHED!");
 			}
 		}
 	}

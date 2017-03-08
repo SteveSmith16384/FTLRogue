@@ -17,7 +17,13 @@ public class Knife extends AbstractItem {
 
 	
 	@Override
-	public void process(int pass) {
+	public void preProcess() {
+		
+	}
+
+
+	@Override
+	public void process() {
 		// Do nothing
 		
 	}

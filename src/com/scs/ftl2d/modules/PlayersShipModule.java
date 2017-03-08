@@ -78,28 +78,40 @@ public class PlayersShipModule extends AbstractModule {
 	public void updateGame() {
 		GameData gameData = this.main.gameData;
 		gameData.turnNo++;
-		
+
 		// Set values to zero as they will be adjusted by the mapsquares
 		gameData.shipSpeed = 0;
 		gameData.powerGainedPerTurn= 0;
 		gameData.powerUsedPerTurn = 0;
 
-		for (int pass=1 ; pass<=2 ; pass++) {
-			// Go through map
-			for (int y=0 ; y<gameData.getHeight() ; y++) {
-				for (int x=0 ; x<gameData.getWidth() ; x++) {
-					AbstractMapSquare sq = gameData.map[x][y];
-					sq.process(pass);
-				}			
-			}
+		for (int y=0 ; y<gameData.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map[x][y];
+				sq.updateItemList();
+			}			
+		}
 
-			for(AbstractEvent ev : gameData.currentEvents) {
-				ev.process(pass);
-			}
+		// Go through map
+		for (int y=0 ; y<gameData.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map[x][y];
+				sq.process();
+			}			
+		}
 
-			for(AbstractMission m : gameData.currentMissions) {
-				m.process(pass);
-			}
+		for(AbstractEvent ev : gameData.currentEvents) {
+			ev.process();
+		}
+
+		for(AbstractMission m : gameData.currentMissions) {
+			m.process();
+		}
+
+		for (int y=0 ; y<gameData.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map[x][y];
+				sq.updateItemList();
+			}			
 		}
 
 		gameData.weaponTemp -= 1;
@@ -109,16 +121,16 @@ public class PlayersShipModule extends AbstractModule {
 
 
 		// POWER
-		gameData.powerUsedPerTurn += (gameData.shieldPowerLevelPcent / 10);
+		gameData.powerUsedPerTurn += (gameData.shieldPowerPcent / 10);
 		if (gameData.shipFlying) {
-			gameData.powerUsedPerTurn += (gameData.enginePowerLevel / 10);
+			gameData.powerUsedPerTurn += (gameData.enginePowerPcent / 10);
 		}
 		gameData.totalPower += gameData.powerGainedPerTurn;
 		gameData.totalPower -= gameData.powerUsedPerTurn;
 		if (gameData.totalPower < 0) {
 			gameData.totalPower = 0;
-			gameData.shieldPowerLevelPcent = 0;
-			gameData.enginePowerLevel = 0;
+			gameData.shieldPowerPcent = 0;
+			gameData.enginePowerPcent = 0;
 		} else if (gameData.totalPower > 100) {
 			gameData.totalPower = 100;
 		}
@@ -127,7 +139,7 @@ public class PlayersShipModule extends AbstractModule {
 		if (gameData.shipFlying) {
 			// Adjust ship speed by engine power
 			if (gameData.totalPower > 0) {
-				gameData.shipSpeed *= gameData.enginePowerLevel;
+				gameData.shipSpeed *= gameData.enginePowerPcent;
 				gameData.distanceToDest -= gameData.shipSpeed;
 				if (gameData.distanceToDest <= 0) {
 					gameData.distanceToDest = 0;
@@ -144,6 +156,9 @@ public class PlayersShipModule extends AbstractModule {
 		/*if (this.currentEvents.size() == 0) {
 			this.currentEvents.add(new EnemyShipEvent(main));
 		}*/
+		
+		gameData.recalcVisibleSquares();
+
 	}
 
 
@@ -220,7 +235,7 @@ public class PlayersShipModule extends AbstractModule {
 							inputMode = InputMode.DirectionalMovement;
 							main.addMsg("Enter directions.  Press X to return to normal mode");
 							return false;
-							
+
 						case 'n':
 						{
 							main.addMsg("You do nothing");
@@ -275,8 +290,7 @@ public class PlayersShipModule extends AbstractModule {
 					int i = Integer.parseInt(c+"");
 					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i);
 					if (de.canBePickedUp()) {
-						main.gameData.currentUnit.getSq().removeEntity(de);
-						main.gameData.currentUnit.equipment.add((AbstractItem)de);
+						main.gameData.currentUnit.pickup(de);
 						main.addMsg("You pick up the " + de.getName());
 					} else {
 						main.addMsg("You can't pick up the " + de.getName());
@@ -297,8 +311,7 @@ public class PlayersShipModule extends AbstractModule {
 				case '9':
 					int i = Integer.parseInt(c+"");
 					DrawableEntity de = main.gameData.currentUnit.equipment.get(i);
-					main.gameData.currentUnit.equipment.remove(de);
-					main.gameData.currentUnit.getSq().addEntity(de);
+					main.gameData.currentUnit.drop(de);
 					main.addMsg("You drop the " + de.getName());
 				}
 				inputMode = InputMode.Normal;
@@ -372,6 +385,6 @@ public class PlayersShipModule extends AbstractModule {
 			main.addMsg(de.getName());
 		}
 	}
-	
-	
+
+
 }

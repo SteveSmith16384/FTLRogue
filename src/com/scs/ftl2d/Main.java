@@ -37,7 +37,7 @@ public class Main {
 
 
 	private void createGameData() throws IOException {
-		gameData = new GameData(this, new CSVMap("map1.csv"));//ArrayMap());
+		gameData = new GameData(this, new CSVMap("map1.csv"));
 		gameData.recalcVisibleSquares();
 		gameData.msgs.add("Welcome to " + Settings.TITLE);
 
@@ -50,6 +50,9 @@ public class Main {
 
 
 	private void mainGameLoop() {
+		if (Settings.DEBUG) {
+			this.addMsg("## DEBUG MODE ##");
+		}
 		this.currentModule.updateGame();
 		this.checkOxygen();
 		while (!stopNow) {

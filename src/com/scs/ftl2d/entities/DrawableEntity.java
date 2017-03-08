@@ -5,6 +5,7 @@ import java.awt.Point;
 import com.scs.ftl2d.Line;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
+import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 
@@ -16,6 +17,7 @@ public abstract class DrawableEntity extends Entity {
 	public static final int Z_FLOOR = 0;
 
 	public int x, y, z;
+	public AbstractMob carriedBy;
 
 	public DrawableEntity(Main main, int _x, int _y, int _z) {
 		super(main);
@@ -36,6 +38,9 @@ public abstract class DrawableEntity extends Entity {
 
 
 	public AbstractMapSquare getSq() {
+		if (carriedBy != null) {
+			return main.gameData.map[carriedBy.x][carriedBy.y];
+		}
 		return main.gameData.map[x][y];
 	}
 

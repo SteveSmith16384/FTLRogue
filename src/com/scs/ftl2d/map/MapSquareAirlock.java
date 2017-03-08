@@ -56,14 +56,8 @@ public class MapSquareAirlock extends AbstractMapSquare {
 
 
 	@Override
-	public void process(int pass) {
-		processItems(pass);
-	}
-
-	
-	@Override
 	protected Color getBackgroundColour() {
-		return Color.white;
+		return Color.lightGray;
 	}
 
 

@@ -45,14 +45,15 @@ public class DefaultView implements IGameView {
 
 		// Draw map
 		seenSquares.clear();
-		gameData.recalcVisibleSquares();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
 				screen.setCharacter(x, y, tc);
-				if (!seenSquares.containsKey(tc)) {
-					seenSquares.put(sq.getName(), tc);
+				if (sq.visible == AbstractMapSquare.VisType.Visible) {
+					if (!seenSquares.containsKey(sq.getName())) {
+						seenSquares.put(sq.getName(), tc);
+					}
 				}
 			}			
 		}
@@ -61,7 +62,7 @@ public class DefaultView implements IGameView {
 		int y=0;
 		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerLevelPcent + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
@@ -137,7 +138,7 @@ public class DefaultView implements IGameView {
 	public void drawConsoleScreen(List<String> lines, String cmd) throws IOException {
 		screen.startScreen();
 		screen.clear();
-		
+
 		TextGraphics tGraphics = screen.newTextGraphics();
 		tGraphics.setForegroundColor(TextColor.ANSI.GREEN);
 		int y = 0;
@@ -147,7 +148,7 @@ public class DefaultView implements IGameView {
 		}
 		y++;
 		tGraphics.putString(0, y, "> " + cmd + "_");
-		
+
 		screen.refresh();
 
 	}

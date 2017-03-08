@@ -17,7 +17,7 @@ public class MediKit extends AbstractItem {
 
 	
 	@Override
-	public void process(int pass) {
+	public void process() {
 		// Do nothing
 		
 	}

@@ -86,6 +86,16 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		case MAP_BATTERY:
 			return new MapSquareBattery(main, code, x, y);
 
+		case MAP_WEAPON_CONSOLE:
+			return new MapSquareWeaponsConsole(main, code, x, y);
+
+		case MAP_AIRLOCK:
+			return new MapSquareAirlock(main, code, x, y);
+
+		case MAP_WEAPON_POINT:
+			// todo
+			return new MapSquareNothing(main, code, x, y);
+
 		default:
 			throw new RuntimeException("Unknown type: " + code);
 		}
@@ -112,13 +122,19 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 	public abstract String getName();
 
-	protected void processItems(int pass) {
-		boolean calcChar = this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
-		this.entities.removeAll(this.entitiesToRemove);
-		entitiesToRemove.clear();
-		this.entities.addAll(this.entitiesToAdd);
-		entitiesToAdd.clear();
+	@Override
+	public void preProcess() {
+		
+	}
 
+
+	@Override
+	public void process() {
+		this.processItems();
+	}
+
+
+	protected void processItems() {
 		if (!this.hasOxygen) {
 			this.onFire = false;
 			// Kill any units
@@ -132,20 +148,23 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		}
 
 		for (DrawableEntity de : this.entities) {
-			de.process(pass);
+			de.process();
 		}
 
-		calcChar = calcChar || this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
+	}
+
+	
+	public void updateItemList() {
+		boolean calcChar = this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
 		this.entities.removeAll(this.entitiesToRemove);
 		entitiesToRemove.clear();
 		this.entities.addAll(this.entitiesToAdd);
 		entitiesToAdd.clear();
+		
 		if (calcChar) {
 			this.calcChars();
 		}
-
-}
-
+	}
 
 	public TextCharacter getChar() {
 		if (this.visible == VisType.Hidden) {

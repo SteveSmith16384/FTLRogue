@@ -35,14 +35,12 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 
 
 	@Override
-	public void process(int pass) {
-		processItems(pass);
+	public void process() {
+		super.process();
 
-		if (pass == 1) {
-			main.gameData.incOxygenLevel((2f * this.getHealth()) / 100);
-			if (this.damage_pcent > 0) {
-				main.gameData.powerUsedPerTurn += 1f;
-			}
+		main.gameData.incOxygenLevel((2f * this.getHealth()) / 100);
+		if (this.damage_pcent > 0) {
+			main.gameData.powerUsedPerTurn += 1f;
 		}
 	}
 

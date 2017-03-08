@@ -38,7 +38,7 @@ public class TransportEggMission extends AbstractMission {
 
 
 	@Override
-	public void process(int pass) {
+	public void process() {
 		
 	}
 	

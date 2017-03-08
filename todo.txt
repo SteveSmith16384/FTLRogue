@@ -19,21 +19,16 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-AddWalls not working quite right
+Enemy lasers - choose rnd square at top&bottom and drawl line between the two
+DONE Open doors automatically
+DONE Alien moving across each square!
+DONE Don't add walls around airlock
+DONE AddWalls not working quite right
 Do laser effects, shooting effects, explosion effect
-DONE Door open/close not changing gfx
-DONE Highlighted unit leaves trail
-DONE Seeing mapsquares through walls
-DONE Always draw space even if not seen
-DONE Highlight current unit
-DONE Concurrent modification on mapsquare entities
-DONE Draw dots in space
-DONE Make seen squares darker
 Shoot lasers from defined weapons points
 Show stars moving when ship launched
 Weapon console - press key to fire weapons.  Weapons have reload time.
 Say "no power"
-Design screen layout
 Fire may start when ship hit
 Walls may be destroyed causing oxygen loss
 Doors not open if vacuum

@@ -30,13 +30,6 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 
 
 	@Override
-	public void process(int pass) {
-		processItems(pass);
-
-	}
-
-
-	@Override
 	public String getName() {
 		return "Control Panel";
 	}

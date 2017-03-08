@@ -12,16 +12,19 @@ public class CommandConsole extends AbstractConsoleModule {
 	public CommandConsole(Main main, AbstractModule prev) {
 		super(main, prev);
 
-		showMenu();		
+		this.addLine("SHIP COMPUTER CONSOLE (v0.01 beta)");
+		this.addLine("");
+
+		showMenu();
 	}
 
 
 	private void showMenu() {
-		super.addLine("Please enter a command: ");
+		super.addLine("Please enter a command and press enter: ");
 		super.addLine("");
-		super.addLine("'shields <number>' to set shield level (currently " + (int)main.gameData.shieldPowerLevelPcent + ")");
-		super.addLine("'engines <number>' to set engine level (currently " + (int)main.gameData.enginePowerLevel + ")");
-		super.addLine("'weapons <number>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + ")");
+		super.addLine("'shields <0-100>' to set shield level (currently " + (int)main.gameData.shieldPowerPcent + "%)");
+		super.addLine("'engines <0-100>' to set engine level (currently " + (int)main.gameData.enginePowerPcent + "%)");
+		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
 		if (!main.gameData.shipFlying) {
 			super.addLine("'launch' to launch the ship");
 		}
@@ -56,14 +59,14 @@ public class CommandConsole extends AbstractConsoleModule {
 			switch (tokens[0].toLowerCase()) {
 			case "shields":
 				super.clearLines();
-				main.gameData.shieldPowerLevelPcent = Integer.parseInt(tokens[1]);
-				super.addLine("Shields now at " + main.gameData.shieldPowerLevelPcent);
+				main.gameData.shieldPowerPcent = Integer.parseInt(tokens[1]);
+				super.addLine("Shields now at " + main.gameData.shieldPowerPcent);
 				break;
 
 			case "engines":
 				super.clearLines();
-				main.gameData.enginePowerLevel = Integer.parseInt(tokens[1]);
-				super.addLine("Engines now at " + main.gameData.enginePowerLevel);
+				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
+				super.addLine("Engines now at " + main.gameData.enginePowerPcent);
 				break;
 
 			case "weapons":
@@ -94,7 +97,8 @@ public class CommandConsole extends AbstractConsoleModule {
 						}
 					}			
 				}
-				main.addMsg("The airlock is now " + (open?"open":"closed") + ".");
+				super.addLine("The airlock is now " + (open?"open":"closed") + ".");
+				super.addLine("");
 				main.checkOxygen();
 				break;
 
@@ -103,16 +107,20 @@ public class CommandConsole extends AbstractConsoleModule {
 				boolean on = tokens[1].equalsIgnoreCase("on");
 				main.gameData.shipLightsOn = on;
 				super.addLine("The ship lights are now " + (on?"on":"off") + ".");
+				super.addLine("");
 				main.gameData.recalcVisibleSquares();
 				break;
 
 			case "exit":
+			case "quit":
+			case "logout":
 			case "x":
 				this.main.setModule(this.prevModule);
-				break;
+				return;
 			}
 		} catch (Exception ex) {
 			super.addLine("Unable to understand: " + ex.getMessage());
+			super.addLine("");
 			ex.printStackTrace();
 		}
 		showMenu();

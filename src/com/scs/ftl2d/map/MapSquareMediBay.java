@@ -35,13 +35,6 @@ public class MapSquareMediBay extends AbstractMapSquare {
 
 
 	@Override
-	public void process(int pass) {
-		processItems(pass);
-
-	}
-
-
-	@Override
 	protected Color getBackgroundColour() {
 		return Color.red;
 	}

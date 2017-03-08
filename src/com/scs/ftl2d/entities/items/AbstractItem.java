@@ -10,6 +10,18 @@ public abstract class AbstractItem extends DrawableEntity {
 	}
 	
 	
+	@Override
+	public void preProcess() {
+		
+	}
+
+
+	@Override
+	public void process() {
+		
+	}
+
+
 	public int getMeleeValue() {
 		return 0;
 	}
@@ -19,11 +31,6 @@ public abstract class AbstractItem extends DrawableEntity {
 		return 0;
 	}
 	
-	
-	/*public boolean canShoot() {
-		return false;
-	}*/
-
 	
 	@Override
 	public boolean canBePickedUp() {

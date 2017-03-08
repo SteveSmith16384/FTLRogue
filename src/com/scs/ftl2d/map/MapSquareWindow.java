@@ -36,12 +36,6 @@ public class MapSquareWindow extends AbstractMapSquare {
 		return 'O';
 	}
 
-	@Override
-	public void process(int pass) {
-		processItems(pass);
-
-	}
-
 
 	@Override
 	protected Color getBackgroundColour() {

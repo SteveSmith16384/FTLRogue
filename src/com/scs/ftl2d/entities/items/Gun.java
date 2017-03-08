@@ -17,13 +17,6 @@ public class Gun extends AbstractRangedWeapon {
 
 	
 	@Override
-	public void process(int pass) {
-		// Do nothing
-		
-	}
-
-
-	@Override
 	public int getShotValue() {
 		return 10;
 	}

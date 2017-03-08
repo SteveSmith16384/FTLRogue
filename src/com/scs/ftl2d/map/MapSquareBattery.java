@@ -35,12 +35,10 @@ public class MapSquareBattery extends AbstractMapSquare {
 
 
 	@Override
-	public void process(int pass) {
-		processItems(pass);
+	public void process() {
+		super.process();
 
-		if (pass == 1) {
 			main.gameData.powerGainedPerTurn += (2f * this.getHealth() / 100);
-		}
 	}
 
 

@@ -10,8 +10,8 @@ import com.scs.ftl2d.modules.AbstractModule;
 
 public abstract class AbstractConsoleModule extends AbstractModule {
 
-	private static final int MAX_LINES = 10;
-	
+	private static final int MAX_LINES = 20;
+
 	private List<String> lines = new ArrayList<>();
 	protected String command = "";
 
@@ -22,28 +22,30 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 	@Override
 	public void updateGame() {
-		
+
 	}
 
-	
+
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
 		view.drawConsoleScreen(lines, command);
 	}
 
-	
+
 	public void addLine(String s) {
 		this.lines.add(s);
-		while (lines.size() > MAX_LINES) {
-			lines.remove(0);
+		if (MAX_LINES > 0) {
+			while (lines.size() > MAX_LINES) {
+				lines.remove(0);
+			}
 		}
 	}
 
-	
+
 	public void clearLines() {
 		this.lines.clear();
 	}
-	
+
 
 
 }

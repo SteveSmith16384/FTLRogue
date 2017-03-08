@@ -1,5 +1,6 @@
 package com.scs.ftl2d.entities.mobs;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -7,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import ssmith.astar.AStar;
 import ssmith.astar.WayPoints;
 
 import com.scs.ftl2d.Main;
@@ -33,8 +35,11 @@ public abstract class AbstractMob extends DrawableEntity {
 	public int side;
 	public List<AbstractItem> equipment = new ArrayList<>();
 	public String manualRoute = "";
-	public WayPoints astarRoute;
 	public AbstractItem currentItem;
+
+	private WayPoints astarRoute;
+	private Point aStarDest;
+
 
 	// Stats
 	public float health = 100f;
@@ -47,7 +52,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		theChar = c;
 		name = _name;
 		side = _side;
-		
+
 		health = hlth;
 		att = _att;
 		def = _def;
@@ -55,7 +60,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		AllMobs.add(this);
 	}
 
-	
+
 	@Override
 	public char getChar() {
 		return theChar;
@@ -68,8 +73,8 @@ public abstract class AbstractMob extends DrawableEntity {
 		int i = Main.RND.nextInt(lines.size());
 		return lines.get(i);
 	}
-	
-	
+
+
 	public void remove() {
 		AllMobs.remove(this);
 		super.remove();
@@ -94,17 +99,21 @@ public abstract class AbstractMob extends DrawableEntity {
 	public boolean moveTowards(int x, int y) {
 		return attemptMove(Integer.signum(x-this.x), Integer.signum(y-this.y));
 	}
-	
-	
+
+
 	public boolean attemptMove(int offx, int offy) {
 		if (offx == 0 && offy == 0) {
 			return false;
 		}
-		
+
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
 		if (newsq.isTraversable()) {
 			Unit other = main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
+				if (newsq instanceof MapSquareDoor) {
+					MapSquareDoor door = (MapSquareDoor)newsq;
+					door.setOpen(true);
+				}
 				AbstractMapSquare oldsq = main.gameData.map[x][y];
 				oldsq.removeEntity(this);
 
@@ -125,8 +134,8 @@ public abstract class AbstractMob extends DrawableEntity {
 		return false;
 	}
 
-	
-	public void checkForShooting() {
+
+	public boolean checkForShooting() {
 		if (this.currentItem != null) {
 			AbstractItem i = (AbstractItem)this.currentItem;
 			if (i instanceof AbstractRangedWeapon) {
@@ -139,14 +148,21 @@ public abstract class AbstractMob extends DrawableEntity {
 				AbstractRangedWeapon gun = (AbstractRangedWeapon)i;
 				AbstractMob enemy = getClosestVisibleEnemy();
 				if (enemy != null) {
-				// todo - check range
 					float dist = this.distanceTo(enemy);
 					if (dist <= gun.getRange()) {
-						
+						enemy.shotBy(this);
+						return true;
 					}
 				}
 			}
 		}
+		return false;
+	}
+
+
+	protected void shotBy(AbstractMob shooter) {
+		// todo
+		this.incHealth(-1, "shot by " + shooter.getName());
 	}
 
 
@@ -154,16 +170,16 @@ public abstract class AbstractMob extends DrawableEntity {
 		int tot = Math.max(0, this.att - other.def);
 		int dam = Main.RND.nextInt(tot)+1;
 		other.incHealth(-dam, this.getName());
-		
+
 	}
-	
-	
+
+
 	protected void addMsgIfOurs(String s) {
 		if (this.side == SIDE_PLAYER) {
 			main.addMsg(s);
 		}
 	}
-	
+
 
 	public void openDoor() {
 		MapSquareDoor sq = (MapSquareDoor)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
@@ -212,7 +228,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	protected AbstractMob getClosestVisibleEnemy() {
 		AbstractMob closest = null;
 		float closestDistance = 9999;
-		
+
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = main.gameData.map[x][y];
@@ -232,10 +248,61 @@ public abstract class AbstractMob extends DrawableEntity {
 				}
 			}			
 		}
-
 		return closest;
+	}
+
+
+	protected boolean moveAStar() {
+		if (this.astarRoute == null || this.astarRoute.isEmpty()) {
+			Point dest = this.getAStarDest();
+			AStar astar = new AStar(this.main.gameData);
+			astar.findPath(x, y, dest.x, dest.y, false);
+			if (astar.wasSuccessful()) {
+				this.astarRoute = astar.getRoute();
+			}
+		}
+		return true;
+	}
+	
+	
+	public abstract Point getAStarDest();
+
+
+	public void pickup(DrawableEntity de) {
+		main.gameData.currentUnit.getSq().removeEntity(de);
+		main.gameData.currentUnit.equipment.add((AbstractItem)de);
+		de.carriedBy = this;
 
 	}
 
 
+	public void drop(DrawableEntity de) {
+		main.gameData.currentUnit.equipment.remove(de);
+		main.gameData.currentUnit.getSq().addEntity(de);
+		de.carriedBy = null;
+
+	}
+
+
+	protected Point rotateDir(Point dir) {
+		if (dir.x == 1 && dir.y == 0) {
+			return new Point(0, 1);
+		} else if (dir.x == 0 && dir.y == 1) {
+			return new Point(-1, 0);
+		} else if (dir.x == -1 && dir.y == 0) {
+			return new Point(0, -1);
+		} else if (dir.x == 0 && dir.y == -1) {
+			return new Point(1, 0);
+		} else {
+			throw new RuntimeException("Unknown dir: " + dir);
+		}
+	}
+	
+	
+	protected boolean isUsingGun() {
+		return this.currentItem != null && this.currentItem instanceof AbstractRangedWeapon;
+	}
+	
+	
 }
+

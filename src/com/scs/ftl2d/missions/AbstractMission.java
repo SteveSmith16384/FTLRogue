@@ -15,4 +15,12 @@ public abstract class AbstractMission extends Entity {
 	public abstract int getReward();
 	
 	public abstract void accepted();
+	
+	@Override
+	public void preProcess() {
+		
+	}
+
+
+
 }

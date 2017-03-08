@@ -12,7 +12,13 @@ public class EnemyShipEvent extends AbstractEvent {
 
 
 	@Override
-	public void process(int pass) {
+	public void preProcess() {
+		
+	}
+
+
+	@Override
+	public void process() {
 
 	}
 

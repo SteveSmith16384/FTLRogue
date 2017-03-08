@@ -1,5 +1,6 @@
 package com.scs.ftl2d.entities.mobs;
 
+import java.awt.Point;
 import java.io.IOException;
 
 import com.scs.ftl2d.Main;
@@ -23,82 +24,87 @@ public class Unit extends AbstractMob {
 
 
 	@Override
-	public void process(int pass) {
-		if (pass == 1) {
-			status = Status.Waiting;
+	public void preProcess() {
 
-			// Can we see anything to shoot at?
-			if (this != this.main.gameData.currentUnit) {
-				checkForShooting();
-			}
+	}
 
 
-			this.incFood(-0.25f);
-			// Are we next to a replicator?
-			if (status == Status.Waiting) {
-				if (this.food < 99f) {
-					MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
-					if (sqr != null) {
-						if (main.gameData.totalPower > 0) {
-							main.gameData.powerUsedPerTurn += 1f;
-							this.incFood(10);
-							this.main.addMsg(this.getName() + " eats some food");
-							status = Status.Eating;
-						}
-					}
-				}
-			}
+	@Override
+	public void process() {
+		status = Status.Waiting;
 
-			if (this.food <= 0) {
-				main.addMsg(this.getName() + " is starving!");
-				this.incHealth(-5, "starvation");
-			} else if (this.food < 20) {
-				main.addMsg(this.getName() + " is hungry");
-			}
+		// Can we see anything to shoot at?
+		if (this != this.main.gameData.currentUnit) {
+			checkForShooting();
+		}
 
-			// Are we on a medibay?
-			if (status == Status.Waiting) {
-				AbstractMapSquare sq = this.getSq();
-				if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
+
+		this.incFood(-0.25f);
+		// Are we next to a replicator?
+		if (status == Status.Waiting) {
+			if (this.food < 99f) {
+				MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
+				if (sqr != null) {
 					if (main.gameData.totalPower > 0) {
 						main.gameData.powerUsedPerTurn += 1f;
-						this.incHealth(1, "");
-						main.addMsg(this.getName() + " is healing");
-						status = Status.Healing;
+						this.incFood(10);
+						this.main.addMsg(this.getName() + " eats some food");
+						status = Status.Eating;
 					}
 				}
 			}
+		}
 
-			// Repair something
-			if (status == Status.Waiting) {
-				AbstractMapSquare sqr = main.gameData.findAdjacentDamagedMapSquare(x, y);
-				if (sqr != null) {
-					sqr.damage_pcent += Main.RND.nextInt(5) + 1;
-					this.main.addMsg(this.getName() + " repairs the " + sqr.getName());
-					status = Status.Repairing;
+		if (this.food <= 0) {
+			main.addMsg(this.getName() + " is starving!");
+			this.incHealth(-5, "starvation");
+		} else if (this.food < 20) {
+			main.addMsg(this.getName() + " is hungry");
+		}
+
+		// Are we on a medibay?
+		if (status == Status.Waiting) {
+			AbstractMapSquare sq = this.getSq();
+			if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
+				if (main.gameData.totalPower > 0) {
+					main.gameData.powerUsedPerTurn += 1f;
+					this.incHealth(1, "");
+					main.addMsg(this.getName() + " is healing");
+					status = Status.Healing;
 				}
 			}
-
-			// Moving
-			if (status == Status.Waiting && this != this.main.gameData.currentUnit) {
-				if (manualRoute.length() > 0) {
-					processManualRoute(manualRoute.substring(0, 1));
-					manualRoute = manualRoute.substring(1);
-				}				
-			}
-
-
-			if (status == Status.Waiting) {
-				this.incTiredness(-1f);
-			}
-
-		} else if (pass == 2) {
-			main.gameData.incOxygenLevel(-0.1f);
-			if (main.gameData.oxygenLevel <= 0) {
-				main.addMsg(this.getName() + " is suffocating!");
-			}
-
 		}
+
+		// Repair something
+		if (status == Status.Waiting) {
+			AbstractMapSquare sqr = main.gameData.findAdjacentDamagedMapSquare(x, y);
+			if (sqr != null) {
+				sqr.damage_pcent += Main.RND.nextInt(5) + 1;
+				this.main.addMsg(this.getName() + " repairs the " + sqr.getName());
+				status = Status.Repairing;
+			}
+		}
+
+		// Moving
+		if (status == Status.Waiting && this != this.main.gameData.currentUnit) {
+			if (manualRoute.length() > 0) {
+				processManualRoute(manualRoute.substring(0, 1));
+				manualRoute = manualRoute.substring(1);
+			}				
+		}
+
+
+		if (status == Status.Waiting) {
+			this.incTiredness(-1f);
+		}
+
+		//} else if (pass == 2) {
+		main.gameData.incOxygenLevel(-0.1f);
+		if (main.gameData.oxygenLevel <= 0) {
+			main.addMsg(this.getName() + " is suffocating!");
+		}
+
+		//}
 	}
 
 
@@ -163,5 +169,13 @@ public class Unit extends AbstractMob {
 			this.tiredness = 0;
 		}
 	}
+
+
+	@Override
+	public Point getAStarDest() {
+		return null;
+	}
+
+
 
 }

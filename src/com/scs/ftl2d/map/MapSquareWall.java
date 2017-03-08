@@ -36,12 +36,6 @@ public class MapSquareWall extends AbstractMapSquare {
 		return this.damage_pcent > 0 ? '#' : ' ';
 	}
 
-	@Override
-	public void process(int pass) {
-		processItems(pass);
-
-	}
-
 
 	@Override
 	protected Color getBackgroundColour() {

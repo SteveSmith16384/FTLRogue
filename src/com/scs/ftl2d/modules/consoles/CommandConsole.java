@@ -98,7 +98,6 @@ public class CommandConsole extends AbstractConsoleModule {
 					}			
 				}
 				super.addLine("The airlock is now " + (open?"open":"closed") + ".");
-				super.addLine("");
 				main.checkOxygen();
 				break;
 
@@ -107,7 +106,6 @@ public class CommandConsole extends AbstractConsoleModule {
 				boolean on = tokens[1].equalsIgnoreCase("on");
 				main.gameData.shipLightsOn = on;
 				super.addLine("The ship lights are now " + (on?"on":"off") + ".");
-				super.addLine("");
 				main.gameData.recalcVisibleSquares();
 				break;
 
@@ -120,9 +118,9 @@ public class CommandConsole extends AbstractConsoleModule {
 			}
 		} catch (Exception ex) {
 			super.addLine("Unable to understand: " + ex.getMessage());
-			super.addLine("");
 			ex.printStackTrace();
 		}
+		super.addLine("");
 		showMenu();
 	}
 

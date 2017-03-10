@@ -17,10 +17,10 @@ import com.scs.ftl2d.missions.AbstractMission;
 CONTROLS:
 Numbers - select unit
 Arrows - move unit
+? - Help TODO
 c - close door
 d - drop
 g - Goto?
-h - Help TODO
 i - inventory
 k - keys?
 l - login to console

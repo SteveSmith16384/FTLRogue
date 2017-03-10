@@ -7,7 +7,7 @@ import com.scs.ftl2d.entities.mobs.Alien;
 
 public class AlienEgg extends AbstractItem {
 
-	private static final int PCENT_CHANCE_HATCH = 1;
+	private static final int PCENT_CHANCE_HATCH = 10;
 
 	public AlienEgg(Main main) {
 		super(main, -1, -1, DrawableEntity.Z_ITEM);

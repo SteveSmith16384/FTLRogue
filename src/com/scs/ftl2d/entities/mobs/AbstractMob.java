@@ -36,6 +36,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public List<AbstractItem> equipment = new ArrayList<>();
 	public String manualRoute = "";
 	public AbstractItem currentItem;
+	protected boolean autoOpenDoors;
 
 	private WayPoints astarRoute;
 	private Point aStarDest;
@@ -46,7 +47,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public int att;
 	public int def;
 
-	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _att, int _def) {
+	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _att, int _def, boolean _autoOpenDoors) {
 		super(main, _x, _y, _z);
 
 		theChar = c;
@@ -56,6 +57,8 @@ public abstract class AbstractMob extends DrawableEntity {
 		health = hlth;
 		att = _att;
 		def = _def;
+
+		autoOpenDoors = _autoOpenDoors;
 
 		AllMobs.add(this);
 	}
@@ -71,7 +74,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
 		List<String> lines = Files.readAllLines(path);
 		int i = Main.RND.nextInt(lines.size());
-		return lines.get(i);
+		return "Captain " + lines.get(i);
 	}
 
 
@@ -88,6 +91,11 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	protected void incHealth(float f, String reason) {
 		this.health += f;
+		if (f > 0) {
+			main.addMsg(this.getName() + " is healed by " + (int)f);
+		} else {
+			main.addMsg(this.getName() + " is wounded by " + (int)-f);
+		}
 		if (this.health > 100f) {
 			this.health = 100f;
 		} else if (health <= 0) {
@@ -108,11 +116,15 @@ public abstract class AbstractMob extends DrawableEntity {
 
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
 		if (newsq.isTraversable()) {
-			Unit other = main.gameData.getUnitAt(x+offx, y+offy);
+			AbstractMob other = main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				if (newsq instanceof MapSquareDoor) {
-					MapSquareDoor door = (MapSquareDoor)newsq;
-					door.setOpen(true);
+					if (this.autoOpenDoors) {
+						MapSquareDoor door = (MapSquareDoor)newsq;
+						door.setOpen(true);
+					} else {
+						return false;
+					}
 				}
 				AbstractMapSquare oldsq = main.gameData.map[x][y];
 				oldsq.removeEntity(this);
@@ -167,7 +179,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void meleeCombat(AbstractMob other) {
-		int tot = Math.max(0, this.att - other.def);
+		int tot = Math.max(1, this.att - other.def);
 		int dam = Main.RND.nextInt(tot)+1;
 		other.incHealth(-dam, this.getName());
 
@@ -263,8 +275,8 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		return true;
 	}
-	
-	
+
+
 	public abstract Point getAStarDest();
 
 
@@ -297,12 +309,12 @@ public abstract class AbstractMob extends DrawableEntity {
 			throw new RuntimeException("Unknown dir: " + dir);
 		}
 	}
-	
-	
+
+
 	protected boolean isUsingGun() {
 		return this.currentItem != null && this.currentItem instanceof AbstractRangedWeapon;
 	}
-	
-	
+
+
 }
 

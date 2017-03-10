@@ -19,11 +19,11 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Enemy lasers - choose rnd square at top&bottom and drawl line between the two
-DONE Open doors automatically
-DONE Alien moving across each square!
-DONE Don't add walls around airlock
-DONE AddWalls not working quite right
+Dungeon gen
+Don't add walls around airlock
+AddWalls not working quite right
+DONE? Key - show Alien
+Enemy lasers - choose rnd square at top&bottom and draw line between the two
 Do laser effects, shooting effects, explosion effect
 Shoot lasers from defined weapons points
 Show stars moving when ship launched
@@ -35,6 +35,7 @@ Doors not open if vacuum
 Fire might spread
 Board enemy ships
 Put items on map
+Engines explode when damaged 100%
 
 
 EVENTS

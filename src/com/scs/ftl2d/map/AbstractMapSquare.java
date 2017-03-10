@@ -42,6 +42,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public boolean hasOxygen = true;
 	public float damage_pcent = 0;
 	public int x, y;
+	public String extraInfo = "";
 
 	private static TextCharacter hiddenChar = new TextCharacter(' ', TextColor.ANSI.BLACK, TextColor.ANSI.BLACK); 
 	private TextCharacter seenChar; 
@@ -194,8 +195,10 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		// Visible char
 		char c = this.getFloorChar();
 		boolean isSelectedUnit = false;
+		extraInfo = "";
 		if (this.entities.size() > 0) {
 			c = entities.get(0).getChar();
+			extraInfo = entities.get(0).getName();
 			if (entities.get(0) == main.gameData.currentUnit) {
 				isSelectedUnit = true;
 			}

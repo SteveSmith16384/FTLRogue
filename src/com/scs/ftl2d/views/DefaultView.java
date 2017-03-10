@@ -54,6 +54,11 @@ public class DefaultView implements IGameView {
 					if (!seenSquares.containsKey(sq.getName())) {
 						seenSquares.put(sq.getName(), tc);
 					}
+					if (sq.extraInfo.length() > 0) {
+						if (!seenSquares.containsKey(sq.extraInfo)) {
+							seenSquares.put(sq.extraInfo, tc);
+						}
+					}
 				}
 			}			
 		}
@@ -66,6 +71,13 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
+		if (gameData.shipFlying) {
+			y++;
+			tGraphics.putString(gameData.getWidth()+2, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
+			tGraphics.putString(gameData.getWidth()+2, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
+			
+		}
+		
 		y++;
 		tGraphics.putString(gameData.getWidth()+2, y++, "POWER");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Total Power: " + (int)gameData.totalPower);

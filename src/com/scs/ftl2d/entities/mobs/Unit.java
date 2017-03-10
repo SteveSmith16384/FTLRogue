@@ -19,7 +19,7 @@ public class Unit extends AbstractMob {
 	public Status status = Status.Waiting;
 
 	public Unit(Main main, char c, int x, int y) throws IOException {
-		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, 5);
+		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, 5, true);
 	}
 
 

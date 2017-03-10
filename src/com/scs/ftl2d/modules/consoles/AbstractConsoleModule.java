@@ -33,7 +33,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 
 	public void addLine(String s) {
-		this.lines.add(s);
+		this.lines.add("> " + s);
 		if (MAX_LINES > 0) {
 			while (lines.size() > MAX_LINES) {
 				lines.remove(0);

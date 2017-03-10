@@ -34,7 +34,7 @@ public class MapSquareDoor extends AbstractMapSquare {
 
 	@Override
 	public String getName() {
-		return "Door";
+		return "Door (" + (this.isOpen?"open":"closed") + ")";
 	}
 
 

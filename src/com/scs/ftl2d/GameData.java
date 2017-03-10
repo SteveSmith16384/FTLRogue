@@ -9,6 +9,7 @@ import ssmith.astar.IAStarMapInterface;
 
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
@@ -139,11 +140,11 @@ public class GameData implements IAStarMapInterface {
 	}
 
 
-	public Unit getUnitAt(int x, int y) {
+	public AbstractMob getUnitAt(int x, int y) {
 		//List<DrawableEntity> list = map[x][y].items;
 		for (DrawableEntity de : map[x][y].getEntities()) {
-			if (de instanceof Unit) {
-				Unit unit = (Unit)  de;
+			if (de instanceof AbstractMob) {
+				AbstractMob unit = (AbstractMob) de;
 				return unit;
 			}
 		}

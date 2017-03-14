@@ -124,11 +124,11 @@ public class GameData implements IAStarMapInterface {
 	}
 
 
-	public AbstractMapSquare findAdjacentDamagedMapSquare(int x, int y) {
+	public AbstractMapSquare findAdjacentRepairableMapSquare(int x, int y) {
 		for (int y2=y-1 ; y2<=y+1 ; y2++) {
 			for (int x2=x-1 ; x2<=x+1 ; x2++) {
 				try {
-					if (map[x2][y2].damage_pcent > 0) {
+					if (map[x2][y2].getDamagePcent() > 0 && map[x2][y2].getDamagePcent() < 100) {
 						return map[x2][y2];
 					}
 				} catch (ArrayIndexOutOfBoundsException ex) {
@@ -206,7 +206,7 @@ public class GameData implements IAStarMapInterface {
 
 	@Override
 	public boolean isMapSquareTraversable(int x, int z) {
-		return map[x][z].isTraversable();
+		return map[x][z].isSquareTraversable();
 	}
 
 

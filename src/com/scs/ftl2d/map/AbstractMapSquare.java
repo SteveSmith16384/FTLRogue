@@ -40,7 +40,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public boolean onFire = false;
 	public boolean hasSmoke = false;
 	public boolean hasOxygen = true;
-	public float damage_pcent = 0;
+	private float damage_pcent = 0;
 	public int x, y;
 	public String extraInfo = "";
 
@@ -88,7 +88,8 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 			return new MapSquareBattery(main, code, x, y);
 
 		case MAP_WEAPON_CONSOLE:
-			return new MapSquareWeaponsConsole(main, code, x, y);
+			//return new MapSquareWeaponsConsole(main, code, x, y);
+			return new MapSquareFloor(main, code, x, y);
 
 		case MAP_AIRLOCK:
 			return new MapSquareAirlock(main, code, x, y);
@@ -113,9 +114,25 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		this.calcChars();
 	}
 
-	public abstract boolean isTraversable();
+	public boolean isSquareTraversable() {
+		if (this.damage_pcent >= 100) {
+			return true;
+		} else {
+			return this.isTraversable();
+		}
+	}
+	
+	public boolean isSquareTransparent() {
+		if (this.damage_pcent >= 100) {
+			return true;
+		} else {
+			return this.isTransparent();
+		}
+	}
+	
+	protected abstract boolean isTraversable();
 
-	public abstract boolean isTransparent();
+	protected abstract boolean isTransparent();
 
 	protected abstract char getFloorChar();
 
@@ -216,7 +233,20 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		return 100 - this.damage_pcent;
 	}
 
+	
+	public float getDamagePcent() {
+		return this.damage_pcent;
+	}
 
+	
+	public void incDamage(float i) {
+		this.damage_pcent += 100;
+		if (this.damage_pcent > 100) {
+			this.damage_pcent = 100;
+		}
+	}
+
+	
 	@Override
 	public int compare(DrawableEntity de1, DrawableEntity de2) {
 		return de2.z - de1.z;

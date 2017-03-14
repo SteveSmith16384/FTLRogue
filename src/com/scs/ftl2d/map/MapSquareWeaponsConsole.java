@@ -1,5 +1,5 @@
 package com.scs.ftl2d.map;
-
+/*
 import java.awt.Color;
 
 import com.scs.ftl2d.Main;
@@ -41,3 +41,4 @@ public class MapSquareWeaponsConsole extends AbstractMapSquare {
 	}
 
 }
+*/

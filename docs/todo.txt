@@ -19,7 +19,10 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Dungeon gen
+Mech-suit
+Weapon console - press key to fire weapons.  Weapons have reload time.
+	Can't fix stuff completely damaged
+	if wall dam > 100, traversable and see through and no oxygen
 Don't add walls around airlock
 AddWalls not working quite right
 DONE? Key - show Alien
@@ -27,13 +30,13 @@ Enemy lasers - choose rnd square at top&bottom and draw line between the two
 Do laser effects, shooting effects, explosion effect
 Shoot lasers from defined weapons points
 Show stars moving when ship launched
-Weapon console - press key to fire weapons.  Weapons have reload time.
 Say "no power"
 Fire may start when ship hit
-Walls may be destroyed causing oxygen loss
+	Walls may be destroyed causing oxygen loss
 Doors not open if vacuum
 Fire might spread
 Board enemy ships
+Dungeon gen
 Put items on map
 Engines explode when damaged 100%
 

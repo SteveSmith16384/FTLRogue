@@ -13,7 +13,7 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 public class EnemyUnit extends AbstractMob {
 
 	public EnemyUnit(Main main, int _x, int _y) throws IOException {
-		super(main, _x, _y, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, 4, true);
+		super(main, _x, _y, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, true);
 
 		Gun gun = new Gun(main);
 		this.equipment.add(gun);
@@ -34,8 +34,12 @@ public class EnemyUnit extends AbstractMob {
 			shooting = this.checkForShooting();
 		}
 		if (!shooting) {
-			//List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.x,  this.y)
-			// todo - Check if can sabotage
+			List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.x,  this.y);
+			for (AbstractMapSquare sq : squares) {
+				if (this.isSabotagable(sq)) {
+					sq.incDamage(Main.RND.nextInt(5));
+				}
+			}
 			this.moveAStar();
 		}
 	}
@@ -47,10 +51,8 @@ public class EnemyUnit extends AbstractMob {
 		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
 			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = main.gameData.map[x][y];
-				if (sq.damage_pcent < 100) {
-					if (isSabotagable(sq)) {
-						squares.add(sq);
-					}
+				if (isSabotagable(sq)) {
+					squares.add(sq);
 				}
 			}
 		}
@@ -65,10 +67,12 @@ public class EnemyUnit extends AbstractMob {
 
 
 	private boolean isSabotagable(AbstractMapSquare sq) {
-		return (sq.type == AbstractMapSquare.MAP_BATTERY ||
-				sq.type == AbstractMapSquare.MAP_ENGINES ||
-				sq.type == AbstractMapSquare.MAP_OXYGEN_GEN);
-
+		if (sq.getHealth() > 0) {
+			return (sq.type == AbstractMapSquare.MAP_BATTERY ||
+					sq.type == AbstractMapSquare.MAP_ENGINES ||
+					sq.type == AbstractMapSquare.MAP_OXYGEN_GEN);
+		}
+		return false;
 	}
 
 }

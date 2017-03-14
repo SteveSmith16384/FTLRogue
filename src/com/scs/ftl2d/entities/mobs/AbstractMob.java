@@ -44,10 +44,9 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	// Stats
 	public float health = 100f;
-	public int att;
-	public int def;
+	public int meleeSkill;
 
-	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _att, int _def, boolean _autoOpenDoors) {
+	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _combat, boolean _autoOpenDoors) {
 		super(main, _x, _y, _z);
 
 		theChar = c;
@@ -55,8 +54,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		side = _side;
 
 		health = hlth;
-		att = _att;
-		def = _def;
+		meleeSkill = _combat;
 
 		autoOpenDoors = _autoOpenDoors;
 
@@ -115,7 +113,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
-		if (newsq.isTraversable()) {
+		if (newsq.isSquareTraversable()) {
 			AbstractMob other = main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				if (newsq instanceof MapSquareDoor) {
@@ -162,7 +160,7 @@ public abstract class AbstractMob extends DrawableEntity {
 				if (enemy != null) {
 					float dist = this.distanceTo(enemy);
 					if (dist <= gun.getRange()) {
-						enemy.shotBy(this);
+						enemy.shotBy(this, gun);
 						return true;
 					}
 				}
@@ -172,17 +170,31 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void shotBy(AbstractMob shooter) {
-		// todo
-		this.incHealth(-1, "shot by " + shooter.getName());
+	protected void shotBy(AbstractMob shooter, AbstractRangedWeapon gun) {
+		this.genericAttack(shooter, gun.getShotValue(), "shot by");
 	}
 
 
-	public void meleeCombat(AbstractMob other) {
-		int tot = Math.max(1, this.att - other.def);
+	public void meleeCombat(AbstractMob attacker) {
+		float att = attacker.meleeSkill;
+		if (attacker.currentItem != null) {
+			att += attacker.currentItem.getMeleeValue();
+		}
+		this.genericAttack(attacker, att, "hit by");
+	}
+	
+	
+	protected void genericAttack(AbstractMob attacker, float attackVal, String verb) {
+		int tot = Math.max(1, attacker.meleeSkill - this.meleeSkill);
 		int dam = Main.RND.nextInt(tot)+1;
-		other.incHealth(-dam, this.getName());
-
+		this.incHealth(-dam, this.getName());
+		/*
+	private void commonAttack(Creature other, int attack, String action, Object ... params) {
+		int amount = Math.max(0, attack - other.defenseValue());
+		amount = (int)(Math.random() * amount) + 1;
+		other.modifyHp(-amount, "Killed by a " + name);
+		 */
+		
 	}
 
 

@@ -1,10 +1,12 @@
 package com.scs.ftl2d.modules;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 
 public abstract class AbstractModule {
 

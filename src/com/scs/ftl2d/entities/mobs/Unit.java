@@ -5,11 +5,9 @@ import java.io.IOException;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.map.MapSquareReplicator;
-import com.scs.ftl2d.map.MapSquareWeaponsConsole;
 import com.scs.ftl2d.modules.consoles.CommandConsole;
 
 public class Unit extends AbstractMob {
@@ -19,7 +17,7 @@ public class Unit extends AbstractMob {
 	public Status status = Status.Waiting;
 
 	public Unit(Main main, char c, int x, int y) throws IOException {
-		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, 5, true);
+		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, true);
 	}
 
 
@@ -77,9 +75,9 @@ public class Unit extends AbstractMob {
 
 		// Repair something
 		if (status == Status.Waiting) {
-			AbstractMapSquare sqr = main.gameData.findAdjacentDamagedMapSquare(x, y);
+			AbstractMapSquare sqr = main.gameData.findAdjacentRepairableMapSquare(x, y);
 			if (sqr != null) {
-				sqr.damage_pcent += Main.RND.nextInt(5) + 1;
+				sqr.incDamage(-(Main.RND.nextInt(5) + 1));
 				this.main.addMsg(this.getName() + " repairs the " + sqr.getName());
 				status = Status.Repairing;
 			}
@@ -147,7 +145,7 @@ public class Unit extends AbstractMob {
 		if (sq != null) {
 			main.setModule(new CommandConsole(main, main.getCurrentModule()));
 		} else {
-			if (main.gameData.currentLocation != null) {
+			/*if (main.gameData.currentLocation != null) {
 				MapSquareWeaponsConsole wsq = (MapSquareWeaponsConsole)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_WEAPON_CONSOLE);
 				if (wsq != null) {
 					if (main.gameData.weaponTemp <= 0) {
@@ -156,7 +154,8 @@ public class Unit extends AbstractMob {
 				}
 			} else {
 				main.addMsg("There is nothing to shoot at.");
-			}
+			}*/
+			main.addMsg("No console here.");
 		}
 	}
 

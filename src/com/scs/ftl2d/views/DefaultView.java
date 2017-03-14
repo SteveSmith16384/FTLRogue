@@ -16,6 +16,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
+import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.mobs.Unit;
@@ -37,7 +38,7 @@ public class DefaultView implements IGameView {
 
 
 	@Override
-	public void drawPlayersShipScreen(GameData gameData, Unit currentUnit) throws IOException {
+	public void drawPlayersShipScreen(GameData gameData, Unit currentUnit, List<AbstractAsciiEffect> effects) throws IOException {
 		screen.startScreen();
 		screen.clear();
 

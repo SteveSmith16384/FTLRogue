@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.CSVMap;
 import com.scs.ftl2d.missions.TransportEggMission;
@@ -24,8 +25,9 @@ public class Main {
 	private KeyStroke lastChar;
 	private AbstractModule currentModule;
 	public int gameStage = 0;
-	
-	public Main() throws IOException {
+	public List<AbstractAsciiEffect> asciiEffects = new ArrayList<>();
+
+	public Main() throws IOException, InterruptedException {
 		createGameData();
 
 		currentModule = new PlayersShipModule(this, null);
@@ -49,20 +51,26 @@ public class Main {
 	}
 
 
-	private void mainGameLoop() {
+	private void mainGameLoop() throws InterruptedException {
 		if (Settings.DEBUG) {
 			this.addMsg("## DEBUG MODE ##");
 		}
 		this.currentModule.updateGame();
-		this.checkOxygen();
+		this.checkOxygen(); // Do once at start
 		while (!stopNow) {
 			try {
 				this.currentModule.drawScreen(view);
-				lastChar = view.getInput();
-				//this.addMsg("Key '" + lastChar + "' pressed");
-				boolean progress = this.currentModule.processInput(lastChar);
-				if (progress) {
-					this.currentModule.updateGame();
+				if (this.asciiEffects.isEmpty()) {
+					lastChar = view.getInput();
+					boolean progress = this.currentModule.processInput(lastChar);
+					if (progress) {
+						this.currentModule.updateGame();
+					}
+				} else {
+					for (AbstractAsciiEffect effect : this.asciiEffects) {
+						effect.process();
+					}
+					Thread.sleep(200);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -87,7 +95,7 @@ public class Main {
 				sq.hasOxygen = true;
 			}
 		}
-		
+
 		List<AbstractMapSquare> waiting = new ArrayList<>();
 		List<AbstractMapSquare> processed = new ArrayList<>();
 
@@ -100,7 +108,7 @@ public class Main {
 
 			List<AbstractMapSquare> adj = this.gameData.getAdjacentSquares(sq.x, sq.y);
 			for (AbstractMapSquare asq : adj) {
-				if (asq.isTraversable()) {
+				if (asq.isSquareTraversable()) {
 					if (!processed.contains(asq) && !waiting.contains(asq)) {
 						waiting.add(asq);
 					}
@@ -118,8 +126,8 @@ public class Main {
 	public void setModule(AbstractModule mod) {
 		this.currentModule = mod;
 	}
-	
-	
+
+
 	public void fireShipsWeapons() {
 		this.gameData.weaponTemp += 5;
 		// todo
@@ -136,7 +144,7 @@ public class Main {
 	public static void main(String[] args) {
 		try {
 			new Main();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

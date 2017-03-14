@@ -39,7 +39,7 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 		super.process();
 
 		main.gameData.incOxygenLevel((2f * this.getHealth()) / 100);
-		if (this.damage_pcent > 0) {
+		if (this.getDamagePcent() > 0) {
 			main.gameData.powerUsedPerTurn += 1f;
 		}
 	}

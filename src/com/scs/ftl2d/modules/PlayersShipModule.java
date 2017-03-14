@@ -20,6 +20,7 @@ Arrows - move unit
 ? - Help TODO
 c - close door
 d - drop
+f - fire ships weapons
 g - Goto?
 i - inventory
 k - keys?
@@ -175,7 +176,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawPlayersShipScreen(main.gameData, main.gameData.currentUnit);
+		view.drawPlayersShipScreen(main.gameData, main.gameData.currentUnit, main.asciiEffects);
 
 	}
 

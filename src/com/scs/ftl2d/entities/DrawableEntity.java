@@ -63,7 +63,7 @@ public abstract class DrawableEntity extends Entity {
 		for (Point p : l) {
 			if (p.x != x || p.y != y) {
 				if (p.x != mx || p.y != my) {
-					if (!main.gameData.map[p.x][p.y].isTransparent()) {
+					if (!main.gameData.map[p.x][p.y].isSquareTransparent()) {
 						return false;
 					}
 				}

@@ -1,29 +1,30 @@
 package com.scs.ftl2d.destinations;
 
+import java.util.List;
+
+import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Entity;
 
-public class AbstractSpaceLocation extends Entity {
+public abstract class AbstractSpaceLocation implements IProcessable {
 
-	public int x, y;
 	public String name;
-	
-	public AbstractSpaceLocation(Main main, String _name) {
-		super(main);
+	protected Main main;
+
+	protected int timer = 0;
+	protected float damage = 0;
+	protected boolean attacked = false;
+
+
+	public AbstractSpaceLocation(Main _main, String _name) {
+		super();
 		
+		main = _main;
 		name = _name;
 	}
-
 	
-	@Override
-	public void preProcess() {
-		
-	}
-
-
-	@Override
-	public void process() {
-		
-	}
+	
+	public abstract void shot();
+	
+	public abstract List<String> getStats();
 
 }

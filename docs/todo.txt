@@ -19,24 +19,12 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Mech-suit
-Weapon console - press key to fire weapons.  Weapons have reload time.
-	Can't fix stuff completely damaged
-	if wall dam > 100, traversable and see through and no oxygen
-Don't add walls around airlock
 AddWalls not working quite right
-DONE? Key - show Alien
-Enemy lasers - choose rnd square at top&bottom and draw line between the two
-Do laser effects, shooting effects, explosion effect
-Shoot lasers from defined weapons points
 Show stars moving when ship launched
+Don't add walls around airlock
 Say "no power"
-Fire may start when ship hit
 	Walls may be destroyed causing oxygen loss
 Doors not open if vacuum
-Fire might spread
-Board enemy ships
-Dungeon gen
 Put items on map
 Engines explode when damaged 100%
 
@@ -55,18 +43,17 @@ LATER
 All units can do all actions, but specialists are better
 Buy crewmembers
 Can board and take control of enemy ships
-Need to stock up on missiles or something?
 Scroll map
 Stock up on fuel at spacestation
+loadResource instead of directly
 Have background stories for units
 LATER Engines leak coolant if no power
+Mech-suit
 LATER Units wear spacesuit to go into non-oxygen areas
-Draw starfield
 Hover mouse over square to identify
 Fly ship around space map
 Trade with space station
 Encounter other ships when moving around in space
-Random events - enemy ship turns up, meteor storm
 Engines - get ship ready for warp
 Send out mayday signal
 Receive mayday signal
@@ -74,7 +61,8 @@ LATER Sleeping quarters
 LATER Fuel TODO - Determines ships range
 Choose where to fly to
 Self-destruct
-Smoke
+Board enemy ships
+Dungeon gen
 grenades
 Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode

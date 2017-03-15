@@ -16,7 +16,7 @@ public abstract class DrawableEntity extends Entity {
 	public static final int Z_ITEM = 1;
 	public static final int Z_FLOOR = 0;
 
-	public int x, y, z;
+	public int x, y, z; // todo - get rid of x, y and use square?
 	public AbstractMob carriedBy;
 
 	public DrawableEntity(Main main, int _x, int _y, int _z) {

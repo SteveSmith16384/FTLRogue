@@ -1,12 +1,14 @@
 package com.scs.ftl2d.missions;
 
+import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Entity;
 
-public abstract class AbstractMission extends Entity {
+public abstract class AbstractMission implements IProcessable {
 
+	protected Main main;
+	
 	public AbstractMission(Main _main) {
-		super(_main);// = _main;
+		main = _main;
 	}
 
 	
@@ -16,11 +18,6 @@ public abstract class AbstractMission extends Entity {
 	
 	public abstract void accepted();
 	
-	@Override
-	public void preProcess() {
-		
-	}
-
 
 
 }

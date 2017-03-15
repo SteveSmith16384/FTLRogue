@@ -1,11 +1,57 @@
 package com.scs.ftl2d.destinations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entities.mobs.PoliceMob;
+import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class SpaceStation extends AbstractSpaceLocation {
 
+	private boolean shot = false;
+	private int turnsUntilPolice = 0;
+	private int numPoliceRequired = 0;
+
 	public SpaceStation(Main main, String name) {
 		super(main, name);
+	}
+
+
+	@Override
+	public void process() {
+		if (shot) {
+			turnsUntilPolice--;
+			if (turnsUntilPolice <= 0) {
+				if (this.numPoliceRequired > 0) {
+					numPoliceRequired--;
+					// Teleport onto ship
+					AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+					sq.addEntity(new PoliceMob(main));
+					main.addMsg("This is the police!  We have boarded your ship.");
+				}
+				turnsUntilPolice = Main.RND.nextInt(5)+2;
+			}
+		}
+	}
+
+
+	@Override
+	public List<String> getStats() {
+		List<String> stats = new ArrayList<>();
+		return stats;
+	}
+
+
+	@Override
+	public void shot() {
+		if (!shot) {
+			main.addMsg(this.name + ": Prepare to be boarded!");
+			turnsUntilPolice = Main.RND.nextInt(5)+2;
+		}
+		shot = true;
+		numPoliceRequired++;
+
 	}
 
 }

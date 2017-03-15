@@ -27,7 +27,7 @@ public class MapSquareEngine extends AbstractMapSquare {
 	public boolean isTransparent() {
 		return false;
 	}
-	
+
 
 	@Override
 	public char getFloorChar() {
@@ -38,13 +38,13 @@ public class MapSquareEngine extends AbstractMapSquare {
 	@Override
 	public void process() {
 		super.process();
-		
-			if (main.gameData.shipFlying) {
-				float speed = (10f * this.getHealth()) / 100f;
-				speed = (speed * main.gameData.enginePowerPcent) / 100f;
-				main.gameData.shipSpeed += speed;
-				
-			}
+
+		if (main.gameData.currentLocation == null) {
+			float speed = (10f * this.getHealth()) / 100f;
+			speed = (speed * main.gameData.enginePowerPcent) / 100f;
+			main.gameData.shipSpeed += speed;
+
+		}
 	}
 
 

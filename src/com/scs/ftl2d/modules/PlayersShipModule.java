@@ -1,5 +1,6 @@
 package com.scs.ftl2d.modules;
 
+import java.awt.Point;
 import java.io.IOException;
 
 import com.googlecode.lanterna.input.KeyStroke;
@@ -7,30 +8,35 @@ import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.asciieffects.ShipLaser;
+import com.scs.ftl2d.destinations.AnotherShip;
+import com.scs.ftl2d.destinations.Planet;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.events.AbstractEvent;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.missions.AbstractMission;
+import com.scs.ftl2d.modules.consoles.HelpConsole;
 /*
 
 CONTROLS:
 Numbers - select unit
 Arrows - move unit
-? - Help TODO
+? - Help
 c - close door
 d - drop
+e - TODO examine (current square)
 f - fire ships weapons
-g - Goto?
+g - goto LATER
 i - inventory
-k - keys?
 l - login to console
-m - move
+m - TEST move
 n - Nothing
 o - open door
 p - Pick up
 s - shoot/select (use current item)
-t - teleport LATER
+t - throw
 u - Use, i.e. change to current item
 w - wear LATER
 
@@ -39,6 +45,7 @@ Numbers - Players units
 A - OxyGen (air)
 B - Battery
 C - Control panel
+c - corpse
 E - Engines
 e - Egg (alien)
 F - On fire
@@ -56,7 +63,7 @@ T - Teleporter
 COLOURS
 Mapsquares:
 Background colour of installations shows type
-Foreground colour shows damage
+Foreground colour shows damage (white -> grey)
 
 
  */
@@ -80,11 +87,17 @@ public class PlayersShipModule extends AbstractModule {
 		GameData gameData = this.main.gameData;
 		gameData.turnNo++;
 
+		if (main.checkOxygenFlag) {
+			main.checkOxygenFlag = false;
+			gameData.checkOxygen();
+		}
+
 		// Set values to zero as they will be adjusted by the mapsquares
 		gameData.shipSpeed = 0;
 		gameData.powerGainedPerTurn= 0;
 		gameData.powerUsedPerTurn = 0;
 
+		// Refresh items in each square
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
@@ -108,6 +121,11 @@ public class PlayersShipModule extends AbstractModule {
 			m.process();
 		}
 
+		if (this.main.gameData.currentLocation != null) {
+			this.main.gameData.currentLocation.process();
+		}
+
+		// Refresh items in each square
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
@@ -115,6 +133,7 @@ public class PlayersShipModule extends AbstractModule {
 			}			
 		}
 
+		// Weapons
 		gameData.weaponTemp -= 1;
 		if (gameData.weaponTemp < 0) {
 			gameData.weaponTemp = 0;
@@ -123,7 +142,7 @@ public class PlayersShipModule extends AbstractModule {
 
 		// POWER
 		gameData.powerUsedPerTurn += (gameData.shieldPowerPcent / 10);
-		if (gameData.shipFlying) {
+		if (gameData.currentLocation == null) {
 			gameData.powerUsedPerTurn += (gameData.enginePowerPcent / 10);
 		}
 		gameData.totalPower += gameData.powerGainedPerTurn;
@@ -137,17 +156,22 @@ public class PlayersShipModule extends AbstractModule {
 		}
 
 
-		if (gameData.shipFlying) {
+		if (gameData.currentLocation == null) {
 			// Adjust ship speed by engine power
 			if (gameData.totalPower > 0) {
 				gameData.shipSpeed *= gameData.enginePowerPcent;
 				gameData.distanceToDest -= gameData.shipSpeed;
 				if (gameData.distanceToDest <= 0) {
 					gameData.distanceToDest = 0;
-					gameData.shipFlying = false;
+					gameData.currentLocation = new Planet(main, "Rigel 7");
 					this.main.addMsg("You have reached your destination!");
 					// todo - end?
 				}
+			}
+
+			// Any encouters?
+			if (Main.RND.nextInt(10) == 0) {
+				gameData.currentLocation = new AnotherShip(main);
 			}
 		} else {
 			gameData.shipSpeed = 0;
@@ -157,7 +181,7 @@ public class PlayersShipModule extends AbstractModule {
 		/*if (this.currentEvents.size() == 0) {
 			this.currentEvents.add(new EnemyShipEvent(main));
 		}*/
-		
+
 		gameData.recalcVisibleSquares();
 
 	}
@@ -203,6 +227,10 @@ public class PlayersShipModule extends AbstractModule {
 					if (ks != null && ks.getCharacter() != null) {
 						char c = ks.getCharacter();
 						switch (c) {
+						case '?':
+							this.main.setModule(new HelpConsole(main, this));
+							return false;
+							
 						case '1':
 						case '2':
 						case '3':
@@ -223,6 +251,10 @@ public class PlayersShipModule extends AbstractModule {
 						case 'd': // Drop
 							this.dropMenu();
 							return false;
+
+						case 'f': // Fire ships weapons
+							this.fireShipsWeapons();
+							return true;
 
 						case 'i': // Inventory
 							showInventory();
@@ -385,6 +417,33 @@ public class PlayersShipModule extends AbstractModule {
 		for (DrawableEntity de : main.gameData.currentUnit.equipment) {
 			main.addMsg(de.getName());
 		}
+	}
+
+
+	public void fireShipsWeapons() {
+		if (this.main.gameData.weaponTemp < 100) {
+			if (this.main.gameData.currentLocation != null) {
+				// Check next to console
+				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
+				if (sq != null) {
+					main.addMsg("You have fired at " + main.gameData.currentLocation.name);
+					this.main.gameData.weaponTemp += 5;
+					this.main.gameData.currentLocation.shot();
+					
+					// create bullets
+					for (Point p : main.gameData.weaponPoints) {
+						this.main.asciiEffects.add(new ShipLaser(main, p.x, p.y, 0, -1, p.x, 0));
+					}
+				} else {
+					main.addMsg("No console here.");
+				}
+			} else {
+				main.addMsg("There is nothing to shoot at");
+			}
+		} else {
+			main.addMsg("Weapons are too hot!");
+		}
+
 	}
 
 

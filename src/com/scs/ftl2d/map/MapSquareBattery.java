@@ -5,7 +5,7 @@ import java.awt.Color;
 import com.scs.ftl2d.Main;
 
 public class MapSquareBattery extends AbstractMapSquare {
-	
+
 	public MapSquareBattery(Main main, int code, int x, int y) {
 		super(main, code, x, y);
 	}
@@ -38,7 +38,7 @@ public class MapSquareBattery extends AbstractMapSquare {
 	public void process() {
 		super.process();
 
-			main.gameData.powerGainedPerTurn += (2f * this.getHealth() / 100);
+		main.gameData.powerGainedPerTurn += (2f * this.getHealth() / 100);
 	}
 
 

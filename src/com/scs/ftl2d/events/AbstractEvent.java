@@ -1,12 +1,14 @@
 package com.scs.ftl2d.events;
 
+import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Entity;
 
-public abstract class AbstractEvent extends Entity {
+public abstract class AbstractEvent implements IProcessable {
 
-	public AbstractEvent(Main main) {
-		super(main);
+	protected Main main;
+	
+	public AbstractEvent(Main _main) {
+		main = _main;
 	}
 
 	

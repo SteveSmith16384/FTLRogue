@@ -5,12 +5,12 @@ import java.awt.Point;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 
-public class Alien extends AbstractMob {
+public class PoliceMob extends AbstractMob {
 
 	private Point lastDir = new Point(1, 0);
 
-	public Alien(Main main, int _x, int _y) {
-		super(main, _x, _y, DrawableEntity.Z_UNIT, 'A', "Alien", AbstractMob.SIDE_ALIEN, 50, 50, false);
+	public PoliceMob(Main main) {
+		super(main, 0, 0, DrawableEntity.Z_UNIT, 'P', "Police", AbstractMob.SIDE_POLICE, 50, 50, false);
 	}
 
 

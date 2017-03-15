@@ -1,18 +1,22 @@
 package com.scs.ftl2d.asciieffects;
 
+import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.Entity;
 
-public abstract class AbstractAsciiEffect extends Entity {
+public abstract class AbstractAsciiEffect {
 
-	public AbstractAsciiEffect(Main main) {
-		super(main);
+	protected Main main;
+	public AbstractAsciiEffect nextEffect;
+
+	public AbstractAsciiEffect(Main _main) {
+		main = _main;
 	}
 
 
-	@Override
-	public void preProcess() {
-		
-	}
+	public abstract void drawChars(IGameView view);
+
+
+	public abstract boolean process();
 
 }

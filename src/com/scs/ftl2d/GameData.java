@@ -8,7 +8,12 @@ import java.util.List;
 import ssmith.astar.IAStarMapInterface;
 
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
+import com.scs.ftl2d.destinations.SpaceStation;
 import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.items.AbstractItem;
+import com.scs.ftl2d.entities.items.Gun;
+import com.scs.ftl2d.entities.items.Knife;
+import com.scs.ftl2d.entities.items.MediKit;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
@@ -19,11 +24,12 @@ import com.scs.ftl2d.missions.AbstractMission;
 public class GameData implements IAStarMapInterface {
 
 	public Main main;
-
+	private ILevelData mapdata;
+	
 	public AbstractMapSquare[][] map;
 	public List<Unit> units = new ArrayList<>();
 	public List<String> msgs = new ArrayList<>();
-	public AbstractSpaceLocation currentLocation = null;
+	public List<Point> weaponPoints = new ArrayList<>();
 
 	public Unit currentUnit;
 
@@ -33,7 +39,6 @@ public class GameData implements IAStarMapInterface {
 	public int turnNo = 0;
 	public int creds = 500;
 	public float oxygenLevel = 100f;
-	public float hullDamage = 0f;
 
 	public int shieldPowerPcent = 33;
 	public int weaponPowerPcent = 33;
@@ -45,15 +50,21 @@ public class GameData implements IAStarMapInterface {
 
 	public boolean shipLightsOn = true;
 
-	public boolean shipFlying = false;
+	public AbstractSpaceLocation currentLocation = null;
 	public float shipSpeed;
-	public float distanceToDest;
+	public float distanceToDest = 1000;
 
 	public float weaponTemp = 0;
 
-	public GameData(Main _main, ILevelData mapdata) throws IOException {
+	public GameData(Main _main, ILevelData _mapdata) throws IOException {
+		super();
+		
 		main = _main;
+		mapdata = _mapdata;
+	}
 
+	
+	public void init() throws IOException { // Can't put this in the constructor since it uses a reference to gamedata
 		map = new AbstractMapSquare[mapdata.getWidth()][mapdata.getHeight()];
 		for (int y=0 ; y<mapdata.getHeight() ; y++) {
 			for (int x=0 ; x<mapdata.getWidth() ; x++) {
@@ -69,9 +80,20 @@ public class GameData implements IAStarMapInterface {
 			units.add(unit);
 			map[p.x][p.y].addEntity(unit);
 		}
-
-		//recalcVisibleSquares();
-
+		
+		// Add random equipment
+		List<AbstractItem> itemsToAdd = new ArrayList<>();
+		itemsToAdd.add(new MediKit(main));
+		itemsToAdd.add(new MediKit(main));
+		itemsToAdd.add(new Knife(main));
+		itemsToAdd.add(new Knife(main));
+		itemsToAdd.add(new Gun(main));
+		itemsToAdd.add(new Gun(main));
+		for (AbstractItem item : itemsToAdd) {
+			this.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR).addEntity(item);
+		}
+		
+		this.currentLocation = new SpaceStation(main, "Station Zybex");
 	}
 
 
@@ -160,7 +182,7 @@ public class GameData implements IAStarMapInterface {
 	}
 
 
-	public AbstractMapSquare getMapSquare(int _type) {
+	public AbstractMapSquare getFirstMapSquare(int _type) {
 		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {
 				AbstractMapSquare sq = map[x][y];
@@ -170,6 +192,18 @@ public class GameData implements IAStarMapInterface {
 			}			
 		}
 		return null;
+	}
+
+
+	public AbstractMapSquare getRandomMapSquare(int _type) {
+		while (true) {
+			int x = Main.RND.nextInt(getWidth());
+			int y = Main.RND.nextInt(getHeight());
+			AbstractMapSquare sq = map[x][y];
+			if (sq.type == _type) {
+				return sq;
+			}
+		}
 	}
 
 
@@ -190,6 +224,38 @@ public class GameData implements IAStarMapInterface {
 
 		return list;
 	}
+
+
+	public void checkOxygen() {
+		// Set all as oxygen
+		for (int y=0 ; y<getHeight() ; y++) {
+			for (int x=0 ; x<getWidth() ; x++) {
+				AbstractMapSquare sq = map[x][y];
+				sq.hasOxygen = true;
+			}
+		}
+
+		List<AbstractMapSquare> waiting = new ArrayList<>();
+		List<AbstractMapSquare> processed = new ArrayList<>();
+
+		waiting.add(map[0][0]);
+
+		while (!waiting.isEmpty()) {
+			AbstractMapSquare sq = waiting.remove(0);
+			processed.add(sq);
+			sq.hasOxygen = false;
+
+			List<AbstractMapSquare> adj = getAdjacentSquares(sq.x, sq.y);
+			for (AbstractMapSquare asq : adj) {
+				if (asq.isSquareTraversable()) {
+					if (!processed.contains(asq) && !waiting.contains(asq)) {
+						waiting.add(asq);
+					}
+				}
+			}
+		}
+	}
+
 
 
 	@Override

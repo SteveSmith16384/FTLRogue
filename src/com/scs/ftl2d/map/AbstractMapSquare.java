@@ -1,6 +1,7 @@
 package com.scs.ftl2d.map;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import ssmith.util.SortedArrayList;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
@@ -29,16 +31,16 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_DOOR = 6;
 	public static final int MAP_WALL = 7;
 	public static final int MAP_REPLICATOR = 8;
-	public static final int MAP_CONTROL_PANEL = 9;
+	//public static final int MAP_WEAPON_CONSOLE = 9;
 	public static final int MAP_BATTERY = 10;
-	public static final int MAP_WEAPON_CONSOLE = 11;
+	public static final int MAP_CONTROL_PANEL = 11;
 	public static final int MAP_AIRLOCK = 12;
 	public static final int MAP_WEAPON_POINT = 13;
 
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
-	public boolean hasSmoke = false;
+	public boolean hasSmoke = false; // todo - use this
 	public boolean hasOxygen = true;
 	private float damage_pcent = 0;
 	public int x, y;
@@ -87,16 +89,12 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		case MAP_BATTERY:
 			return new MapSquareBattery(main, code, x, y);
 
-		case MAP_WEAPON_CONSOLE:
-			//return new MapSquareWeaponsConsole(main, code, x, y);
-			return new MapSquareFloor(main, code, x, y);
-
 		case MAP_AIRLOCK:
 			return new MapSquareAirlock(main, code, x, y);
 
 		case MAP_WEAPON_POINT:
-			// todo
-			return new MapSquareNothing(main, code, x, y);
+			main.gameData.weaponPoints.add(new Point(x, y));
+			return new MapSquareShipLaser(main, code, x, y);
 
 		default:
 			throw new RuntimeException("Unknown type: " + code);
@@ -114,6 +112,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		this.calcChars();
 	}
 
+	
 	public boolean isSquareTraversable() {
 		if (this.damage_pcent >= 100) {
 			return true;
@@ -122,8 +121,11 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		}
 	}
 	
+	
 	public boolean isSquareTransparent() {
-		if (this.damage_pcent >= 100) {
+		if (this.hasSmoke) {
+			return false;
+		} else if (this.damage_pcent >= 100) {
 			return true;
 		} else {
 			return this.isTransparent();
@@ -148,13 +150,9 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 	@Override
 	public void process() {
-		this.processItems();
-	}
-
-
-	protected void processItems() {
 		if (!this.hasOxygen) {
 			this.onFire = false;
+			this.hasSmoke = false;
 			// Kill any units
 			for (DrawableEntity de : this.entities) {
 				if (de instanceof AbstractMob) {
@@ -162,9 +160,16 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 					am.died("asphyxiation");
 				}
 			}
-			this.entities.clear();
+			//this.entities.clear();  Entities move around?
+		} else if (this.onFire) {
+			// todo - spread?
 		}
 
+		this.processItems();
+	}
+
+
+	protected void processItems() {
 		for (DrawableEntity de : this.entities) {
 			de.process();
 		}
@@ -185,6 +190,9 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	}
 
 	public TextCharacter getChar() {
+		if (Settings.DEBUG) {
+			return this.visibleChar;
+		}
 		if (this.visible == VisType.Hidden) {
 			return hiddenChar;//' ';
 		} else if (this.visible == VisType.Seen) { 
@@ -205,7 +213,13 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 		}
 		TextColor foregroundTC = new TextColor.RGB(foregroundCol.getRed(), foregroundCol.getGreen(), foregroundCol.getBlue());
 
+		// Seen
 		Color backgroundColSeen = this.getBackgroundColour().darker().darker();
+		if (this.onFire) {
+			backgroundColSeen = Color.orange;
+		} else if (this.hasSmoke) {
+			backgroundColSeen = Color.lightGray;
+		}
 		TextColor backgroundTC2 = new TextColor.RGB(backgroundColSeen.getRed(), backgroundColSeen.getGreen(), backgroundColSeen.getBlue());
 		seenChar = new TextCharacter(this.getFloorChar(), foregroundTC, backgroundTC2);
 
@@ -220,11 +234,15 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 				isSelectedUnit = true;
 			}
 		}
-		Color backgroundCol = this.getBackgroundColour();
-		if (isSelectedUnit) {
-			backgroundCol = Color.red;
+		Color backgroundColVisible = this.getBackgroundColour();
+		if (this.onFire) {
+			backgroundColVisible = Color.orange;
+		} else if (this.hasSmoke) {
+			backgroundColVisible = Color.lightGray;
+		} else if (isSelectedUnit) {
+			backgroundColVisible = Color.red;
 		}
-		TextColor backgroundTC = new TextColor.RGB(backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue());
+		TextColor backgroundTC = new TextColor.RGB(backgroundColVisible.getRed(), backgroundColVisible.getGreen(), backgroundColVisible.getBlue());
 		visibleChar = new TextCharacter(c, foregroundTC, backgroundTC);
 	}
 
@@ -240,9 +258,16 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 	
 	public void incDamage(float i) {
-		this.damage_pcent += 100;
+		this.damage_pcent += i;
 		if (this.damage_pcent > 100) {
 			this.damage_pcent = 100;
+			main.checkOxygenFlag = true;
+		} else {
+			// Start a fire?
+			int n = Main.RND.nextInt(100);
+			if (n < this.damage_pcent) {
+				this.onFire = true;
+			}
 		}
 	}
 

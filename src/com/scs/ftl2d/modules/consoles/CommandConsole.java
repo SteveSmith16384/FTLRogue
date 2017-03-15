@@ -25,7 +25,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		super.addLine("'shields <0-100>' to set shield level (currently " + (int)main.gameData.shieldPowerPcent + "%)");
 		super.addLine("'engines <0-100>' to set engine level (currently " + (int)main.gameData.enginePowerPcent + "%)");
 		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
-		if (!main.gameData.shipFlying) {
+		if (main.gameData.currentLocation != null) {
 			super.addLine("'launch' to launch the ship");
 		}
 		super.addLine("'airlock open/close' to open or close the main airlock");
@@ -77,9 +77,10 @@ public class CommandConsole extends AbstractConsoleModule {
 
 			case "launch":
 				super.clearLines();
-				if (!main.gameData.shipFlying) {
-					main.gameData.shipFlying = true;
+				if (main.gameData.currentLocation != null) {
 					super.addLine("The ship has been launched!");
+					main.gameData.currentLocation = null;
+					//main.gameData.distanceToDest = 1000;
 				} else {
 					super.addLine("The ship has already been launched.");
 				}
@@ -98,7 +99,7 @@ public class CommandConsole extends AbstractConsoleModule {
 					}			
 				}
 				super.addLine("The airlock is now " + (open?"open":"closed") + ".");
-				main.checkOxygen();
+				main.checkOxygenFlag = true;
 				break;
 
 			case "lights":

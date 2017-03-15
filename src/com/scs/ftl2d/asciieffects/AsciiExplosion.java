@@ -1,5 +1,6 @@
 package com.scs.ftl2d.asciieffects;
 
+import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 
 public class AsciiExplosion extends AbstractAsciiEffect {
@@ -9,8 +10,13 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 	}
 
 	@Override
-	public void process() {
-		// TODO Auto-generated method stub
+	public boolean process() {
+		return true;
+
+	}
+
+	@Override
+	public void drawChars(IGameView view) {
 		
 	}
 

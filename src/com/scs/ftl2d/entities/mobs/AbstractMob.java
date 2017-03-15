@@ -12,10 +12,13 @@ import ssmith.astar.AStar;
 import ssmith.astar.WayPoints;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.items.AbstractRangedWeapon;
+import com.scs.ftl2d.entities.items.Corpse;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.map.AbstractMapSquare.VisType;
 import com.scs.ftl2d.map.MapSquareDoor;
 
 public abstract class AbstractMob extends DrawableEntity {
@@ -29,6 +32,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public static final int SIDE_PLAYER = 0;
 	public static final int SIDE_ALIEN = 1;
 	public static final int SIDE_ENEMY_SHIP = 2;
+	public static final int SIDE_POLICE = 3;
 
 	public char theChar;
 	public String name;
@@ -63,16 +67,27 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	@Override
+	public void preProcess() {
+
+	}
+
+
+	@Override
 	public char getChar() {
 		return theChar;
 	}
 
 
-	public static String GetRandomName() throws IOException {
-		Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
-		List<String> lines = Files.readAllLines(path);
-		int i = Main.RND.nextInt(lines.size());
-		return "Captain " + lines.get(i);
+	public static String GetRandomName() {
+		try {
+			Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
+			List<String> lines = Files.readAllLines(path);
+			int i = Main.RND.nextInt(lines.size());
+			return "Captain " + lines.get(i);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return "Mr Bum.";
+		}
 	}
 
 
@@ -182,19 +197,15 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		this.genericAttack(attacker, att, "hit by");
 	}
-	
-	
+
+
 	protected void genericAttack(AbstractMob attacker, float attackVal, String verb) {
 		int tot = Math.max(1, attacker.meleeSkill - this.meleeSkill);
 		int dam = Main.RND.nextInt(tot)+1;
 		this.incHealth(-dam, this.getName());
-		/*
-	private void commonAttack(Creature other, int attack, String action, Object ... params) {
-		int amount = Math.max(0, attack - other.defenseValue());
-		amount = (int)(Math.random() * amount) + 1;
-		other.modifyHp(-amount, "Killed by a " + name);
-		 */
-		
+		if (Settings.DEBUG || this.getSq().visible == VisType.Visible) {
+			main.addMsg(this.name + " has been " + verb + " " + attacker.getName());
+		}
 	}
 
 
@@ -240,6 +251,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		for(DrawableEntity eq : this.equipment) {
 			super.getSq().addEntity(eq); // Drop the equipment
 		}
+		super.getSq().addEntity(new Corpse(main, this.getName()));
 		main.gameData.units.remove(this); // Remove from list if ours
 		if (main.gameData.units.isEmpty()) {
 			main.addMsg("GAME OVER!");
@@ -262,7 +274,7 @@ public abstract class AbstractMob extends DrawableEntity {
 						if (m.side != this.side) {
 							float dist = this.distanceTo(m); 
 							if (dist < closestDistance) {
-								if (this.canSee(m)) {
+								if (this.canSee(m)) { // This takes into account view distances
 									closest = m;
 									closestDistance = dist;
 								}

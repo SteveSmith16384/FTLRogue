@@ -12,17 +12,11 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class EnemyUnit extends AbstractMob {
 
-	public EnemyUnit(Main main, int _x, int _y) throws IOException {
-		super(main, _x, _y, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, true);
+	public EnemyUnit(Main main) {
+		super(main, -1, -1, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, true);
 
 		Gun gun = new Gun(main);
 		this.equipment.add(gun);
-
-	}
-
-
-	@Override
-	public void preProcess() {
 
 	}
 

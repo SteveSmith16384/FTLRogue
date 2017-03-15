@@ -63,6 +63,11 @@ public class DefaultView implements IGameView {
 				}
 			}			
 		}
+		
+		// Draw effects
+		for (AbstractAsciiEffect effect : effects) {
+			effect.drawChars(this);
+		}
 
 		// Draw stats
 		int y=0;
@@ -70,9 +75,9 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
+		//tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
-		if (gameData.shipFlying) {
+		if (gameData.currentLocation == null) {
 			y++;
 			tGraphics.putString(gameData.getWidth()+2, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
 			tGraphics.putString(gameData.getWidth()+2, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
@@ -116,6 +121,16 @@ public class DefaultView implements IGameView {
 		}
 		if (itemlist.length() > 0) {
 			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());
+		}
+		
+		// Location stats:
+		if (gameData.currentLocation != null) {
+			y++;
+			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.name);
+			List<String> stats = gameData.currentLocation.getStats();
+			for (String s : stats) {
+				tGraphics.putString(gameData.getWidth()+2, y++, s);
+			}
 		}
 
 
@@ -164,6 +179,12 @@ public class DefaultView implements IGameView {
 
 		screen.refresh();
 
+	}
+
+
+	@Override
+	public void drawCharacter(int x, int y, TextCharacter ch) {
+		screen.setCharacter(x, y, ch);		
 	}
 
 

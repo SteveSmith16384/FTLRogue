@@ -2,12 +2,12 @@ package com.scs.ftl2d;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
-import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.CSVMap;
 import com.scs.ftl2d.missions.TransportEggMission;
 import com.scs.ftl2d.modules.AbstractModule;
@@ -26,6 +26,7 @@ public class Main {
 	private AbstractModule currentModule;
 	public int gameStage = 0;
 	public List<AbstractAsciiEffect> asciiEffects = new ArrayList<>();
+	public boolean checkOxygenFlag = false;
 
 	public Main() throws IOException, InterruptedException {
 		createGameData();
@@ -40,6 +41,7 @@ public class Main {
 
 	private void createGameData() throws IOException {
 		gameData = new GameData(this, new CSVMap("map1.csv"));
+		gameData.init();
 		gameData.recalcVisibleSquares();
 		gameData.msgs.add("Welcome to " + Settings.TITLE);
 
@@ -56,7 +58,8 @@ public class Main {
 			this.addMsg("## DEBUG MODE ##");
 		}
 		this.currentModule.updateGame();
-		this.checkOxygen(); // Do once at start
+		this.gameData.checkOxygen(); // Do once at start
+		
 		while (!stopNow) {
 			try {
 				this.currentModule.drawScreen(view);
@@ -66,9 +69,14 @@ public class Main {
 					if (progress) {
 						this.currentModule.updateGame();
 					}
+					
 				} else {
-					for (AbstractAsciiEffect effect : this.asciiEffects) {
-						effect.process();
+					Iterator<AbstractAsciiEffect> it = asciiEffects.iterator();
+					while (it.hasNext()) {
+						AbstractAsciiEffect effect = it.next();
+						if (!effect.process()) {
+							it.remove();
+						}
 					}
 					Thread.sleep(200);
 				}
@@ -87,37 +95,6 @@ public class Main {
 	}
 
 
-	public void checkOxygen() {
-		// Set all as oxygen
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
-				sq.hasOxygen = true;
-			}
-		}
-
-		List<AbstractMapSquare> waiting = new ArrayList<>();
-		List<AbstractMapSquare> processed = new ArrayList<>();
-
-		waiting.add(gameData.map[0][0]);
-
-		while (!waiting.isEmpty()) {
-			AbstractMapSquare sq = waiting.remove(0);
-			processed.add(sq);
-			sq.hasOxygen = false;
-
-			List<AbstractMapSquare> adj = this.gameData.getAdjacentSquares(sq.x, sq.y);
-			for (AbstractMapSquare asq : adj) {
-				if (asq.isSquareTraversable()) {
-					if (!processed.contains(asq) && !waiting.contains(asq)) {
-						waiting.add(asq);
-					}
-				}
-			}
-		}
-	}
-
-
 	public AbstractModule getCurrentModule() {
 		return this.currentModule;
 	}
@@ -127,11 +104,6 @@ public class Main {
 		this.currentModule = mod;
 	}
 
-
-	public void fireShipsWeapons() {
-		this.gameData.weaponTemp += 5;
-		// todo
-	}
 
 	//--------------------------------------------
 

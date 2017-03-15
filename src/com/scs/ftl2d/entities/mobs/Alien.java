@@ -9,7 +9,7 @@ public class Alien extends AbstractMob {
 
 	private Point lastDir = new Point(1, 0);
 
-	public Alien(Main main, int _x, int _y) {
+	public Alien(Main main, int _x, int _y) { // todo - make stats random
 		super(main, _x, _y, DrawableEntity.Z_UNIT, 'A', "Alien", AbstractMob.SIDE_ALIEN, 50, 50, false);
 	}
 

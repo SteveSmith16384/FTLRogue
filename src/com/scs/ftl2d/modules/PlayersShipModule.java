@@ -321,7 +321,7 @@ public class PlayersShipModule extends AbstractModule {
 				case '8':
 				case '9':
 					int i = Integer.parseInt(c+"");
-					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i);
+					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i-1);
 					if (de.canBePickedUp()) {
 						main.gameData.currentUnit.pickup(de);
 						main.addMsg("You pick up the " + de.getName());
@@ -330,6 +330,7 @@ public class PlayersShipModule extends AbstractModule {
 					}
 				}
 				inputMode = InputMode.Normal;
+				return true;
 			} else if (inputMode == InputMode.Drop) {
 				char c = ks.getCharacter();
 				switch (c) {
@@ -343,11 +344,12 @@ public class PlayersShipModule extends AbstractModule {
 				case '8':
 				case '9':
 					int i = Integer.parseInt(c+"");
-					DrawableEntity de = main.gameData.currentUnit.equipment.get(i);
+					DrawableEntity de = main.gameData.currentUnit.equipment.get(i-1);
 					main.gameData.currentUnit.drop(de);
 					main.addMsg("You drop the " + de.getName());
 				}
 				inputMode = InputMode.Normal;
+				return true;
 			} else if (inputMode == InputMode.UseEquipment) {
 				char c = ks.getCharacter();
 				switch (c) {
@@ -361,7 +363,7 @@ public class PlayersShipModule extends AbstractModule {
 				case '8':
 				case '9':
 					int i = Integer.parseInt(c+"");
-					AbstractItem de = main.gameData.currentUnit.equipment.get(i);
+					AbstractItem de = main.gameData.currentUnit.equipment.get(i-1);
 					main.gameData.currentUnit.currentItem = de;
 					main.addMsg("You use the " + de.getName());
 				}
@@ -373,13 +375,13 @@ public class PlayersShipModule extends AbstractModule {
 			ex.printStackTrace();
 			inputMode = InputMode.Normal;
 		}
-		return false;
+		return true;
 	}
 
 
 	private void pickupMenu() {
 		main.addMsg("What to pick up?");
-		int i=0;
+		int i=1;
 		for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
 			if (de.canBePickedUp()) {
 				main.addMsg(i + ":" + de.getName());
@@ -392,7 +394,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	private void dropMenu() {
 		main.addMsg("What to drop?");
-		int i=0;
+		int i=1;
 		for (DrawableEntity de : main.gameData.currentUnit.equipment) {
 			main.addMsg(i + ":" + de.getName());
 			i++;
@@ -403,7 +405,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	private void useEquipmentMenu() {
 		main.addMsg("What to use?");
-		int i=0;
+		int i=1;
 		for (DrawableEntity de : main.gameData.currentUnit.equipment) {
 			main.addMsg(i + ":" + de.getName());
 			i++;

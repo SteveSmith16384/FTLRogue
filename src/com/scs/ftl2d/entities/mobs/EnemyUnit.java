@@ -12,7 +12,7 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class EnemyUnit extends AbstractMob {
 
-	public EnemyUnit(Main main) {
+	public EnemyUnit(Main main) { // todo - make stats random
 		super(main, -1, -1, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, true);
 
 		Gun gun = new Gun(main);

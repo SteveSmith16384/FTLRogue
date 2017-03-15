@@ -67,6 +67,9 @@ public class CommandConsole extends AbstractConsoleModule {
 				super.clearLines();
 				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
 				super.addLine("Engines now at " + main.gameData.enginePowerPcent);
+				if (main.gameData.currentLocation != null) {
+					// todo super.addLine("Engines now at " + main.gameData.enginePowerPcent);
+				}
 				break;
 
 			case "weapons":

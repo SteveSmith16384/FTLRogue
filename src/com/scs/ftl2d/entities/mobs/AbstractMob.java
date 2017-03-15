@@ -43,7 +43,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	protected boolean autoOpenDoors;
 
 	private WayPoints astarRoute;
-	private Point aStarDest;
+	//private Point aStarDest;
 
 
 	// Stats

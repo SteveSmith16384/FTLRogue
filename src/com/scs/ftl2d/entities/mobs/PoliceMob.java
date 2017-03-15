@@ -9,8 +9,8 @@ public class PoliceMob extends AbstractMob {
 
 	private Point lastDir = new Point(1, 0);
 
-	public PoliceMob(Main main) {
-		super(main, 0, 0, DrawableEntity.Z_UNIT, 'P', "Police", AbstractMob.SIDE_POLICE, 50, 50, false);
+	public PoliceMob(Main main) { // todo - make stats random
+		super(main, 0, 0, DrawableEntity.Z_UNIT, 'P', "Police", AbstractMob.SIDE_POLICE, 20, 5, true);
 	}
 
 

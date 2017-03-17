@@ -3,7 +3,7 @@ package com.scs.ftl2d.entities.items;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
 
-public class Corpse extends AbstractItem {
+public class Corpse extends AbstractItem {// AbstractItem {
 
 	private String name;
 	
@@ -21,6 +21,11 @@ public class Corpse extends AbstractItem {
 	@Override
 	public char getChar() {
 		return 'c';
+	}
+
+	@Override
+	public void process() {
+		
 	}
 
 }

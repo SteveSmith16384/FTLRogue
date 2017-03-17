@@ -51,5 +51,10 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 
 }

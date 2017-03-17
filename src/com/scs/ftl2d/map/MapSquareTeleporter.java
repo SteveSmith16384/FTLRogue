@@ -42,4 +42,9 @@ public class MapSquareTeleporter extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 }

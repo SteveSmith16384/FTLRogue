@@ -41,5 +41,10 @@ public class MapSquareReplicator extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return "Units stood next to a replicator will automatically eat food.";
+	}
+
 
 }

@@ -68,7 +68,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
 				super.addLine("Engines now at " + main.gameData.enginePowerPcent);
 				if (main.gameData.currentLocation != null) {
-					// todo super.addLine("Engines now at " + main.gameData.enginePowerPcent);
+					super.addLine("(Although not currently in use)");
 				}
 				break;
 

@@ -88,5 +88,14 @@ public class MapSquareDoor extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		if (this.isOpen) {
+			return "You can press 'c' to close the door.";
+		}
+		return null;
+		
+	}
+
 
 }

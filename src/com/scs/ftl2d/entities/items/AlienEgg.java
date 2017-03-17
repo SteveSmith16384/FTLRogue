@@ -4,8 +4,9 @@ import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Alien;
+import com.scs.ftl2d.entityinterfaces.ICarryable;
 
-public class AlienEgg extends AbstractItem {
+public class AlienEgg extends AbstractItem implements ICarryable {// AbstractItem {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
 
@@ -21,10 +22,10 @@ public class AlienEgg extends AbstractItem {
 	}
 
 
-	@Override
+	/*@Override
 	public void preProcess() {
 
-	}
+	}*/
 
 
 	@Override

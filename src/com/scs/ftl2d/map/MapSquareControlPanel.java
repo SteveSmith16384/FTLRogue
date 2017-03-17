@@ -40,4 +40,11 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 		return Color.gray;
 	}
 
+
+	@Override
+	public String getHelp() {
+		return "Press 'l' to log-in, or 'f' to fire ship's weapons";
+	}
+
+
 }

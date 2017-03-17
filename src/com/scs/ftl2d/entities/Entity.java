@@ -1,5 +1,5 @@
 package com.scs.ftl2d.entities;
-
+/*
 import com.scs.ftl2d.Main;
 
 public abstract class Entity {
@@ -17,3 +17,4 @@ public abstract class Entity {
 
 
 }
+*/

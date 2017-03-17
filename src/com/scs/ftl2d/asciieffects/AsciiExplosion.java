@@ -17,7 +17,7 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 
 	@Override
 	public void drawChars(IGameView view) {
-		
+		// todo
 	}
 
 }

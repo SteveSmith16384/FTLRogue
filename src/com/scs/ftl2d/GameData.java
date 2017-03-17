@@ -10,7 +10,6 @@ import ssmith.astar.IAStarMapInterface;
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.destinations.SpaceStation;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.items.Gun;
 import com.scs.ftl2d.entities.items.Knife;
 import com.scs.ftl2d.entities.items.MediKit;
@@ -82,14 +81,14 @@ public class GameData implements IAStarMapInterface {
 		}
 		
 		// Add random equipment
-		List<AbstractItem> itemsToAdd = new ArrayList<>();
+		List<DrawableEntity> itemsToAdd = new ArrayList<>();
 		itemsToAdd.add(new MediKit(main));
 		itemsToAdd.add(new MediKit(main));
 		itemsToAdd.add(new Knife(main));
 		itemsToAdd.add(new Knife(main));
 		itemsToAdd.add(new Gun(main));
 		itemsToAdd.add(new Gun(main));
-		for (AbstractItem item : itemsToAdd) {
+		for (DrawableEntity item : itemsToAdd) {
 			this.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR).addEntity(item);
 		}
 		

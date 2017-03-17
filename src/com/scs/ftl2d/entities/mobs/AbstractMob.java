@@ -15,8 +15,10 @@ import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.items.AbstractItem;
-import com.scs.ftl2d.entities.items.AbstractRangedWeapon;
 import com.scs.ftl2d.entities.items.Corpse;
+import com.scs.ftl2d.entityinterfaces.ICarryable;
+import com.scs.ftl2d.entityinterfaces.IMeleeWeapon;
+import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.AbstractMapSquare.VisType;
 import com.scs.ftl2d.map.MapSquareDoor;
@@ -37,9 +39,9 @@ public abstract class AbstractMob extends DrawableEntity {
 	public char theChar;
 	public String name;
 	public int side;
-	public List<AbstractItem> equipment = new ArrayList<>();
+	public List<ICarryable> equipment = new ArrayList<>();
 	public String manualRoute = "";
-	public AbstractItem currentItem;
+	public ICarryable currentItem;
 	protected boolean autoOpenDoors;
 
 	private WayPoints astarRoute;
@@ -66,10 +68,10 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	@Override
+	/*@Override
 	public void preProcess() {
 
-	}
+	}*/
 
 
 	@Override
@@ -162,15 +164,9 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public boolean checkForShooting() {
 		if (this.currentItem != null) {
-			AbstractItem i = (AbstractItem)this.currentItem;
-			if (i instanceof AbstractRangedWeapon) {
-				/*for (AbstractMob mob : AbstractMob.AllMobs) {
-					if (mob.side != this.side) {
-						if (this.canSee(mob)) {
-						}
-					}
-				}*/
-				AbstractRangedWeapon gun = (AbstractRangedWeapon)i;
+			//I i = (AbstractItem)this.currentItem;
+			if (currentItem instanceof IRangedWeapon) {
+				IRangedWeapon gun = (IRangedWeapon)currentItem;
 				AbstractMob enemy = getClosestVisibleEnemy();
 				if (enemy != null) {
 					float dist = this.distanceTo(enemy);
@@ -185,15 +181,16 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void shotBy(AbstractMob shooter, AbstractRangedWeapon gun) {
+	protected void shotBy(AbstractMob shooter, IRangedWeapon gun) {
 		this.genericAttack(shooter, gun.getShotValue(), "shot by");
 	}
 
 
 	public void meleeCombat(AbstractMob attacker) {
 		float att = attacker.meleeSkill;
-		if (attacker.currentItem != null) {
-			att += attacker.currentItem.getMeleeValue();
+		if (attacker.currentItem != null && attacker.currentItem instanceof IMeleeWeapon) {
+			IMeleeWeapon weapon = (IMeleeWeapon)attacker.currentItem;
+			att += weapon.getMeleeValue();
 		}
 		this.genericAttack(attacker, att, "hit by");
 	}
@@ -248,8 +245,8 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public void died(String reason) {
 		main.addMsg(this.getName() + " has died of " + reason);
-		for(DrawableEntity eq : this.equipment) {
-			super.getSq().addEntity(eq); // Drop the equipment
+		for(ICarryable eq : this.equipment) {
+			super.getSq().addEntity((DrawableEntity)eq); // Drop the equipment
 		}
 		super.getSq().addEntity(new Corpse(main, this.getName()));
 		main.gameData.units.remove(this); // Remove from list if ours
@@ -304,18 +301,20 @@ public abstract class AbstractMob extends DrawableEntity {
 	public abstract Point getAStarDest();
 
 
-	public void pickup(DrawableEntity de) {
+	public void pickup(ICarryable ic) {
+		DrawableEntity de = (DrawableEntity)ic;
 		main.gameData.currentUnit.getSq().removeEntity(de);
-		main.gameData.currentUnit.equipment.add((AbstractItem)de);
-		de.carriedBy = this;
+		main.gameData.currentUnit.equipment.add(ic);
+		ic.setCarriedBy(this);
 
 	}
 
 
-	public void drop(DrawableEntity de) {
+	public void drop(ICarryable ic) {
+		DrawableEntity de = (DrawableEntity)ic;
 		main.gameData.currentUnit.equipment.remove(de);
 		main.gameData.currentUnit.getSq().addEntity(de);
-		de.carriedBy = null;
+		ic.setNotCarried();
 
 	}
 
@@ -336,7 +335,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	protected boolean isUsingGun() {
-		return this.currentItem != null && this.currentItem instanceof AbstractRangedWeapon;
+		return this.currentItem != null && this.currentItem instanceof IRangedWeapon;
 	}
 
 

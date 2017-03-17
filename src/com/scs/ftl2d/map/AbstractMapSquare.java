@@ -11,13 +11,13 @@ import ssmith.util.SortedArrayList;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
+import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.Entity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
 
-public abstract class AbstractMapSquare extends Entity implements Comparator<DrawableEntity> {
+public abstract class AbstractMapSquare implements IProcessable, Comparator<DrawableEntity> {
 
 	public enum VisType {Hidden, Seen, Visible};
 
@@ -37,6 +37,7 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	public static final int MAP_AIRLOCK = 12;
 	public static final int MAP_WEAPON_POINT = 13;
 
+	public Main main;
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
@@ -103,8 +104,9 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 
 
 	public AbstractMapSquare(Main _main, int _code, int _x, int _y) {
-		super(_main);
+		super();
 
+		main = _main;
 		type = _code;
 		x = _x;
 		y = _y;
@@ -141,11 +143,13 @@ public abstract class AbstractMapSquare extends Entity implements Comparator<Dra
 	protected abstract Color getBackgroundColour();
 
 	public abstract String getName();
+	
+	public abstract String getHelp();
 
-	@Override
+	/*@Override
 	public void preProcess() {
 		
-	}
+	}*/
 
 
 	@Override

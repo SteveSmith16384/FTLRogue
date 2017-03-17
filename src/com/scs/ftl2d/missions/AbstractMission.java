@@ -12,6 +12,11 @@ public abstract class AbstractMission implements IProcessable {
 	}
 
 	
+	/*@Override
+	public void preProcess() {
+		
+	}*/
+	
 	public abstract String getDescription();
 	
 	public abstract int getReward();

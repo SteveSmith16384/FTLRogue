@@ -1,5 +1,5 @@
 package com.scs.ftl2d.entities.items;
-
+/*
 import com.scs.ftl2d.Main;
 
 public abstract class AbstractRangedWeapon extends AbstractItem {
@@ -20,3 +20,4 @@ public abstract class AbstractRangedWeapon extends AbstractItem {
 	
 	public abstract int getShotValue();
 }
+*/

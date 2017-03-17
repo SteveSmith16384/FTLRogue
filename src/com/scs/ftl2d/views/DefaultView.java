@@ -18,7 +18,6 @@ import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
@@ -26,8 +25,6 @@ public class DefaultView implements IGameView {
 
 	private Terminal terminal;
 	private Screen screen;
-
-	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
@@ -38,20 +35,20 @@ public class DefaultView implements IGameView {
 
 
 	@Override
-	public void drawPlayersShipScreen(GameData gameData, Unit currentUnit, List<AbstractAsciiEffect> effects) throws IOException {
+	public void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText) throws IOException {
 		screen.startScreen();
 		screen.clear();
 
 		TextGraphics tGraphics = screen.newTextGraphics();
 
 		// Draw map
-		seenSquares.clear();
+		//seenSquares.clear();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
 				screen.setCharacter(x, y, tc);
-				if (sq.visible == AbstractMapSquare.VisType.Visible) {
+				/*if (sq.visible == AbstractMapSquare.VisType.Visible) {
 					if (!seenSquares.containsKey(sq.getName())) {
 						seenSquares.put(sq.getName(), tc);
 					}
@@ -60,10 +57,10 @@ public class DefaultView implements IGameView {
 							seenSquares.put(sq.extraInfo, tc);
 						}
 					}
-				}
+				}*/
 			}			
 		}
-		
+
 		// Draw effects
 		for (AbstractAsciiEffect effect : effects) {
 			effect.drawChars(this);
@@ -81,9 +78,9 @@ public class DefaultView implements IGameView {
 			y++;
 			tGraphics.putString(gameData.getWidth()+2, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
 			tGraphics.putString(gameData.getWidth()+2, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
-			
+
 		}
-		
+
 		y++;
 		tGraphics.putString(gameData.getWidth()+2, y++, "POWER");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Total Power: " + (int)gameData.totalPower);
@@ -92,8 +89,8 @@ public class DefaultView implements IGameView {
 
 		// Draw mapsquares key
 		y++;
-		for (String tc : this.seenSquares.keySet()) {
-			tGraphics.setCharacter(gameData.getWidth()+2, y, this.seenSquares.get(tc));
+		for (String tc : seenSquares.keySet()) {
+			tGraphics.setCharacter(gameData.getWidth()+2, y, seenSquares.get(tc));
 			tGraphics.putString(gameData.getWidth()+4, y, tc);
 			y++;
 		}
@@ -103,7 +100,7 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "CREW");
 		for (Unit unit : gameData.units) {
 			StringBuilder str = new StringBuilder();
-			if (unit == currentUnit) {
+			if (unit == gameData.currentUnit) {
 				str.append("*");
 			}
 			str.append(unit.getName()).append(" ");
@@ -115,20 +112,29 @@ public class DefaultView implements IGameView {
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
 		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()){
-			if (de instanceof AbstractItem) {
-				itemlist.append(de.getName() + "; ");
-			}
+			//if (de instanceof AbstractItem) {
+			itemlist.append(de.getName() + "; ");
+			//}
 		}
 		if (itemlist.length() > 0) {
 			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());
 		}
-		
+
 		// Location stats:
 		if (gameData.currentLocation != null) {
 			y++;
 			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.name);
 			List<String> stats = gameData.currentLocation.getStats();
 			for (String s : stats) {
+				tGraphics.putString(gameData.getWidth()+2, y++, s);
+			}
+		}
+
+		// Help text
+		if (helpText.size() > 0) {
+			y++;
+			tGraphics.putString(gameData.getWidth()+2, y++, "HELP");
+			for (String s : helpText) {
 				tGraphics.putString(gameData.getWidth()+2, y++, s);
 			}
 		}

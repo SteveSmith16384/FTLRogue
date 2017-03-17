@@ -2,8 +2,10 @@ package com.scs.ftl2d.entities.items;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
+import com.scs.ftl2d.entities.mobs.AbstractMob;
+import com.scs.ftl2d.entityinterfaces.IMeleeWeapon;
 
-public class Knife extends AbstractItem {
+public class Knife extends AbstractItem implements IMeleeWeapon {// AbstractItem {
 
 	public Knife(Main main) {
 		super(main, -1, -1, DrawableEntity.Z_ITEM);
@@ -16,10 +18,10 @@ public class Knife extends AbstractItem {
 	}
 
 	
-	@Override
+	/*@Override
 	public void preProcess() {
 		
-	}
+	}*/
 
 
 	@Override
@@ -39,5 +41,6 @@ public class Knife extends AbstractItem {
 	public String getName() {
 		return "Knife";
 	}
+
 
 }

@@ -41,4 +41,9 @@ public class MapSquareWall extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 }

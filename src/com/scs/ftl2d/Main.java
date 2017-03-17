@@ -78,7 +78,7 @@ public class Main {
 							it.remove();
 						}
 					}
-					Thread.sleep(200);
+					Thread.sleep(100);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

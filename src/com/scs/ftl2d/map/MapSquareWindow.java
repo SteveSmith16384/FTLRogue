@@ -41,6 +41,11 @@ public class MapSquareWindow extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 
 
 }

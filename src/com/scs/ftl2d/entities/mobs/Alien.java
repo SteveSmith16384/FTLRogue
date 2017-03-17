@@ -14,10 +14,10 @@ public class Alien extends AbstractMob {
 	}
 
 
-	@Override
+	/*@Override
 	public void preProcess() {
 
-	}
+	}*/
 
 
 	@Override

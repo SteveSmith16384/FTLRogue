@@ -12,7 +12,11 @@ public abstract class AbstractEvent implements IProcessable {
 	}
 
 	
-	//public abstract void init();
+	/*@Override
+	public void preProcess() {
+		
+	}*/
+	
 
 
 }

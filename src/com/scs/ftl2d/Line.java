@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Line implements Iterable<Point> {
+public class Line extends ArrayList<Point> {//implements Iterable<Point> {
 
-	private List<Point> points;
+	//private List<Point> points;
+
+	private static final long serialVersionUID = 1L;
 
 	public Line(int x0, int y0, int x1, int y1) {
-		points = new ArrayList<Point>();
+		//points = new ArrayList<Point>();
 
 		int dx = Math.abs(x1-x0);
 		int dy = Math.abs(y1-y0);
@@ -20,7 +22,7 @@ public class Line implements Iterable<Point> {
 		int err = dx-dy;
 
 		while (true){
-			points.add(new Point(x0, y0));
+			add(new Point(x0, y0));
 
 			if (x0==x1 && y0==y1)
 				break;
@@ -38,7 +40,7 @@ public class Line implements Iterable<Point> {
 	}
 
 
-	public List<Point> getPoints() { 
+/*	public List<Point> getPoints() { 
 		return points; 
 	}
 
@@ -52,5 +54,8 @@ public class Line implements Iterable<Point> {
 	public Iterator<Point> iterator() {
 		return points.iterator();
 	}
+	
+	*/
+	
 
 }

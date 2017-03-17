@@ -54,4 +54,9 @@ public class MapSquareEngine extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 }

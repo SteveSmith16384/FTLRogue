@@ -44,6 +44,11 @@ public class MapSquareFloor extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 
 
 }

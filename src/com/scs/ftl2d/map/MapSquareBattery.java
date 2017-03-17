@@ -47,4 +47,10 @@ public class MapSquareBattery extends AbstractMapSquare {
 		return Color.blue;
 	}
 
+
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 }

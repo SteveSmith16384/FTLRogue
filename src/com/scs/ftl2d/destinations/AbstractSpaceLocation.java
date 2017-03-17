@@ -23,6 +23,11 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 	}
 	
 	
+	/*@Override
+	public void preProcess() {
+		
+	}*/
+	
 	public abstract void shot();
 	
 	public abstract List<String> getStats();

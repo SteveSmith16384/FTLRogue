@@ -40,5 +40,11 @@ public class MapSquareMediBay extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return "Units are automatically healed when stood next to a medibay.";
+	}
+
+
 
 }

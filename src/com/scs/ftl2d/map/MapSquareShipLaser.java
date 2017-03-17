@@ -35,4 +35,10 @@ public class MapSquareShipLaser extends AbstractMapSquare {
 		return "Ship Laser";
 	}
 
+
+	@Override
+	public String getHelp() {
+		return null;
+	}
+
 }

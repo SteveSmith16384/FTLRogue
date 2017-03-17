@@ -14,10 +14,10 @@ public class PoliceMob extends AbstractMob {
 	}
 
 
-	@Override
+	/*@Override
 	public void preProcess() {
 
-	}
+	}*/
 
 
 	@Override

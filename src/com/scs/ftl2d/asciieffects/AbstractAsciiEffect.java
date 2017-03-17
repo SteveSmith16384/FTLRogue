@@ -2,7 +2,6 @@ package com.scs.ftl2d.asciieffects;
 
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.entities.Entity;
 
 public abstract class AbstractAsciiEffect {
 

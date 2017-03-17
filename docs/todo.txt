@@ -19,8 +19,13 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Create ascii images from pngs
+DONE Give controls help based on what is nearby
+DONE Ratify "use", make current, shoot etc...
 AddWalls not working quite right
+
+Throw/shoot direction selector
+Show route when commanding a unit
+Improve input method for picking up
 Show stars moving when ship launched
 Don't add walls around airlock
 Say "no power"
@@ -41,6 +46,7 @@ Encounter empty hulk
 
 
 LATER
+Drums that explode
 All units can do all actions, but specialists are better
 Buy crewmembers
 Can board and take control of enemy ships
@@ -60,6 +66,7 @@ Send out mayday signal
 Receive mayday signal
 LATER Sleeping quarters
 LATER Fuel TODO - Determines ships range
+Create ascii images from pngs
 Choose where to fly to
 Self-destruct
 Board enemy ships

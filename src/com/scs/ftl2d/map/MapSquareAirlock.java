@@ -61,4 +61,10 @@ public class MapSquareAirlock extends AbstractMapSquare {
 	}
 
 
+	@Override
+	public String getHelp() {
+		return "Airlocks can only be opened using the command console.";
+	}
+
+
 }

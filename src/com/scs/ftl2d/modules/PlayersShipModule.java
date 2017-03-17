@@ -9,21 +9,25 @@ import java.util.Map;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.ShipLaser;
-import com.scs.ftl2d.destinations.AnotherShip;
+import com.scs.ftl2d.destinations.EnemyShip;
 import com.scs.ftl2d.destinations.Planet;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IHelpIfCarried;
 import com.scs.ftl2d.events.AbstractEvent;
+import com.scs.ftl2d.events.MeteorStorm;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareControlPanel;
 import com.scs.ftl2d.missions.AbstractMission;
-import com.scs.ftl2d.modules.consoles.HelpConsole;
+import com.scs.ftl2d.modules.inputmodes.ChangeItemInputHandler;
+import com.scs.ftl2d.modules.inputmodes.DirectControlInputHandler;
+import com.scs.ftl2d.modules.inputmodes.DropItemInputHandler;
+import com.scs.ftl2d.modules.inputmodes.IInputHander;
+import com.scs.ftl2d.modules.inputmodes.PickupItemInputHandler;
 /*
 
 CONTROLS:
@@ -38,13 +42,13 @@ g - goto LATER
 h - Change current item
 i - inventory
 l - login to console
-m - TEST move
+m - TEST move to
 n - Nothing
 o - open door
 p - Pick up
 s - shoot/select (use current item) TODO
 t - throw TODO
-u - Use, i.e. change to current item
+u - Use, e.g. prime grenade
 w - wear LATER
 
 ASCII CODES
@@ -76,12 +80,17 @@ Foreground colour shows damage (white -> grey)
  */
 public class PlayersShipModule extends AbstractModule {
 
-	public enum InputMode {Normal, DirectionalMovement, Pickup, Drop, ChangeCurrentItem, SelectShotTarget, SelectThrowTarget}
+	//public enum InputMode {Normal, SelectDestination, Pickup, Drop, ChangeCurrentItem, SelectShotTarget, SelectThrowTarget}
 
-	private InputMode inputMode = InputMode.Normal;
+	public IInputHander inputHandler;
+	private DirectControlInputHandler directControlIH;
+	//private InputMode inputMode = InputMode.Normal;
 
 	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 	private List<String> contextSensitiveHelpText = new ArrayList<>();
+
+	public Point selectedpoint; // For choosing shooting dest etc...
+	public List<Point> route;
 
 	public PlayersShipModule(Main main, AbstractModule prev) {
 		super(main, prev);
@@ -89,13 +98,17 @@ public class PlayersShipModule extends AbstractModule {
 		if (main.gameData.currentUnit == null) {
 			this.selectUnit(0);
 		}
+		
+		directControlIH = new DirectControlInputHandler(main, this);
+		
+		restoreDirectControlIH();
 	}
 
 
 	@Override
 	public void updateGame() {
 		contextSensitiveHelpText.clear();
-		
+
 		GameData gameData = this.main.gameData;
 		gameData.turnNo++;
 
@@ -109,7 +122,7 @@ public class PlayersShipModule extends AbstractModule {
 		gameData.powerGainedPerTurn= 0;
 		gameData.powerUsedPerTurn = 0;
 
-		// Refresh items in each square
+		// Refresh items in each square - todo - does this need doing?
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
@@ -173,7 +186,7 @@ public class PlayersShipModule extends AbstractModule {
 				this.contextSensitiveHelpText.add(help.getHelpIfCarried());
 			}
 		}
-		
+
 		// Help based on adjacent mapsquares
 		List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.main.gameData.currentUnit.x,  this.main.gameData.currentUnit.y);
 		for (AbstractMapSquare sq : squares) {
@@ -182,11 +195,11 @@ public class PlayersShipModule extends AbstractModule {
 				this.contextSensitiveHelpText.add(help);
 			}
 		}
-		
-		
-		
+
+
+
 		// ALL NON_MAP STUFF HERE
-		
+
 		// Weapons
 		gameData.weaponTemp -= 1;
 		if (gameData.weaponTemp < 0) {
@@ -209,7 +222,7 @@ public class PlayersShipModule extends AbstractModule {
 			gameData.totalPower = 100;
 		}
 
-		
+
 		// Flying towards destination?
 		if (gameData.currentLocation == null) {
 			// Adjust ship speed by engine power
@@ -225,8 +238,14 @@ public class PlayersShipModule extends AbstractModule {
 			}
 
 			// Any encounters?
-			if (Main.RND.nextInt(10) == 0) {
-				gameData.currentLocation = new AnotherShip(main);
+			int i = Main.RND.nextInt(20);
+			switch (i) {
+			case 0:
+				gameData.currentLocation = new EnemyShip(main);
+				break;
+			case 1:
+				gameData.currentEvents.add(new MeteorStorm(main));
+				break;
 			}
 		} else {
 			gameData.shipSpeed = 0;
@@ -235,7 +254,7 @@ public class PlayersShipModule extends AbstractModule {
 	}
 
 
-	private boolean selectUnit(int i) {
+	public boolean selectUnit(int i) {
 		if (i < main.gameData.units.size()) {
 			main.gameData.currentUnit = main.gameData.units.get(i);
 			main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
@@ -248,7 +267,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawPlayersShipScreen(main.gameData, seenSquares, main.asciiEffects, contextSensitiveHelpText);
+		view.drawPlayersShipScreen(main.gameData, seenSquares, main.asciiEffects, contextSensitiveHelpText, this.route);
 
 	}
 
@@ -258,214 +277,51 @@ public class PlayersShipModule extends AbstractModule {
 	 */
 	public boolean processInput(KeyStroke ks) {
 		try {
-			if (inputMode == InputMode.Normal) {
-				if (ks.getKeyType() == KeyType.ArrowUp) {
-					main.gameData.currentUnit.attemptMove(0, -1);
-					return true;
-				} else if (ks.getKeyType() == KeyType.ArrowDown) {
-					main.gameData.currentUnit.attemptMove(0, 1);
-					return true;
-				} else if (ks.getKeyType() == KeyType.ArrowLeft) {
-					main.gameData.currentUnit.attemptMove(-1, 0);
-					return true;
-				} else if (ks.getKeyType() == KeyType.ArrowRight) {
-					main.gameData.currentUnit.attemptMove(1, 0);
-					return true;
-				} else {
-					if (ks != null && ks.getCharacter() != null) {
-						char c = ks.getCharacter();
-						switch (c) {
-						case '?':
-							this.main.setModule(new HelpConsole(main, this));
-							return false;
-							
-						case '1':
-						case '2':
-						case '3':
-						case '4':
-						case '5':
-						case '6':
-						case '7':
-						case '8':
-						case '9':
-							int i = Integer.parseInt(c+"");
-							this.selectUnit(i-1);
-							return false;
-
-						case 'c':
-							main.gameData.currentUnit.closeDoor();
-							return true;
-
-						case 'd': // Drop
-							this.dropMenu();
-							return false;
-
-						case 'f': // Fire ships weapons
-							this.fireShipsWeapons();
-							return true;
-
-						case 'h': // Change current item
-							this.changeCurrentItem();
-							return false;
-
-						case 'i': // Inventory
-							showInventory();
-							return false;
-
-						case 'l':
-							main.gameData.currentUnit.useConsole();
-							return true;
-
-						case 'm':
-							inputMode = InputMode.DirectionalMovement;
-							main.addMsg("Enter directions.  Press X to return to normal mode");
-							return false;
-
-						case 'n':
-						{
-							main.addMsg("You do nothing");
-							return true;
-						}
-
-						case 'o':
-							main.gameData.currentUnit.openDoor();
-							return true;
-
-						case 'p': // Pickup
-						{
-							pickupMenu();
-							return false;
-						}
-
-						case 's':
-							this.main.gameData.currentUnit.checkForShooting();
-							return true;
-
-						case 'w':
-							return true;
-
-						default:
-							main.addMsg("Unknown key " + c);
-						}
-					}
-				}
-			} else if (inputMode == InputMode.DirectionalMovement) {
-				char c = ks.getCharacter();
-				if (c != 'x') {
-					main.gameData.currentUnit.manualRoute = main.gameData.currentUnit.manualRoute + c;
-				} else {
-					inputMode = InputMode.Normal;
-				}
-			} else if (inputMode == InputMode.Pickup) {
-				char c = ks.getCharacter();
-				switch (c) {
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					int i = Integer.parseInt(c+"");
-					DrawableEntity de = main.gameData.currentUnit.getSq().getEntity(i-1);
-					if (de instanceof ICarryable) {
-						main.gameData.currentUnit.pickup((ICarryable)de);
-						main.addMsg("You pick up the " + de.getName());
-					} else {
-						main.addMsg("You can't pick up the " + de.getName());
-					}
-					break;
-				case 'x':
-					break;
-				}
-				inputMode = InputMode.Normal;
-				return true;
-			} else if (inputMode == InputMode.Drop) {
-				char c = ks.getCharacter();
-				switch (c) {
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					int i = Integer.parseInt(c+"");
-					ICarryable de = main.gameData.currentUnit.equipment.get(i-1);
-					main.gameData.currentUnit.drop(de);
-					main.addMsg("You drop the " + de.getName());
-				}
-				inputMode = InputMode.Normal;
-				return true;
-			} else if (inputMode == InputMode.ChangeCurrentItem) {
-				char c = ks.getCharacter();
-				switch (c) {
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					int i = Integer.parseInt(c+"");
-					ICarryable de = main.gameData.currentUnit.equipment.get(i-1);
-					main.gameData.currentUnit.currentItem = de;
-					main.addMsg("You use the " + ((DrawableEntity)de).getName());
-				}
-				inputMode = InputMode.Normal;
-			} else {
-				throw new RuntimeException("Unknown input mode: " + inputMode);
-			}
+			this.inputHandler.processInput(ks);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			inputMode = InputMode.Normal;
+			this.restoreDirectControlIH();
 		}
 		return true;
 	}
 
 
-	private void pickupMenu() {
+	public void pickupMenu() {
 		main.addMsg("What to pick up?");
 		int i=1;
 		for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
 			if (de instanceof ICarryable) {
 				main.addMsg(i + ":" + de.getName());
-				i++;
 			}
+			i++;
 		}
-		this.inputMode = InputMode.Pickup;
+		this.inputHandler = new PickupItemInputHandler(main, this);
 	}
 
 
-	private void dropMenu() {
+	public void dropMenu() {
 		main.addMsg("What to drop?");
 		int i=1;
 		for (ICarryable de : main.gameData.currentUnit.equipment) {
 			main.addMsg(i + ":" + de.getName());
-			i++;
 		}
-		this.inputMode = InputMode.Drop;
+		i++;
+		this.inputHandler = new DropItemInputHandler(main, this);
 	}
 
 
-	private void changeCurrentItem() {
+	public void changeCurrentItem() {
 		main.addMsg("What to use?");
 		int i=1;
 		for (ICarryable de : main.gameData.currentUnit.equipment) {
 			main.addMsg(i + ":" + de.getName());
 			i++;
 		}
-		this.inputMode = InputMode.ChangeCurrentItem;
+		this.inputHandler = new ChangeItemInputHandler(main, this);
 	}
 
 
-	private void showInventory() {
+	public void showInventory() {
 		main.addMsg(main.gameData.currentUnit.getName() + " is carrying");
 		for (ICarryable de : main.gameData.currentUnit.equipment) {
 			main.addMsg(de.getName());
@@ -482,7 +338,7 @@ public class PlayersShipModule extends AbstractModule {
 					main.addMsg("You have fired at " + main.gameData.currentLocation.name);
 					this.main.gameData.weaponTemp += 5;
 					this.main.gameData.currentLocation.shot();
-					
+
 					// create bullets
 					for (Point p : main.gameData.weaponPoints) {
 						this.main.asciiEffects.add(new ShipLaser(main, p.x, p.y, 0, -1, p.x, 0));
@@ -500,4 +356,7 @@ public class PlayersShipModule extends AbstractModule {
 	}
 
 
+	public void restoreDirectControlIH() {
+		this.inputHandler = this.directControlIH;
+	}
 }

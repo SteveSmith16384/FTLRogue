@@ -17,7 +17,7 @@ import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
 
-public abstract class AbstractMapSquare implements IProcessable, Comparator<DrawableEntity> {
+public abstract class AbstractMapSquare implements IProcessable {//, Comparator<DrawableEntity> {
 
 	public enum VisType {Hidden, Seen, Visible};
 
@@ -51,9 +51,9 @@ public abstract class AbstractMapSquare implements IProcessable, Comparator<Draw
 	private TextCharacter seenChar; 
 	private TextCharacter visibleChar; 
 
-	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();//10, this);
-	private List<DrawableEntity> entitiesToAdd = new ArrayList<DrawableEntity>();
-	private List<DrawableEntity> entitiesToRemove = new ArrayList<DrawableEntity>();
+	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();
+	private List<DrawableEntity> entitiesToAdd = new ArrayList<DrawableEntity>(); // todo - use a global shared list
+	private List<DrawableEntity> entitiesToRemove = new ArrayList<DrawableEntity>(); // todo - use a global shared list
 
 	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {
@@ -127,8 +127,8 @@ public abstract class AbstractMapSquare implements IProcessable, Comparator<Draw
 	public boolean isSquareTransparent() {
 		if (this.hasSmoke) {
 			return false;
-		} else if (this.damage_pcent >= 100) {
-			return true;
+		/*} else if (this.damage_pcent >= 100) {
+			return true;*/
 		} else {
 			return this.isTransparent();
 		}
@@ -185,7 +185,7 @@ public abstract class AbstractMapSquare implements IProcessable, Comparator<Draw
 		boolean calcChar = this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
 		this.entities.removeAll(this.entitiesToRemove);
 		entitiesToRemove.clear();
-		this.entities.addAll(this.entitiesToAdd);
+		this.entities.addAllWithSort(this.entitiesToAdd);
 		entitiesToAdd.clear();
 		
 		if (calcChar) {
@@ -264,8 +264,9 @@ public abstract class AbstractMapSquare implements IProcessable, Comparator<Draw
 	public void incDamage(float i) {
 		this.damage_pcent += i;
 		if (this.damage_pcent > 100) {
-			this.damage_pcent = 100;
+			//this.damage_pcent = 100;
 			main.checkOxygenFlag = true;
+			this.main.gameData.map[x][y] = new MapSquareFloor(main, MAP_FLOOR, x, y);
 		} else {
 			// Start a fire?
 			int n = Main.RND.nextInt(100);
@@ -276,11 +277,11 @@ public abstract class AbstractMapSquare implements IProcessable, Comparator<Draw
 	}
 
 	
-	@Override
+/*	@Override
 	public int compare(DrawableEntity de1, DrawableEntity de2) {
 		return de2.z - de1.z;
 	}
-
+*/
 
 	public void addEntity(DrawableEntity de) {
 		de.x = x;

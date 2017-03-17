@@ -5,8 +5,9 @@ import com.scs.ftl2d.Settings;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Alien;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
+import com.scs.ftl2d.entityinterfaces.IExamineable;
 
-public class AlienEgg extends AbstractItem implements ICarryable {// AbstractItem {
+public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {// AbstractItem {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
 
@@ -45,6 +46,12 @@ public class AlienEgg extends AbstractItem implements ICarryable {// AbstractIte
 	@Override
 	public String getName() {
 		return "Egg";
+	}
+
+
+	@Override
+	public String getExamineText() {
+		return "It is large and green.";
 	}
 
 }

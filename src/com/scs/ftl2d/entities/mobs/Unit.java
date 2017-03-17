@@ -85,10 +85,11 @@ public class Unit extends AbstractMob {
 
 		// Moving
 		if (status == Status.Waiting && this != this.main.gameData.currentUnit) {
-			if (manualRoute.length() > 0) {
+			/*if (manualRoute.length() > 0) {
 				processManualRoute(manualRoute.substring(0, 1));
 				manualRoute = manualRoute.substring(1);
-			}				
+			}*/
+			this.moveAStar();
 		}
 
 
@@ -106,7 +107,7 @@ public class Unit extends AbstractMob {
 	}
 
 
-	private void processManualRoute(String dir) {
+	/*private void processManualRoute(String dir) {
 		switch (dir.toLowerCase()) {
 		case "u":
 		case "n":
@@ -128,7 +129,7 @@ public class Unit extends AbstractMob {
 			main.addMsg("Unknown movement char: " + dir);
 		}
 	}
-
+*/
 
 	private void incFood(float f) {
 		this.food += f;

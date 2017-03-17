@@ -40,16 +40,13 @@ public abstract class AbstractMob extends DrawableEntity {
 	public String name;
 	public int side;
 	public List<ICarryable> equipment = new ArrayList<>();
-	public String manualRoute = "";
 	public ICarryable currentItem;
 	protected boolean autoOpenDoors;
 
-	private WayPoints astarRoute;
-	//private Point aStarDest;
-
+	public List<Point> astarRoute;
 
 	// Stats
-	public float health = 100f;
+	public float health, maxHealth;
 	public int meleeSkill;
 
 	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _combat, boolean _autoOpenDoors) {
@@ -60,6 +57,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		side = _side;
 
 		health = hlth;
+		maxHealth = health;
 		meleeSkill = _combat;
 
 		autoOpenDoors = _autoOpenDoors;
@@ -104,7 +102,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void incHealth(float f, String reason) {
+	public void incHealth(float f, String reason) {
 		this.health += f;
 		if (f > 0) {
 			main.addMsg(this.getName() + " is healed by " + (int)f);

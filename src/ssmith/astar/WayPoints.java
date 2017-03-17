@@ -3,10 +3,6 @@ package ssmith.astar;
 import java.awt.Point;
 import java.util.ArrayList;
 
-/**
- * @author stephen smith
- *
- */
 public class WayPoints extends ArrayList<Point> {
 
 	private static final long serialVersionUID = 1L;

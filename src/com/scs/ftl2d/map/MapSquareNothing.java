@@ -13,7 +13,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 	public MapSquareNothing(Main main, int code, int x, int y) {
 		super(main, code, x, y);
 		
-		int i = Main.RND.nextInt(40);
+		/*int i = Main.RND.nextInt(40);
 		switch (i) {
 		case 0: 
 			theChar = '.';
@@ -24,7 +24,8 @@ public class MapSquareNothing extends AbstractMapSquare {
 		default: 
 			theChar = ' ';
 			break;
-		}
+		}*/
+		theChar = ' ';
 		calcChars();
 		
 		this.hasOxygen = false;
@@ -39,7 +40,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 	@Override
 	public boolean isTraversable() {
-		return false;
+		return true;
 	}
 
 

@@ -19,21 +19,16 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-DONE Give controls help based on what is nearby
-DONE Ratify "use", make current, shoot etc...
-AddWalls not working quite right
-
-Throw/shoot direction selector
-Show route when commanding a unit
-Improve input method for picking up
-Show stars moving when ship launched
+Show "alert!  meteror storm!"
+After setting engines etc, show new power diff
+Meteor storm causes more damage if moving fast
+DONE Show stars moving when ship launched
 Don't add walls around airlock
+Don't iterate over the whole map?
+Improve input method for picking up
 Say "no power"
-	Walls may be destroyed causing oxygen loss
 Doors not open if vacuum
-Put items on map
-Engines explode when damaged 100%
-
+Make stats random
 
 EVENTS
 Enemy ship off starboard bow
@@ -46,6 +41,7 @@ Encounter empty hulk
 
 
 LATER
+Mobs pick up weapons if better than what they have
 Drums that explode
 All units can do all actions, but specialists are better
 Buy crewmembers
@@ -54,6 +50,7 @@ Scroll map
 Stock up on fuel at spacestation
 loadResource instead of directly
 Have background stories for units
+Player can choose where installations go
 LATER Engines leak coolant if no power
 Mech-suit
 LATER Units wear spacesuit to go into non-oxygen areas
@@ -72,6 +69,7 @@ Self-destruct
 Board enemy ships
 Dungeon gen
 grenades
+Engines explode when damaged 100%
 Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon

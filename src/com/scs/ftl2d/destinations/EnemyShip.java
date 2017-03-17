@@ -7,9 +7,9 @@ import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.ShipLaser;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
-public class AnotherShip extends AbstractSpaceLocation {
+public class EnemyShip extends AbstractSpaceLocation {
 
-	public AnotherShip(Main main) {
+	public EnemyShip(Main main) {
 		super(main, "Enemy Ship");
 
 		main.addMsg("An enemy ship has appeared!");
@@ -30,23 +30,26 @@ public class AnotherShip extends AbstractSpaceLocation {
 			} if (timer == 11) { // Hail
 				main.addMsg("\"But will if we must!\"");
 			} else if (timer > 20) { // Attack
+				if (Main.RND.nextInt(8) == 0) {
 				this.attackPlayer();
+				}
 			}
 		} else {
 			this.attackPlayer();
 		}
 	}
+	
 
 	private void attackPlayer() {
 		// Todo - If player damaged, teleport aboard
 		
-		// Shoot laser
+		// Shoot laser - todo - choose two random points
 		int x = Main.RND.nextInt(main.gameData.getMapWidth());
 		int y = 0;
 		while (y < main.gameData.getMapHeight()) {
 			AbstractMapSquare sq = main.gameData.map[x][y];
-			sq.incDamage(-10);
 			if (sq.isSquareTraversable() == false) {
+				sq.incDamage(10);
 				break;
 			}
 			y++;

@@ -1,7 +1,8 @@
 package com.scs.ftl2d.views;
 
+import java.awt.Point;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
+import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Unit;
@@ -23,24 +25,39 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class DefaultView implements IGameView {
 
+	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
+	private static final TextCharacter STAR_CHAR = new TextCharacter('*', TextColor.ANSI.WHITE, TextColor.ANSI.BLACK);
+
 	private Terminal terminal;
 	private Screen screen;
+
+	private List<Point> stars;// = new ArrayList<>();
 
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
 		fac.setInitialTerminalSize(new TerminalSize(70, 50));
 		terminal = fac.createTerminal();
 		screen = new TerminalScreen(terminal);
+
 	}
 
 
 	@Override
-	public void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText) throws IOException {
+	public void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route) throws IOException {
+		if (stars == null) {
+			createStars(gameData);
+		}
+
 		screen.startScreen();
 		screen.clear();
 
 		TextGraphics tGraphics = screen.newTextGraphics();
 
+		if (gameData.shipSpeed > 0) {
+			this.moveStars(gameData);
+		}
+		drawStars(screen);
+		
 		// Draw map
 		//seenSquares.clear();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
@@ -61,6 +78,13 @@ public class DefaultView implements IGameView {
 			}			
 		}
 
+		// Draw route
+		if (route != null) {
+			for (Point p : route) {
+				screen.setCharacter(p.x, p.y, ROUTE_CHAR); // todo-show diff char for end dest
+			}
+		}
+
 		// Draw effects
 		for (AbstractAsciiEffect effect : effects) {
 			effect.drawChars(this);
@@ -72,13 +96,11 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
-		//tGraphics.putString(gameData.getWidth()+2, y++, "Hull Dmg: " + (int)gameData.hullDamage + "%");
 
 		if (gameData.currentLocation == null) {
 			y++;
 			tGraphics.putString(gameData.getWidth()+2, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
 			tGraphics.putString(gameData.getWidth()+2, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
-
 		}
 
 		y++;
@@ -194,5 +216,26 @@ public class DefaultView implements IGameView {
 	}
 
 
+	private void createStars(GameData gameData) {
+		stars = new ArrayList<>();
+		for (int i=0 ; i<20 ; i++) {
+			int x = Main.RND.nextInt(gameData.getMapWidth());
+			int y = Main.RND.nextInt(gameData.getMapHeight());
+			this.stars.add(new Point(x, y));
+		}
+	}
 
+
+	private void moveStars(GameData gameData) {
+		for (Point p : stars) {
+			p.y++;
+		}
+	}
+
+
+	private void drawStars(Screen screen) {
+		for (Point p : stars) {
+			screen.setCharacter(p.x,  p.y, STAR_CHAR);
+		}
+	}
 }

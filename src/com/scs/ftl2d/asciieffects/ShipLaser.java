@@ -25,16 +25,16 @@ public class ShipLaser extends AbstractAsciiEffect {
 
 	@Override
 	public boolean process() {
+		if (current.x == end.x && current.y == end.y) {
+			return false;
+		}
+		
 		current.x += dir.x;
 		current.y += dir.y;
 		
 		if (this.current.x < 0 || this.current.x > main.gameData.getWidth() || this.current.y < 0 || this.current.y > main.gameData.getHeight()) {
 			return false;
 		}
-		if (current.x == end.x && current.y == end.y) {
-			return false;
-		}
-		
 		return true;
 	}
 

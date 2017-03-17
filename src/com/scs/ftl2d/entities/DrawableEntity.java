@@ -5,12 +5,11 @@ import java.awt.Point;
 import com.scs.ftl2d.Line;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
-import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 
-public abstract class DrawableEntity {//extends Entity {
+public abstract class DrawableEntity implements Comparable{//extends Entity {
 
 	// Z levels
 	public static final int Z_UNIT = 10;
@@ -29,7 +28,7 @@ public abstract class DrawableEntity {//extends Entity {
 		z = _z;
 	}
 
-	//todo float getWeight();
+	//float getWeight();
 
 	//public abstract void preProcess();
 
@@ -91,6 +90,16 @@ public abstract class DrawableEntity {//extends Entity {
 
 	public void remove() {
 		this.getSq().removeEntity(this); // Remove us
+	}
+
+
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof DrawableEntity) {
+			DrawableEntity de = (DrawableEntity)o;
+			return de.z - this.z;
+		}
+		return 0;
 	}
 
 }

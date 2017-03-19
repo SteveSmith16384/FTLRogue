@@ -32,6 +32,7 @@ public class SelectDestinationInputHandler extends AbstractSelectTargetInputHand
 		this.main.gameData.currentUnit.astarRoute = shipModule.route;
 		shipModule.restoreDirectControlIH();
 		shipModule.route = null;
+		main.addMsg("Destination selected");
 		
 	}
 

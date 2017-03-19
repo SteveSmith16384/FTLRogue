@@ -286,10 +286,12 @@ public abstract class AbstractMob extends DrawableEntity {
 	protected boolean moveAStar() {
 		if (this.astarRoute == null || this.astarRoute.isEmpty()) {
 			Point dest = this.getAStarDest();
+			if (dest != null) {
 			AStar astar = new AStar(this.main.gameData);
 			astar.findPath(x, y, dest.x, dest.y, false);
 			if (astar.wasSuccessful()) {
 				this.astarRoute = astar.getRoute();
+			}
 			}
 		}
 		return true;

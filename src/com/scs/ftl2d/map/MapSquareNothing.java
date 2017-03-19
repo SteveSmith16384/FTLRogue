@@ -52,10 +52,11 @@ public class MapSquareNothing extends AbstractMapSquare {
 
 	@Override
 	public char getFloorChar() {
-		if ((int)theChar == 0) { // Not set yet
+		/*if ((int)theChar == 0) { // Not set yet
 			return ' ';
 		}
-		return theChar;
+		return theChar;*/
+		return ' ';
 	}
 
 

@@ -19,6 +19,10 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Highlight current unit in red immed
+Don't duplicate help
+Make screen wider
+DefaultView - split up into areas
 Show "alert!  meteror storm!"
 After setting engines etc, show new power diff
 Meteor storm causes more damage if moving fast

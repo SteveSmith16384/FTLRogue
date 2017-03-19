@@ -57,15 +57,16 @@ public class DefaultView implements IGameView {
 			this.moveStars(gameData);
 		}
 		drawStars(screen);
-		
+
 		// Draw map
 		//seenSquares.clear();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
-				screen.setCharacter(x, y, tc);
-				/*if (sq.visible == AbstractMapSquare.VisType.Visible) {
+				if (tc.getCharacter() != ' ') {
+					screen.setCharacter(x, y, tc);
+					/*if (sq.visible == AbstractMapSquare.VisType.Visible) {
 					if (!seenSquares.containsKey(sq.getName())) {
 						seenSquares.put(sq.getName(), tc);
 					}
@@ -75,6 +76,7 @@ public class DefaultView implements IGameView {
 						}
 					}
 				}*/
+				}
 			}			
 		}
 
@@ -134,9 +136,9 @@ public class DefaultView implements IGameView {
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
 		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()){
-			//if (de instanceof AbstractItem) {
-			itemlist.append(de.getName() + "; ");
-			//}
+			if (de instanceof Unit == false) {
+				itemlist.append(de.getName() + "; ");
+			}
 		}
 		if (itemlist.length() > 0) {
 			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());

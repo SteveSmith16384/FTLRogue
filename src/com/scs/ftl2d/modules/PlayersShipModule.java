@@ -186,6 +186,8 @@ public class PlayersShipModule extends AbstractModule {
 				this.contextSensitiveHelpText.add(help.getHelpIfCarried());
 			}
 		}
+		
+		// todo - help based on item in square
 
 		// Help based on adjacent mapsquares
 		List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.main.gameData.currentUnit.x,  this.main.gameData.currentUnit.y);
@@ -228,7 +230,7 @@ public class PlayersShipModule extends AbstractModule {
 			// Adjust ship speed by engine power
 			if (gameData.totalPower > 0) {
 				gameData.shipSpeed *= gameData.enginePowerPcent;
-				gameData.distanceToDest -= gameData.shipSpeed;
+				gameData.distanceToDest -= (gameData.shipSpeed / 100);
 				if (gameData.distanceToDest <= 0) {
 					gameData.distanceToDest = 0;
 					gameData.currentLocation = new Planet(main, "Rigel 7");

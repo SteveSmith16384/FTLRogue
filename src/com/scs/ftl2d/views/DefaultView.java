@@ -64,7 +64,8 @@ public class DefaultView implements IGameView {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
-				if (tc.getCharacter() != ' ') {
+				if (sq.type != AbstractMapSquare.MAP_NOTHING) {
+				//if (tc.getCharacter() != ' ') {
 					screen.setCharacter(x, y, tc);
 				}
 			}			
@@ -233,6 +234,7 @@ public class DefaultView implements IGameView {
 	private void moveStars(GameData gameData) {
 		for (Point p : stars) {
 			p.y++;
+			// todo - if drop of bottom, put back to top
 		}
 	}
 

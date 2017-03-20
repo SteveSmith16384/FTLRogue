@@ -26,4 +26,15 @@ public class EmptyHulk extends AbstractAnotherShip {
 		return null;
 	}
 
+	
+	@Override
+	public String getHailResponse() {
+		return "[There is no response]";
+	}
+
+	@Override
+	public String processCommand(String cmd) {
+		return null;
+	}
+
 }

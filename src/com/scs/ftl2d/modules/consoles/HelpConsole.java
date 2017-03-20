@@ -13,10 +13,11 @@ public class HelpConsole extends AbstractConsoleModule {
 		this.addLine("Todo");
 	}
 
-	
 	@Override
-	public boolean processInput(KeyStroke ks) {
+	protected void processCommand(String cmd) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
+
+	
 }

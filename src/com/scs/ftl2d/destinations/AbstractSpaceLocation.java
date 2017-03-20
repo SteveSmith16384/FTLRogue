@@ -25,14 +25,24 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 	}
 	
 	
-	protected void shootPlayer(float dam) {
-		
+	public abstract String getHailResponse();
+	
+	public abstract String processCommand(String cmd);
+	
+	public abstract void shotByPlayer();
+	
+	public abstract List<String> getStats();
+
+
+	protected void shootPlayer(float dam) {		
 		// Shoot laser - todo - choose two random points
 		int x = Main.RND.nextInt(main.gameData.getMapWidth());
 		int y = 0;
 		while (y < main.gameData.getMapHeight()) {
 			AbstractMapSquare sq = main.gameData.map[x][y];
 			if (sq.isSquareTraversable() == false) {
+				main.addMsg(this.name + " fires and damages you " + dam);
+				// todo - take into account shields
 				sq.incDamage(dam);
 				break;
 			}
@@ -40,10 +50,5 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 		}
 		this.main.asciiEffects.add(new ShipLaser(main, x, 0, 0, 1, x, y));
 	}
-
-
-	public abstract void shotByPlayer();
-	
-	public abstract List<String> getStats();
 
 }

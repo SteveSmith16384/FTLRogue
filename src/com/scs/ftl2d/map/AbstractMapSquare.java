@@ -228,7 +228,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		// Seen
 		Color backgroundColSeen = this.getBackgroundColour().darker().darker();
 		if (this.onFire) {
-			backgroundColSeen = Color.orange;
+			backgroundColSeen = Color.red;
 		} else if (this.hasSmoke) {
 			backgroundColSeen = Color.lightGray;
 		}
@@ -270,7 +270,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 
 	
 	public void incDamage(float i) {
-		this.damage_pcent += i;
+		this.damage_pcent += i;		
 		if (this.damage_pcent > 100) {
 			//this.damage_pcent = 100;
 			main.checkOxygenFlag = true;
@@ -282,6 +282,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 				this.onFire = true;
 			}
 		}
+		this.calcChar();
 	}
 
 	

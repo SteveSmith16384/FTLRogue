@@ -1,7 +1,5 @@
 package com.scs.ftl2d.modules.consoles;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.MapSquareAirlock;
@@ -14,6 +12,10 @@ public class CommandConsole extends AbstractConsoleModule {
 
 		this.addLine("SHIP COMPUTER CONSOLE (v0.01 beta)");
 		this.addLine("");
+		if (main.gameData.currentLocation != null) {
+			addLine("Currently docked at " + main.gameData.currentLocation);
+			addLine("");
+		}
 
 		showMenu();
 	}
@@ -27,6 +29,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
 		if (main.gameData.currentLocation != null) {
 			super.addLine("'launch' to launch the ship");
+			super.addLine("'hail' to hail " + main.gameData.currentLocation.name);
 		}
 		super.addLine("'airlock open/close' to open or close the main airlock");
 		super.addLine("'lights on/off' to turn the ship's lights on or off");
@@ -38,24 +41,9 @@ public class CommandConsole extends AbstractConsoleModule {
 
 
 	@Override
-	public boolean processInput(KeyStroke ks) {
-		if (ks.getKeyType() == KeyType.Enter) {
-			processCommand();
-			command = "";
-		} else if (ks.getKeyType() == KeyType.Backspace) {
-			if (command.length() > 0) {
-				command = command.substring(0, command.length()-1);
-			}
-		} else {
-			command = command + ks.getCharacter();
-		}
-		return false;
-	}
-
-
-	private void processCommand() {
+	protected void processCommand(String cmd) {
 		try {
-			String tokens[] = this.command.split(" ");
+			String tokens[] = cmd.split(" ");
 			switch (tokens[0].toLowerCase()) {
 			case "shields":
 				super.clearLines();

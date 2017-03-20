@@ -20,6 +20,10 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Oxygen overlay
+When repairing, say how much repaired
+Add toString()s
+After launch, warn if engines at 0
 loadResource instead of directly
 Don't duplicate help
 Make screen wider

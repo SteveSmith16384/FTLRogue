@@ -38,6 +38,7 @@ public class GameData implements IAStarMapInterface {
 
 	public int turnNo = 0;
 	public int creds = 500;
+	public int wantedLevel = 0;
 	public float oxygenLevel = 100f;
 
 	public int shieldPowerPcent = 33;

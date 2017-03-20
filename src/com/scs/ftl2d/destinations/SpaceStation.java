@@ -54,4 +54,17 @@ public class SpaceStation extends AbstractSpaceLocation {
 
 	}
 
+
+	@Override
+	public String getHailResponse() {
+		return "Welcome to " + this.name + ".  You are cleared for launch.";
+	}
+
+
+	@Override
+	public String processCommand(String cmd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -38,6 +38,7 @@ public class EnemyShip extends AbstractAnotherShip {
 				}
 			}
 		} else {
+			// todo - don't shot every turn!
 			this.shootPlayer(SHOT_POWER);
 		}
 	}
@@ -59,6 +60,20 @@ public class EnemyShip extends AbstractAnotherShip {
 		this.damage += dam;
 		main.addMsg("You inflict " + dam + " on the enemy ship.");
 
+	}
+
+
+	@Override
+	public String getHailResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String processCommand(String cmd) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

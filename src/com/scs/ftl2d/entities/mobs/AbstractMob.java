@@ -215,23 +215,23 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	public void meleeCombat(AbstractMob attacker) {
-		float att = attacker.meleeSkill;
-		if (attacker.currentItem != null && attacker.currentItem instanceof IMeleeWeapon) {
-			IMeleeWeapon weapon = (IMeleeWeapon)attacker.currentItem;
+	public void meleeCombat(AbstractMob defender) {
+		float att = this.meleeSkill;
+		if (this.currentItem != null && this.currentItem instanceof IMeleeWeapon) {
+			IMeleeWeapon weapon = (IMeleeWeapon)this.currentItem;
 			att += weapon.getMeleeValue();
-		}
-		this.genericAttack(attacker, att, "hit by");
+		} // todo - defenders weapon
+		this.genericAttack(defender, att, "hit by");
 	}
 
 
-	protected void genericAttack(AbstractMob attacker, float attackVal, String verb) {
-		int tot = Math.max(1, attacker.meleeSkill - this.meleeSkill);
+	protected void genericAttack(AbstractMob defender, float attackVal, String verb) {
+		int tot = Math.max(1, this.meleeSkill - defender.meleeSkill);
 		int dam = Main.RND.nextInt(tot)+1;
-		this.incHealth(-dam, this.getName());
 		if (Settings.DEBUG || this.getSq().visible == VisType.Visible) {
-			main.addMsg(this.name + " has been " + verb + " " + attacker.getName());
+			main.addMsg(this.name + " has " + verb + " " + defender.name + " for " + dam);
 		}
+		defender.incHealth(-dam, this.getName());
 	}
 
 

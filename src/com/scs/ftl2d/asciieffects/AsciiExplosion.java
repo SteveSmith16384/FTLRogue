@@ -22,8 +22,7 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 	public AsciiExplosion(Main main, int x, int y) {
 		super(main);
 		
-		p.x = x;
-		p.y = y;
+		p = new Point(x, y);
 		
 		chars.add(CHAR1);
 		chars.add(CHAR2);

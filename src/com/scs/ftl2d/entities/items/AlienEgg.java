@@ -31,7 +31,7 @@ public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
 
 	@Override
 	public void process() {
-		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
+		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) { // todo - don't hatch straight away
 			Alien a = new Alien(main, this.x, this.y);
 			this.getSq().addEntity(a);
 			this.remove();

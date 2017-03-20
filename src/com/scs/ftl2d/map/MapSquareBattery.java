@@ -44,7 +44,7 @@ public class MapSquareBattery extends AbstractMapSquare {
 
 	@Override
 	protected Color getBackgroundColour() {
-		return Color.blue;
+		return Color.yellow;
 	}
 
 

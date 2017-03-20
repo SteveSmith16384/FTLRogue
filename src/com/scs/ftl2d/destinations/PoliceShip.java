@@ -32,4 +32,18 @@ public class PoliceShip extends AbstractAnotherShip {
 		return null;
 	}
 
+
+	@Override
+	public String getHailResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String processCommand(String cmd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

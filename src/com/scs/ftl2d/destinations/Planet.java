@@ -29,4 +29,15 @@ public class Planet extends AbstractSpaceLocation {
 		
 	}
 
+	
+	@Override
+	public String getHailResponse() {
+		return "Welcome to " + this.name + ".  You are cleared for launch.";
+	}
+
+	@Override
+	public String processCommand(String cmd) {
+		return null;
+	}
+
 }

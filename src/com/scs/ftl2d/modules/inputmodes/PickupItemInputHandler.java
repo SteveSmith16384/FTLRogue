@@ -5,7 +5,7 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.modules.PlayersShipModule;
 
-public class PickupItemInputHandler extends AbstractSelectItemInputHandler implements IInputHander {
+public class PickupItemInputHandler extends AbstractSelectNumberInputHandler implements IInputHander {
 
 	public PickupItemInputHandler(Main _main, PlayersShipModule psm) {
 		super(_main, psm);

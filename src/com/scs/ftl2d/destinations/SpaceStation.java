@@ -44,7 +44,7 @@ public class SpaceStation extends AbstractSpaceLocation {
 
 
 	@Override
-	public void shot() {
+	public void shotByPlayer() {
 		if (!shot) {
 			main.addMsg(this.name + ": Prepare to be boarded!");
 			turnsUntilPolice = Main.RND.nextInt(5)+2;

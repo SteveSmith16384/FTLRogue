@@ -8,7 +8,7 @@ public class Corpse extends AbstractItem {// AbstractItem {
 	private String name;
 	
 	public Corpse(Main main, String _name) {
-		super(main, -1, -1, DrawableEntity.Z_ITEM);
+		super(main, -1, -1);
 		
 		name = "Corpse of " + _name;
 	}

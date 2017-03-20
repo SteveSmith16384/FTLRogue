@@ -3,9 +3,9 @@ package com.scs.ftl2d.map;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ssmith.util.SortedArrayList;
 
@@ -52,8 +52,8 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	private TextCharacter visibleChar; 
 
 	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();
-	private List<DrawableEntity> entitiesToAdd = new ArrayList<DrawableEntity>(); // todo - use a global shared list
-	private List<DrawableEntity> entitiesToRemove = new ArrayList<DrawableEntity>(); // todo - use a global shared list
+	private List<DrawableEntity> entitiesToAdd = new CopyOnWriteArrayList<DrawableEntity>(); // todo - use a global shared list
+	private List<DrawableEntity> entitiesToRemove = new CopyOnWriteArrayList<DrawableEntity>(); // todo - use a global shared list
 
 	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {
@@ -111,7 +111,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		x = _x;
 		y = _y;
 
-		this.calcChars();
+		this.calcChar();
 	}
 
 	
@@ -161,6 +161,13 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 			for (DrawableEntity de : this.entities) {
 				if (de instanceof AbstractMob) {
 					AbstractMob am = (AbstractMob)de;
+					// Check for oxygen
+					if (am.wearing != null) {
+						if (am.wearing.giveOxygen()) {
+							continue;
+						}
+					}
+						
 					am.died("asphyxiation");
 				}
 			}
@@ -189,10 +196,11 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		entitiesToAdd.clear();
 		
 		if (calcChar) {
-			this.calcChars();
+			this.calcChar();
 		}
 	}
 
+	
 	public TextCharacter getChar() {
 		if (Settings.DEBUG) {
 			return this.visibleChar;
@@ -207,7 +215,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	}
 
 
-	protected void calcChars() {
+	public void calcChar() {
 		Color foregroundCol = Color.white;
 		if (this.damage_pcent > 0) {
 			int num = (int)(this.damage_pcent / 10)+1; 
@@ -311,4 +319,13 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		return this.entities.iterator();
 	}
 
+	
+	public DrawableEntity getEntityOfType(Class c) {
+		for (DrawableEntity e : getEntities()) {
+			if (e.getClass() == c) {
+				return e;
+			}
+		}
+		return null;
+	}
 }

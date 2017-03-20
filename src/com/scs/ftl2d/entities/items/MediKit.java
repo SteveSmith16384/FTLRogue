@@ -8,7 +8,7 @@ import com.scs.ftl2d.entityinterfaces.IUseable;
 public class MediKit extends AbstractItem implements ICarryable, IUseable {
 
 	public MediKit(Main main) {
-		super(main, -1, -1, DrawableEntity.Z_ITEM);
+		super(main, -1, -1);
 	}
 	
 

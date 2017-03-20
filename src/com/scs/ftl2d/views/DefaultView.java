@@ -26,6 +26,7 @@ import com.scs.ftl2d.map.AbstractMapSquare;
 public class DefaultView implements IGameView {
 
 	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
+	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
 	private static final TextCharacter STAR_CHAR = new TextCharacter('*', TextColor.ANSI.WHITE, TextColor.ANSI.BLACK);
 
 	private Terminal terminal;
@@ -43,7 +44,7 @@ public class DefaultView implements IGameView {
 
 
 	@Override
-	public void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route) throws IOException {
+	public void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route, Point selectedTarget) throws IOException {
 		if (stars == null) {
 			createStars(gameData);
 		}
@@ -59,23 +60,12 @@ public class DefaultView implements IGameView {
 		drawStars(screen);
 
 		// Draw map
-		//seenSquares.clear();
 		for (int y=0 ; y<gameData.getHeight() ; y++) {
 			for (int x=0 ; x<gameData.getWidth() ; x++) {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
 				if (tc.getCharacter() != ' ') {
 					screen.setCharacter(x, y, tc);
-					/*if (sq.visible == AbstractMapSquare.VisType.Visible) {
-					if (!seenSquares.containsKey(sq.getName())) {
-						seenSquares.put(sq.getName(), tc);
-					}
-					if (sq.extraInfo.length() > 0) {
-						if (!seenSquares.containsKey(sq.extraInfo)) {
-							seenSquares.put(sq.extraInfo, tc);
-						}
-					}
-				}*/
 				}
 			}			
 		}
@@ -83,8 +73,11 @@ public class DefaultView implements IGameView {
 		// Draw route
 		if (route != null) {
 			for (Point p : route) {
-				screen.setCharacter(p.x, p.y, ROUTE_CHAR); // todo-show diff char for end dest
+				screen.setCharacter(p.x, p.y, ROUTE_CHAR);
 			}
+		}
+		if (selectedTarget != null) {
+			screen.setCharacter(selectedTarget.x, selectedTarget.y, TARGET_CHAR);
 		}
 
 		// Draw effects
@@ -132,10 +125,14 @@ public class DefaultView implements IGameView {
 			str.append("F:" + (int)unit.food);
 			tGraphics.putString(gameData.getWidth()+2, y++, str.toString());
 		}
+		
+		if (gameData.currentUnit.wearing != null) {
+			tGraphics.putString(gameData.getWidth()+2, y++, "Unit is wearing " + gameData.currentUnit.wearing.hashCode());
+		}
 
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
-		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()){
+		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()) {
 			if (de instanceof Unit == false) {
 				itemlist.append(de.getName() + "; ");
 			}
@@ -177,6 +174,11 @@ public class DefaultView implements IGameView {
 	}
 
 
+	/*private int drawCurrentUnit(int x, int y) {
+		
+	}*/
+	
+	
 	@Override
 	public KeyStroke getInput() throws IOException {
 		KeyStroke ks = screen.readInput();

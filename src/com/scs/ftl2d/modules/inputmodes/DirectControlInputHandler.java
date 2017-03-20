@@ -3,6 +3,8 @@ package com.scs.ftl2d.modules.inputmodes;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.entityinterfaces.ICarryable;
+import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
 import com.scs.ftl2d.modules.PlayersShipModule;
 import com.scs.ftl2d.modules.consoles.HelpConsole;
 
@@ -101,13 +103,26 @@ public class DirectControlInputHandler implements IInputHander {
 				}
 
 				case 's':
-					this.shipModule.inputHandler = new SelectShotInputHandler(main, this.shipModule);
+				{
+					ICarryable obj = main.gameData.currentUnit.currentItem;
+					if (obj != null) {
+						if (obj instanceof IRangedWeapon)
+							this.shipModule.inputHandler = new SelectShotInputHandler(main, this.shipModule, (IRangedWeapon)obj);
+					}
 					return false;
-
+				}
+				
 				case 't':
-					this.shipModule.inputHandler = new SelectShotInputHandler(main, this.shipModule);
+				{
+					ICarryable obj = main.gameData.currentUnit.currentItem;
+					if (obj != null) {
+						this.shipModule.inputHandler = new SelectThrowInputHandler(main, this.shipModule, obj);
+					} else {
+						main.addMsg("Unit not using anything");
+					}
 					return false;
-
+				}
+				
 				case 'w':
 					return true;
 
@@ -118,4 +133,4 @@ public class DirectControlInputHandler implements IInputHander {
 			return false;
 		}
 	}
-	}
+}

@@ -32,8 +32,8 @@ public class CommandConsole extends AbstractConsoleModule {
 		super.addLine("'lights on/off' to turn the ship's lights on or off");
 		super.addLine("'exit' to return");
 		super.addLine("");
-		int powerDiff = (int)((main.gameData.powerGainedPerTurn - main.gameData.powerUsedPerTurn) * 60f);
-		super.addLine("Ship power is currently changing by " + powerDiff  + " per minute");
+		//int powerDiff = (int)((main.gameData.powerGainedPerTurn - main.gameData.powerUsedPerTurn) * 60f);
+		//super.addLine("Ship power is currently changing by " + powerDiff  + " per minute");
 	}
 
 

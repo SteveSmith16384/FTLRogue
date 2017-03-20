@@ -16,7 +16,7 @@ public abstract class DrawableEntity implements Comparable{//extends Entity {
 	public static final int Z_ITEM = 1;
 	public static final int Z_FLOOR = 0;
 
-	public int x, y, z; // todo - get rid of x, y and use square?
+	public int x, y, z;
 	public Main main;
 
 	public DrawableEntity(Main _main, int _x, int _y, int _z) {
@@ -29,8 +29,6 @@ public abstract class DrawableEntity implements Comparable{//extends Entity {
 	}
 
 	//float getWeight();
-
-	//public abstract void preProcess();
 
 	public abstract void process();
 

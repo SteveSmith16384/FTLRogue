@@ -33,7 +33,7 @@ public class TransportEggMission extends AbstractMission {
 		main.addMsg("The egg has been teleported onto your ship.");
 		AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 		sq.addEntity(new AlienEgg(main));
-		main.addMsg("We look forward to receiving it.  Please treat it carefully.");
+		main.addMsg("We look forward to receiving it.  Please treat it carefully.  ");
 	}
 
 

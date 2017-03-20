@@ -2,20 +2,25 @@ package com.scs.ftl2d.asciieffects;
 
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.PlayersShipModule;
 
 public abstract class AbstractAsciiEffect {
 
 	protected Main main;
-	public AbstractAsciiEffect nextEffect;
+	//protected PlayersShipModule module;
+	//public AbstractAsciiEffect nextEffect;
 
-	public AbstractAsciiEffect(Main _main) {
+	public AbstractAsciiEffect(Main _main) {//, PlayersShipModule _module) {
+		super();
+		
 		main = _main;
+		//module = _module;
 	}
 
 
 	public abstract void drawChars(IGameView view);
 
 
-	public abstract boolean process();
+	public abstract boolean process(); // return false if ended
 
 }

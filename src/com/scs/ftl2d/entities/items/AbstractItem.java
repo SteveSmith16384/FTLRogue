@@ -9,8 +9,8 @@ public abstract class AbstractItem extends DrawableEntity implements ICarryable 
 
 	protected AbstractMob carrier;
 	
-	public AbstractItem(Main main, int _x, int _y, int _z) {
-		super(main, _x, _y, _z);
+	public AbstractItem(Main main, int _x, int _y) {
+		super(main, _x, _y, DrawableEntity.Z_ITEM);
 	}
 	
 	

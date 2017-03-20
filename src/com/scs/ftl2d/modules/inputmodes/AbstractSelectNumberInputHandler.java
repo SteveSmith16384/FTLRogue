@@ -4,12 +4,12 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.modules.PlayersShipModule;
 
-public abstract class AbstractSelectItemInputHandler implements IInputHander {
+public abstract class AbstractSelectNumberInputHandler implements IInputHander {
 
 	protected Main main;
 	protected PlayersShipModule shipModule;
 
-	public AbstractSelectItemInputHandler(Main _main, PlayersShipModule psm) {
+	public AbstractSelectNumberInputHandler(Main _main, PlayersShipModule psm) {
 		super();
 		
 		main = _main;

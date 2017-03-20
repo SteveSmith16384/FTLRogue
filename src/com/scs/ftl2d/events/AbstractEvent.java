@@ -12,11 +12,9 @@ public abstract class AbstractEvent implements IProcessable {
 	}
 
 	
-	/*@Override
-	public void preProcess() {
-		
-	}*/
-	
+	public void remove() {
+		this.main.gameData.currentEvents.remove(this);
+	}
 
 
 }

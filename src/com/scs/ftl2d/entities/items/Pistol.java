@@ -5,16 +5,16 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
 
-public class Gun extends AbstractItem implements ICarryable, IRangedWeapon {// AbstractRangedWeapon {
+public class Pistol extends AbstractItem implements ICarryable, IRangedWeapon {// AbstractRangedWeapon {
 
-	public Gun(Main main) {
-		super(main, -1, -1, DrawableEntity.Z_ITEM);
+	public Pistol(Main main) {
+		super(main, -1, -1);
 	}
 	
 
 	@Override
 	public char getChar() {
-		return 'g';
+		return 'p';
 	}
 
 	
@@ -26,7 +26,7 @@ public class Gun extends AbstractItem implements ICarryable, IRangedWeapon {// A
 
 	@Override
 	public String getName() {
-		return "Gun";
+		return "Pistol";
 	}
 
 

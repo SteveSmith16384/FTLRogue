@@ -5,7 +5,7 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.modules.PlayersShipModule;
 
-public class ChangeItemInputHandler extends AbstractSelectItemInputHandler implements IInputHander {
+public class ChangeItemInputHandler extends AbstractSelectNumberInputHandler implements IInputHander {
 
 	public ChangeItemInputHandler(Main _main, PlayersShipModule psm) {
 		super(_main, psm);

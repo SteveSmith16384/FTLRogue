@@ -7,7 +7,9 @@ import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.ShipLaser;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
-public class EnemyShip extends AbstractSpaceLocation {
+public class EnemyShip extends AbstractAnotherShip {
+
+	private static final int SHOT_POWER = 10;
 
 	public EnemyShip(Main main) {
 		super(main, "Enemy Ship");
@@ -31,30 +33,13 @@ public class EnemyShip extends AbstractSpaceLocation {
 				main.addMsg("\"But will if we must!\"");
 			} else if (timer > 20) { // Attack
 				if (Main.RND.nextInt(8) == 0) {
-				this.attackPlayer();
+					// Todo - If player damaged, teleport aboard
+					this.shootPlayer(SHOT_POWER);
 				}
 			}
 		} else {
-			this.attackPlayer();
+			this.shootPlayer(SHOT_POWER);
 		}
-	}
-	
-
-	private void attackPlayer() {
-		// Todo - If player damaged, teleport aboard
-		
-		// Shoot laser - todo - choose two random points
-		int x = Main.RND.nextInt(main.gameData.getMapWidth());
-		int y = 0;
-		while (y < main.gameData.getMapHeight()) {
-			AbstractMapSquare sq = main.gameData.map[x][y];
-			if (sq.isSquareTraversable() == false) {
-				sq.incDamage(10);
-				break;
-			}
-			y++;
-		}
-		this.main.asciiEffects.add(new ShipLaser(main, x, 0, 0, 1, x, y)); // todo - add explosion at end
 	}
 
 
@@ -67,13 +52,13 @@ public class EnemyShip extends AbstractSpaceLocation {
 
 
 	@Override
-	public void shot() {
+	public void shotByPlayer() {
 		this.attacked = true;
-		
+
 		int dam = Main.RND.nextInt(15)+1;
 		this.damage += dam;
 		main.addMsg("You inflict " + dam + " on the enemy ship.");
-		
+
 	}
 
 }

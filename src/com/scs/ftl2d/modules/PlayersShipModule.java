@@ -13,8 +13,10 @@ import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.ShipLaser;
+import com.scs.ftl2d.destinations.EmptyHulk;
 import com.scs.ftl2d.destinations.EnemyShip;
 import com.scs.ftl2d.destinations.Planet;
+import com.scs.ftl2d.destinations.PoliceShip;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IHelpIfCarried;
@@ -60,12 +62,14 @@ c - corpse
 E - Engines
 e - Egg (alien)
 F - On fire
-g - Gun
+g - Grenade
+j - oxy mask
 k - knife
 L - Airlock
 M - Medibay
 m - Medikit
 O - Window
+p - pistol
 R - Replicator
 T - Teleporter
 . - Floor
@@ -84,7 +88,6 @@ public class PlayersShipModule extends AbstractModule {
 
 	public IInputHander inputHandler;
 	private DirectControlInputHandler directControlIH;
-	//private InputMode inputMode = InputMode.Normal;
 
 	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 	private List<String> contextSensitiveHelpText = new ArrayList<>();
@@ -98,9 +101,9 @@ public class PlayersShipModule extends AbstractModule {
 		if (main.gameData.currentUnit == null) {
 			this.selectUnit(0);
 		}
-		
+
 		directControlIH = new DirectControlInputHandler(main, this);
-		
+
 		restoreDirectControlIH();
 	}
 
@@ -186,7 +189,7 @@ public class PlayersShipModule extends AbstractModule {
 				this.contextSensitiveHelpText.add(help.getHelpIfCarried());
 			}
 		}
-		
+
 		// todo - help based on item in square
 
 		// Help based on adjacent mapsquares
@@ -240,14 +243,24 @@ public class PlayersShipModule extends AbstractModule {
 			}
 
 			// Any encounters?
-			int i = Main.RND.nextInt(20);
+			int i = Main.RND.nextInt(10);
 			switch (i) {
 			case 0:
 				gameData.currentLocation = new EnemyShip(main);
 				break;
+
 			case 1:
 				gameData.currentEvents.add(new MeteorStorm(main));
 				break;
+
+			case 2:
+				//gameData.currentLocation = new PoliceShip(main);
+				break;
+
+			case 3:
+				//gameData.currentLocation = new EmptyHulk(main);
+				break;
+
 			}
 		} else {
 			gameData.shipSpeed = 0;
@@ -258,8 +271,18 @@ public class PlayersShipModule extends AbstractModule {
 
 	public boolean selectUnit(int i) {
 		if (i < main.gameData.units.size()) {
+			AbstractMapSquare sq1 = null;
+			if (main.gameData.currentUnit != null) {
+				sq1 = main.gameData.currentUnit.getSq();
+			}
 			main.gameData.currentUnit = main.gameData.units.get(i);
+			AbstractMapSquare sq2 = main.gameData.currentUnit.getSq();
 			main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
+
+			if (sq1 != null) {
+				sq1.calcChar();
+			}
+			sq2.calcChar();
 			return true;
 		}
 		return false;
@@ -269,7 +292,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawPlayersShipScreen(main.gameData, seenSquares, main.asciiEffects, contextSensitiveHelpText, this.route);
+		view.drawPlayersShipScreen(main.gameData, seenSquares, main.asciiEffects, contextSensitiveHelpText, this.route, selectedpoint);
 
 	}
 
@@ -279,12 +302,12 @@ public class PlayersShipModule extends AbstractModule {
 	 */
 	public boolean processInput(KeyStroke ks) {
 		try {
-			this.inputHandler.processInput(ks);
+			return this.inputHandler.processInput(ks);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			this.restoreDirectControlIH();
 		}
-		return true;
+		return false;
 	}
 
 
@@ -339,7 +362,7 @@ public class PlayersShipModule extends AbstractModule {
 				if (sq != null) {
 					main.addMsg("You have fired at " + main.gameData.currentLocation.name);
 					this.main.gameData.weaponTemp += 5;
-					this.main.gameData.currentLocation.shot();
+					this.main.gameData.currentLocation.shotByPlayer();
 
 					// create bullets
 					for (Point p : main.gameData.weaponPoints) {

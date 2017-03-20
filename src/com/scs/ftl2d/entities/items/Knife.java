@@ -5,10 +5,10 @@ import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.entityinterfaces.IMeleeWeapon;
 
-public class Knife extends AbstractItem implements IMeleeWeapon {// AbstractItem {
+public class Knife extends AbstractItem implements IMeleeWeapon {
 
 	public Knife(Main main) {
-		super(main, -1, -1, DrawableEntity.Z_ITEM);
+		super(main, -1, -1);
 	}
 	
 

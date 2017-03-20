@@ -6,19 +6,21 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ssmith.astar.AStar;
-import ssmith.astar.WayPoints;
 
+import com.scs.ftl2d.Line;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
+import com.scs.ftl2d.asciieffects.BulletShot;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.AbstractItem;
 import com.scs.ftl2d.entities.items.Corpse;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IMeleeWeapon;
 import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
+import com.scs.ftl2d.entityinterfaces.IWearable;
 import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.AbstractMapSquare.VisType;
 import com.scs.ftl2d.map.MapSquareDoor;
@@ -42,6 +44,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public List<ICarryable> equipment = new ArrayList<>();
 	public ICarryable currentItem;
 	protected boolean autoOpenDoors;
+	public IWearable wearing;
 
 	public List<Point> astarRoute;
 
@@ -95,6 +98,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		AllMobs.remove(this);
 		super.remove();
 	}
+
 
 	@Override
 	public String getName() {
@@ -162,20 +166,47 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public boolean checkForShooting() {
 		if (this.currentItem != null) {
-			//I i = (AbstractItem)this.currentItem;
 			if (currentItem instanceof IRangedWeapon) {
 				IRangedWeapon gun = (IRangedWeapon)currentItem;
 				AbstractMob enemy = getClosestVisibleEnemy();
 				if (enemy != null) {
 					float dist = this.distanceTo(enemy);
 					if (dist <= gun.getRange()) {
-						enemy.shotBy(this, gun);
+						shoot(new Line(x, y, enemy.x, enemy.y), gun);
 						return true;
 					}
 				}
 			}
 		}
 		return false;
+	}
+
+
+	public void shoot(List<Point> line, IRangedWeapon gun) {
+		Iterator<Point> it = line.iterator();
+		while (it.hasNext()) {
+			Point p =it.next();
+			AbstractMob mob = (AbstractMob) main.gameData.map[p.x][p.y].getEntityOfType(AbstractMob.class);
+			if (mob != null) {
+				new BulletShot(main, this.x, this.y, p.x, p.y);
+				mob.shotBy(this, gun);
+			}
+		}
+	}
+
+
+	public void throwItem(List<Point> line, ICarryable gun) {
+		Iterator<Point> it = line.iterator();
+		AbstractMapSquare prevSq = null;
+		while (it.hasNext()) {
+			Point p =it.next();
+			AbstractMapSquare sq = main.gameData.map[p.x][p.y];
+			if (sq.isSquareTraversable() == false) {
+				new BulletShot(main, this.x, this.y, prevSq.x, prevSq.y);
+				this.drop(gun, prevSq) ;
+			}
+			prevSq = sq;
+		}
 	}
 
 
@@ -287,11 +318,17 @@ public abstract class AbstractMob extends DrawableEntity {
 		if (this.astarRoute == null || this.astarRoute.isEmpty()) {
 			Point dest = this.getAStarDest();
 			if (dest != null) {
-			AStar astar = new AStar(this.main.gameData);
-			astar.findPath(x, y, dest.x, dest.y, false);
-			if (astar.wasSuccessful()) {
-				this.astarRoute = astar.getRoute();
+				AStar astar = new AStar(this.main.gameData);
+				astar.findPath(x, y, dest.x, dest.y, false);
+				if (astar.wasSuccessful()) {
+					this.astarRoute = astar.getRoute();
+				}
 			}
+		} else {
+			Point p = this.astarRoute.get(0);
+			boolean res = this.moveTowards(p.x, p.y);
+			if (res) {
+				this.astarRoute.remove(0);
 			}
 		}
 		return true;
@@ -310,12 +347,11 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	public void drop(ICarryable ic) {
+	public void drop(ICarryable ic, AbstractMapSquare sq) { // Might be thrown!
 		DrawableEntity de = (DrawableEntity)ic;
 		main.gameData.currentUnit.equipment.remove(de);
-		main.gameData.currentUnit.getSq().addEntity(de);
+		sq.addEntity(de);//main.gameData.currentUnit.getSq().addEntity(de);
 		ic.setNotCarried();
-
 	}
 
 

@@ -26,7 +26,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 			break;
 		}*/
 		theChar = ' ';
-		calcChars();
+		calcChar();
 		
 		this.hasOxygen = false;
 	}

@@ -24,7 +24,7 @@ public class Planet extends AbstractSpaceLocation {
 	}
 
 	@Override
-	public void shot() {
+	public void shotByPlayer() {
 		main.addMsg("You shoot the planet.  Your laser dissipates in the atmosphere.");
 		
 	}

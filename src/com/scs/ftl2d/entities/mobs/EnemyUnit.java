@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.Gun;
+import com.scs.ftl2d.entities.items.Pistol;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class EnemyUnit extends AbstractMob {
@@ -15,7 +15,7 @@ public class EnemyUnit extends AbstractMob {
 	public EnemyUnit(Main main) {
 		super(main, -1, -1, DrawableEntity.Z_UNIT, 'E', AbstractMob.GetRandomName(), SIDE_ENEMY_SHIP, 10, 4, true);
 
-		Gun gun = new Gun(main);
+		Pistol gun = new Pistol(main);
 		this.equipment.add(gun);
 
 	}

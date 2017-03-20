@@ -10,9 +10,10 @@ import ssmith.astar.IAStarMapInterface;
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.destinations.SpaceStation;
 import com.scs.ftl2d.entities.DrawableEntity;
-import com.scs.ftl2d.entities.items.Gun;
 import com.scs.ftl2d.entities.items.Knife;
 import com.scs.ftl2d.entities.items.MediKit;
+import com.scs.ftl2d.entities.items.OxygenMask;
+import com.scs.ftl2d.entities.items.Pistol;
 import com.scs.ftl2d.entities.mobs.AbstractMob;
 import com.scs.ftl2d.entities.mobs.Unit;
 import com.scs.ftl2d.events.AbstractEvent;
@@ -32,8 +33,8 @@ public class GameData implements IAStarMapInterface {
 
 	public Unit currentUnit;
 
-	public List<AbstractEvent> currentEvents = new ArrayList<>();
-	public List<AbstractMission> currentMissions = new ArrayList<>();
+	public List<AbstractEvent> currentEvents = new ArrayList<>(); // todo - make copyonuse
+	public List<AbstractMission> currentMissions = new ArrayList<>(); // todo - make copyonuse
 
 	public int turnNo = 0;
 	public int creds = 500;
@@ -86,8 +87,9 @@ public class GameData implements IAStarMapInterface {
 		itemsToAdd.add(new MediKit(main));
 		itemsToAdd.add(new Knife(main));
 		itemsToAdd.add(new Knife(main));
-		itemsToAdd.add(new Gun(main));
-		itemsToAdd.add(new Gun(main));
+		itemsToAdd.add(new Pistol(main));
+		itemsToAdd.add(new Pistol(main));
+		itemsToAdd.add(new OxygenMask(main));
 		for (DrawableEntity item : itemsToAdd) {
 			this.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR).addEntity(item);
 		}

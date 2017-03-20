@@ -11,7 +11,7 @@ import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 
 public interface IGameView {
 
-	void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route) throws IOException;
+	void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route, Point selectedTarget) throws IOException;
 	
 	void drawConsoleScreen(List<String> lines, String cmd) throws IOException;
 	

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.asciieffects.ShipLaser;
+import com.scs.ftl2d.map.AbstractMapSquare;
 
 public abstract class AbstractSpaceLocation implements IProcessable {
 
@@ -23,12 +25,24 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 	}
 	
 	
-	/*@Override
-	public void preProcess() {
+	protected void shootPlayer(float dam) {
 		
-	}*/
-	
-	public abstract void shot();
+		// Shoot laser - todo - choose two random points
+		int x = Main.RND.nextInt(main.gameData.getMapWidth());
+		int y = 0;
+		while (y < main.gameData.getMapHeight()) {
+			AbstractMapSquare sq = main.gameData.map[x][y];
+			if (sq.isSquareTraversable() == false) {
+				sq.incDamage(dam);
+				break;
+			}
+			y++;
+		}
+		this.main.asciiEffects.add(new ShipLaser(main, x, 0, 0, 1, x, y));
+	}
+
+
+	public abstract void shotByPlayer();
 	
 	public abstract List<String> getStats();
 

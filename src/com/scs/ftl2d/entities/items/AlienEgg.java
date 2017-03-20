@@ -7,12 +7,12 @@ import com.scs.ftl2d.entities.mobs.Alien;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IExamineable;
 
-public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {// AbstractItem {
+public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
 
 	public AlienEgg(Main main) {
-		super(main, -1, -1, DrawableEntity.Z_ITEM);
+		super(main, -1, -1);
 
 	}
 

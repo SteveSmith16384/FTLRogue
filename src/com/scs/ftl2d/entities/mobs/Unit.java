@@ -21,12 +21,6 @@ public class Unit extends AbstractMob {
 	}
 
 
-	/*@Override
-	public void preProcess() {
-
-	}*/
-
-
 	@Override
 	public void process() {
 		status = Status.Waiting;
@@ -64,7 +58,7 @@ public class Unit extends AbstractMob {
 		if (status == Status.Waiting) {
 			AbstractMapSquare sq = this.getSq();
 			if (sq.type == AbstractMapSquare.MAP_MEDIBAY) {
-				if (main.gameData.totalPower > 0) {
+				if (main.gameData.totalPower > 0 && this.health < 100) {
 					main.gameData.powerUsedPerTurn += 1f;
 					this.incHealth(1, "");
 					main.addMsg(this.getName() + " is healing");
@@ -106,30 +100,6 @@ public class Unit extends AbstractMob {
 		//}
 	}
 
-
-	/*private void processManualRoute(String dir) {
-		switch (dir.toLowerCase()) {
-		case "u":
-		case "n":
-			this.moveTowards(0, -1);
-			break;
-		case "d":
-		case "s":
-			this.moveTowards(0, 1);
-			break;
-		case "l":
-		case "w":
-			this.moveTowards(-1, 0);
-			break;
-		case "r":
-		case "e":
-			this.moveTowards(1, 0);
-			break;
-		default:
-			main.addMsg("Unknown movement char: " + dir);
-		}
-	}
-*/
 
 	private void incFood(float f) {
 		this.food += f;

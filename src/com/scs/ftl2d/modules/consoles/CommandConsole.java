@@ -101,15 +101,24 @@ public class CommandConsole extends AbstractConsoleModule {
 				main.gameData.recalcVisibleSquares();
 				break;
 
+			case "hail":
+				// todo
+				break;
+
 			case "exit":
 			case "quit":
 			case "logout":
 			case "x":
 				this.main.setModule(this.prevModule);
 				return;
+
+			default:
+				super.clearLines();
+				super.addLine("Unable to understand '" + cmd + "'");
 			}
 		} catch (Exception ex) {
-			super.addLine("Unable to understand: " + ex.getMessage());
+			super.clearLines();
+			super.addLine("Unable to understand '" + cmd + "': " + ex.getMessage());
 			ex.printStackTrace();
 		}
 		super.addLine("");

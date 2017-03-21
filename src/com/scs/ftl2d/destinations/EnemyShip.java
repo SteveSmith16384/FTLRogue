@@ -45,7 +45,7 @@ public class EnemyShip extends AbstractAnotherShip {
 		
 		}
 
-		if (this.attacked == false) {
+		/*todo if (this.attacked == false) {
 			if (timer == 2) { // Hail
 				main.addMsg("The ship enemy ship hails you...");
 			} if (timer == 3) { // Hail
@@ -64,7 +64,7 @@ public class EnemyShip extends AbstractAnotherShip {
 			if (Main.RND.nextInt(8) == 0) {
 				this.shootPlayer(SHOT_POWER);
 			}
-		}
+		}*/
 	}
 
 

@@ -6,8 +6,10 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import ssmith.astar.AStar;
 
@@ -22,6 +24,7 @@ import com.scs.ftl2d.entityinterfaces.IMeleeWeapon;
 import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
 import com.scs.ftl2d.entityinterfaces.IWearable;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.map.CSVMap;
 import com.scs.ftl2d.map.AbstractMapSquare.VisType;
 import com.scs.ftl2d.map.MapSquareDoor;
 
@@ -82,15 +85,17 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public static String GetRandomName() {
-		try {
-			Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
-			List<String> lines = Files.readAllLines(path);
+		//try {
+			//Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
+			//List<String> lines = Files.readAllLines(path);
+			String text = new Scanner(CSVMap.class.getResourceAsStream("/data/names.txt"), "UTF-8").useDelimiter("\\A").next();
+			List<String> lines = Arrays.asList(text.split("\n"));
 			int i = Main.RND.nextInt(lines.size());
-			return "Captain " + lines.get(i);
-		} catch (IOException ex) {
+			return "Captain " + lines.get(i).trim();
+		/*} catch (IOException ex) {
 			ex.printStackTrace();
 			return "Mr Bum.";
-		}
+		}*/
 	}
 
 

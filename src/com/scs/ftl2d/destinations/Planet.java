@@ -36,8 +36,7 @@ public class Planet extends AbstractSpaceLocation {
 	}
 
 	@Override
-	public String processCommand(String cmd) {
-		return null;
+	public void processCommand(String cmd) {
 	}
 
 }

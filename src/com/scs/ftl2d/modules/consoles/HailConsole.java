@@ -1,20 +1,23 @@
 package com.scs.ftl2d.modules.consoles;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
-import com.scs.ftl2d.map.AbstractMapSquare;
-import com.scs.ftl2d.map.MapSquareAirlock;
 import com.scs.ftl2d.modules.AbstractModule;
 
 public class HailConsole extends AbstractConsoleModule {
 
 	private AbstractSpaceLocation loc;
 
-	public HailConsole(Main main, AbstractModule prev) {
+	public HailConsole(Main main, AbstractModule prev, AbstractSpaceLocation _loc) {
 		super(main, prev);
+		
+		loc =_loc;
 
-		loc.getHailResponse();
+		super.addLine("Hailing " + loc.name + "...");
+		super.addLine("");
+		super.addLine("(Enter 'exit' to return)");
+		super.addLine("");
+		super.addLine(loc.getHailResponse());
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public class HailConsole extends AbstractConsoleModule {
 			ex.printStackTrace();
 		}
 		super.addLine("");
-		//todo showMenu();	
+		super.addLine(loc.getHailResponse());
 	}
 
 

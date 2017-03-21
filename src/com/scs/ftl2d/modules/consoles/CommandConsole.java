@@ -13,7 +13,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		this.addLine("SHIP COMPUTER CONSOLE (v0.01 beta)");
 		this.addLine("");
 		if (main.gameData.currentLocation != null) {
-			addLine("Currently docked at " + main.gameData.currentLocation);
+			addLine("Currently docked at " + main.gameData.currentLocation.name);
 			addLine("");
 		}
 
@@ -56,7 +56,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
 				super.addLine("Engines now at " + main.gameData.enginePowerPcent);
 				if (main.gameData.currentLocation != null) {
-					super.addLine("(Although not currently in use)");
+					super.addLine("(Note: ship not launched yet)");
 				}
 				break;
 

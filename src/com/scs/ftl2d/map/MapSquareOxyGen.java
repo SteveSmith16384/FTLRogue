@@ -47,7 +47,7 @@ public class MapSquareOxyGen extends AbstractMapSquare {
 
 	@Override
 	protected Color getBackgroundColour() {
-		return Color.cyan;
+		return Color.cyan; // todo - change
 	}
 
 

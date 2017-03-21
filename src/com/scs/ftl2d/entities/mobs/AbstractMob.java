@@ -109,9 +109,9 @@ public abstract class AbstractMob extends DrawableEntity {
 	public void incHealth(float f, String reason) {
 		this.health += f;
 		if (f > 0) {
-			main.addMsg(this.getName() + " is healed by " + (int)f);
+			main.addMsg(2, this.getName() + " is healed by " + (int)f);
 		} else {
-			main.addMsg(this.getName() + " is wounded by " + (int)-f);
+			main.addMsg(2, this.getName() + " is wounded by " + (int)-f);
 		}
 		if (this.health > 100f) {
 			this.health = 100f;
@@ -152,13 +152,13 @@ public abstract class AbstractMob extends DrawableEntity {
 				return true;
 			} else {
 				if (this.side == other.side) {
-					addMsgIfOurs(other.getName() + " is in the way");
+					addMsgIfOurs(1, other.getName() + " is in the way");
 				} else {
 					this.meleeCombat(other);
 				}
 			}
 		} else {
-			addMsgIfOurs(newsq.getName() + " is in the way");
+			addMsgIfOurs(1, newsq.getName() + " is in the way");
 		}
 		return false;
 	}
@@ -203,7 +203,7 @@ public abstract class AbstractMob extends DrawableEntity {
 			AbstractMapSquare sq = main.gameData.map[p.x][p.y];
 			if (sq.isSquareTraversable() == false) {
 				new BulletShot(main, this.x, this.y, prevSq.x, prevSq.y);
-				this.drop(gun, prevSq) ;
+				this.dropOrThrow(gun, prevSq) ;
 			}
 			prevSq = sq;
 		}
@@ -220,7 +220,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		if (this.currentItem != null && this.currentItem instanceof IMeleeWeapon) {
 			IMeleeWeapon weapon = (IMeleeWeapon)this.currentItem;
 			att += weapon.getMeleeValue();
-		} // todo - defenders weapon
+		}
 		this.genericAttack(defender, att, "hit by");
 	}
 
@@ -235,9 +235,9 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void addMsgIfOurs(String s) {
+	protected void addMsgIfOurs(int pri, String s) {
 		if (this.side == SIDE_PLAYER) {
-			main.addMsg(s);
+			main.addMsg(pri, s);
 		}
 	}
 
@@ -247,12 +247,12 @@ public abstract class AbstractMob extends DrawableEntity {
 		if (sq != null) {
 			if (!sq.isOpen()) {
 				sq.setOpen(true);
-				main.addMsg("Door opened");
+				main.addMsg(1, "Door opened");
 			} else {
-				main.addMsg("Door already open");
+				main.addMsg(1, "Door already open");
 			}
 		} else {
-			main.addMsg("No door found");
+			main.addMsg(1, "No door found");
 		}
 	}
 
@@ -347,7 +347,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	public void drop(ICarryable ic, AbstractMapSquare sq) { // Might be thrown!
+	public void dropOrThrow(ICarryable ic, AbstractMapSquare sq) {
 		DrawableEntity de = (DrawableEntity)ic;
 		main.gameData.currentUnit.equipment.remove(de);
 		sq.addEntity(de);//main.gameData.currentUnit.getSq().addEntity(de);
@@ -375,5 +375,10 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + ":" + name;
+	}
+	
 }
 

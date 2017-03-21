@@ -43,7 +43,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 		return false;
 	}
 
-	
+
 	protected abstract void processCommand(String cmd);
 
 
@@ -54,7 +54,10 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 
 	public void addLine(String s) {
-		this.lines.add("> " + s);
+		String sublines[] = s.split("\n");
+		for (String l : sublines) { 
+			this.lines.add("> " + l);
+		}
 		if (MAX_LINES > 0) {
 			while (lines.size() > MAX_LINES) {
 				lines.remove(0);

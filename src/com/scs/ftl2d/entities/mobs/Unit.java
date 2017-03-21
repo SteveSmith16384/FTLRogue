@@ -71,8 +71,9 @@ public class Unit extends AbstractMob {
 		if (status == Status.Waiting) {
 			AbstractMapSquare sqr = main.gameData.findAdjacentRepairableMapSquare(x, y);
 			if (sqr != null) {
-				sqr.incDamage(-(Main.RND.nextInt(5) + 1));
-				this.main.addMsg(this.getName() + " repairs the " + sqr.getName());
+				int rep = (Main.RND.nextInt(5) + 1);
+				sqr.incDamage(-rep);
+				this.main.addMsg(this.getName() + " repairs the " + sqr.getName() + " by " + rep + "%");
 				status = Status.Repairing;
 			}
 		}

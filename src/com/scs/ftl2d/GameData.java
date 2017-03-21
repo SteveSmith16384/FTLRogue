@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ssmith.astar.IAStarMapInterface;
 
@@ -28,13 +29,13 @@ public class GameData implements IAStarMapInterface {
 	
 	public AbstractMapSquare[][] map;
 	public List<Unit> units = new ArrayList<>();
-	public List<String> msgs = new ArrayList<>();
+	public List<LogMessage> msgs = new ArrayList<>();
 	public List<Point> weaponPoints = new ArrayList<>();
 
 	public Unit currentUnit;
 
-	public List<AbstractEvent> currentEvents = new ArrayList<>(); // todo - make copyonuse
-	public List<AbstractMission> currentMissions = new ArrayList<>(); // todo - make copyonuse
+	public List<AbstractEvent> currentEvents = new CopyOnWriteArrayList<>();
+	public List<AbstractMission> currentMissions = new CopyOnWriteArrayList<>();
 
 	public int turnNo = 0;
 	public int creds = 500;

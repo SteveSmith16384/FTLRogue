@@ -51,9 +51,9 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	private TextCharacter seenChar; 
 	private TextCharacter visibleChar; 
 
-	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<DrawableEntity>();
-	private List<DrawableEntity> entitiesToAdd = new CopyOnWriteArrayList<DrawableEntity>(); // todo - use a global shared list
-	private List<DrawableEntity> entitiesToRemove = new CopyOnWriteArrayList<DrawableEntity>(); // todo - use a global shared list
+	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<>();
+	private List<DrawableEntity> entitiesToAdd = new ArrayList<>();
+	private List<DrawableEntity> entitiesToRemove = new ArrayList<>();
 
 	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {

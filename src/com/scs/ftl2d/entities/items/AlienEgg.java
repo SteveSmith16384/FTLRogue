@@ -10,10 +10,13 @@ import com.scs.ftl2d.entityinterfaces.IExamineable;
 public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
+	
+	private int minHatchTurn;
 
 	public AlienEgg(Main main) {
 		super(main, -1, -1);
 
+		minHatchTurn = main.gameData.turnNo + 10;
 	}
 
 
@@ -31,15 +34,17 @@ public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
 
 	@Override
 	public void process() {
-		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) { // todo - don't hatch straight away
+		if (minHatchTurn <  main.gameData.turnNo) {
+		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
 			Alien a = new Alien(main, this.x, this.y);
 			this.getSq().addEntity(a);
 			this.remove();
 
 			if (Settings.DEBUG || this.seenByPlayer()) {
-				main.addMsg("THE EGG HAS HATCHED!");
+				main.addMsg(3, "THE EGG HAS HATCHED!");
 			}
 		}
+	}
 	}
 
 

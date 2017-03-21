@@ -43,7 +43,7 @@ public class Main {
 		gameData = new GameData(this, new CSVMap("map1.csv"));
 		gameData.init();
 		gameData.recalcVisibleSquares();
-		gameData.msgs.add("Welcome to " + Settings.TITLE);
+		this.addMsg(1, "Welcome to " + Settings.TITLE);
 
 		// Add egg
 		TransportEggMission tem = new TransportEggMission(this);
@@ -88,7 +88,12 @@ public class Main {
 
 
 	public void addMsg(String s) {
-		this.gameData.msgs.add(s);
+		addMsg(1, s);
+	}
+	
+	
+	public void addMsg(int pri, String s) {
+		this.gameData.msgs.add(new LogMessage(pri, s));
 		while (this.gameData.msgs.size() > Settings.MAX_MSGS) {
 			this.gameData.msgs.remove(0);
 		}

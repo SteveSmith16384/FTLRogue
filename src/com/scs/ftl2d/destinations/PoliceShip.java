@@ -41,9 +41,7 @@ public class PoliceShip extends AbstractAnotherShip {
 
 
 	@Override
-	public String processCommand(String cmd) {
-		// TODO Auto-generated method stub
-		return null;
+	public void processCommand(String cmd) {
 	}
 
 }

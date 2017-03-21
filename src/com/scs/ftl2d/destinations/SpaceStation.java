@@ -62,9 +62,7 @@ public class SpaceStation extends AbstractSpaceLocation {
 
 
 	@Override
-	public String processCommand(String cmd) {
-		// TODO Auto-generated method stub
-		return null;
+	public void processCommand(String cmd) {
 	}
 
 }

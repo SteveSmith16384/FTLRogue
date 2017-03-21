@@ -33,8 +33,7 @@ public class EmptyHulk extends AbstractAnotherShip {
 	}
 
 	@Override
-	public String processCommand(String cmd) {
-		return null;
+	public void processCommand(String cmd) {
 	}
 
 }

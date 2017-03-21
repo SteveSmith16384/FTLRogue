@@ -20,22 +20,18 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Oxygen overlay
-When repairing, say how much repaired
+Add sfx lib
 Add toString()s
-After launch, warn if engines at 0
 loadResource instead of directly
 Don't duplicate help
 Make screen wider
 DefaultView - split up into areas
-DONE Show "alert!  meteror storm!"
+DONE Show "alert!  meteor storm!"
 DONE Show stars moving when ship launched
 Don't add walls around airlock
 DONE Improve input method for picking up
 Say "no power"
-Doors not open if vacuum
 Make stats random
-AbstractSpaceLocations have comms menu to talk to them
 
 
 EVENTS
@@ -43,14 +39,15 @@ Enemy ship off starboard bow
 Boarded by enemies
 Meteor storm
 Aliens invade ship
-Installations break down
+Installations break down over time
 Solar flare
 Encounter empty hulk
 Police search ship
+Get taken prisoner
 
 
 LATER
-Highlight important log entries in red
+Taken prisoner
 Mobs pick up weapons if better than what they have
 Drums that explode
 All units can do all actions, but specialists are better
@@ -62,17 +59,15 @@ Have background stories for units
 Player can choose where installations go
 Engines leak coolant if no power
 Mech-suit
-Units wear spacesuit to go into non-oxygen areas
 Hover mouse over square to identify
 Fly ship around space map
 Trade with space station
 Encounter other ships when moving around in space
-Engines - get ship ready for warp
 Send out mayday signal
 Receive mayday signal
 Don't iterate over the whole map?
-LATER Sleeping quarters
-LATER Fuel TODO - Determines ships range
+Sleeping quarters
+Fuel - Determines ships range
 Create ascii images from pngs
 Choose where to fly to
 Self-destruct
@@ -84,7 +79,6 @@ Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon
 Randomly generate maps
-Units move randomly when oxygen low
 Load/save
 Cloaking device
 Escape shuttle
@@ -95,6 +89,7 @@ MISSIONS
 Deliver alien egg
 Give someone a ride (maybe fugitive?)
 Smuggle stuff
+Rescue mission
 
 
 UNIT SKILLS

@@ -4,7 +4,9 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
+import com.scs.ftl2d.entityinterfaces.IExamineable;
 import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
+import com.scs.ftl2d.entityinterfaces.IWearable;
 import com.scs.ftl2d.modules.PlayersShipModule;
 import com.scs.ftl2d.modules.consoles.HelpConsole;
 
@@ -64,6 +66,18 @@ public class DirectControlInputHandler implements IInputHander {
 					shipModule.dropMenu();
 					return false;
 
+				case 'e': // examine
+				{
+					ICarryable obj = main.gameData.currentUnit.currentItem;
+					if (obj != null) {
+						if (obj instanceof IExamineable) {
+							IExamineable ex = (IExamineable)obj;
+							main.addMsg(1, ex.getExamineText());
+						}
+					}
+				}
+				return false;
+
 				case 'f': // Fire ships weapons
 					shipModule.fireShipsWeapons();
 					return true;
@@ -106,12 +120,13 @@ public class DirectControlInputHandler implements IInputHander {
 				{
 					ICarryable obj = main.gameData.currentUnit.currentItem;
 					if (obj != null) {
-						if (obj instanceof IRangedWeapon)
+						if (obj instanceof IRangedWeapon) {
 							this.shipModule.inputHandler = new SelectShotInputHandler(main, this.shipModule, (IRangedWeapon)obj);
+						}
 					}
 					return false;
 				}
-				
+
 				case 't':
 				{
 					ICarryable obj = main.gameData.currentUnit.currentItem;
@@ -122,9 +137,23 @@ public class DirectControlInputHandler implements IInputHander {
 					}
 					return false;
 				}
-				
+
 				case 'w':
-					return true;
+				{
+					ICarryable obj = main.gameData.currentUnit.currentItem;
+					if (obj != null) {
+						if (obj instanceof IWearable) {
+							IWearable ex = (IWearable)obj;
+							this.main.gameData.currentUnit.wearing = ex;
+							main.addMsg("Unit is now wearing the " + obj.getName());
+						} else {
+							main.addMsg("Unit cannot wear " + obj.getName());
+						}
+					} else {
+						main.addMsg("Unit not using anything");
+					}
+				}
+				return true;
 
 				default:
 					main.addMsg("Unknown key " + c);

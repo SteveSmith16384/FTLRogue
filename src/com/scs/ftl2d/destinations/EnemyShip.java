@@ -8,8 +8,14 @@ import com.scs.ftl2d.asciieffects.ShipLaser;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
 public class EnemyShip extends AbstractAnotherShip {
+	
+	private enum Stage {NoContact, Hailed, Attacking, Boarding, WeSurrender }; 
 
 	private static final int SHOT_POWER = 10;
+	
+	private Stage stage = Stage.NoContact;
+	protected int totalTimer = 0;
+	protected int stageTimer = 0;
 
 	public EnemyShip(Main main) {
 		super(main, "Enemy Ship");
@@ -20,7 +26,24 @@ public class EnemyShip extends AbstractAnotherShip {
 
 	@Override
 	public void process() {
-		timer++;
+		totalTimer++;
+		stageTimer++;
+		
+		switch (stage) {
+		case NoContact:
+			break;
+		case Hailed:
+			break;
+		case Attacking:
+			break;
+		case Boarding:
+			break;
+		case WeSurrender:
+			break;
+		default:
+			break;
+		
+		}
 
 		if (this.attacked == false) {
 			if (timer == 2) { // Hail
@@ -32,14 +55,15 @@ public class EnemyShip extends AbstractAnotherShip {
 			} if (timer == 11) { // Hail
 				main.addMsg("\"But will if we must!\"");
 			} else if (timer > 20) { // Attack
-				if (Main.RND.nextInt(8) == 0) {
+				if (Main.RND.nextInt(10) == 0) {
 					// Todo - If player damaged, teleport aboard
 					this.shootPlayer(SHOT_POWER);
 				}
 			}
 		} else {
-			// todo - don't shot every turn!
-			this.shootPlayer(SHOT_POWER);
+			if (Main.RND.nextInt(8) == 0) {
+				this.shootPlayer(SHOT_POWER);
+			}
 		}
 	}
 
@@ -47,33 +71,33 @@ public class EnemyShip extends AbstractAnotherShip {
 	@Override
 	public List<String> getStats() {
 		List<String> stats = new ArrayList<>();
-		stats.add("Damage: " + (int)damage + "%");
+		stats.add("Damage: " + (int)damagePcent + "%");
 		return stats;
 	}
 
 
 	@Override
 	public void shotByPlayer() {
-		this.attacked = true;
-
 		int dam = Main.RND.nextInt(15)+1;
-		this.damage += dam;
+		this.damagePcent += dam;
 		main.addMsg("You inflict " + dam + " on the enemy ship.");
+		if (this.damagePcent >= 100) {
+			this.destroyed();
+		}
+
+		stage = Stage.Attacking;
 
 	}
 
 
 	@Override
 	public String getHailResponse() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Prepare to be destroyed!";
 	}
 
 
 	@Override
-	public String processCommand(String cmd) {
-		// TODO Auto-generated method stub
-		return null;
+	public void processCommand(String cmd) {
 	}
 
 }

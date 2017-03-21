@@ -15,7 +15,7 @@ public class DropItemInputHandler extends AbstractSelectNumberInputHandler imple
 	@Override
 	protected void numberSelected(int i) {
 		ICarryable de = main.gameData.currentUnit.equipment.get(i-1);
-		main.gameData.currentUnit.drop(de, main.gameData.currentUnit.getSq());
+		main.gameData.currentUnit.dropOrThrow(de, main.gameData.currentUnit.getSq());
 		main.addMsg("You drop the " + de.getName());
 		
 	}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
@@ -17,6 +18,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.scs.ftl2d.GameData;
 import com.scs.ftl2d.IGameView;
+import com.scs.ftl2d.LogMessage;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
 import com.scs.ftl2d.entities.DrawableEntity;
@@ -88,9 +90,20 @@ public class DefaultView implements IGameView {
 
 		// Draw stats
 		int y=0;
+
+		if (gameData.currentLocation == null) {
+			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: Deep Space");
+		} else {
+			tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
+			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.name);
+		}
+		
+		tGraphics.setForegroundColor(TextColor.ANSI.WHITE);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
 		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Engines: " + (int)gameData.enginePowerPcent + "%");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Weapons: " + (int)gameData.weaponPowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
 
 		if (gameData.currentLocation == null) {
@@ -165,8 +178,19 @@ public class DefaultView implements IGameView {
 		// Messages
 		y = Math.max(y, gameData.getHeight()+2);
 		tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
-		for (String s : gameData.msgs) {
-			tGraphics.putString(0, y, s);
+		for (LogMessage msg : gameData.msgs) {
+			switch (msg.priority) {
+			case 3:
+				tGraphics.setForegroundColor(TextColor.ANSI.RED);
+				break;
+			case 2:
+				tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
+				break;
+			default:
+				tGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+				break;
+			}
+			tGraphics.putString(0, y, msg.msg);
 			y++;
 		}
 
@@ -209,7 +233,7 @@ public class DefaultView implements IGameView {
 		}
 		y++;
 		tGraphics.putString(0, y, "> " + cmd + "_");
-
+		screen.setCursorPosition(new TerminalPosition(0, y));
 		screen.refresh();
 
 	}
@@ -234,7 +258,11 @@ public class DefaultView implements IGameView {
 	private void moveStars(GameData gameData) {
 		for (Point p : stars) {
 			p.y++;
-			// todo - if drop of bottom, put back to top
+			// if drop of bottom, put back to top
+			if (p.y > gameData.getHeight()) {
+				p.x = Main.RND.nextInt(gameData.getMapWidth());
+				p.y = 0;
+			}
 		}
 	}
 

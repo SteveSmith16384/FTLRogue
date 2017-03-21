@@ -38,9 +38,8 @@ Arrows - move unit
 ? - Help
 c - close door
 d - drop
-e - TODO examine (current/adjacent square)
+e - examine (current/ TODO adjacent square)
 f - fire ships weapons
-g - goto LATER
 h - Change current item
 i - inventory
 l - login to console
@@ -48,10 +47,10 @@ m - TEST move to
 n - Nothing
 o - open door
 p - Pick up
-s - shoot/select (use current item) TODO
-t - throw TODO
+s - shoot
+t - throw
 u - Use, e.g. prime grenade
-w - wear LATER
+w - wear
 
 ASCII CODES
 Numbers - Players units
@@ -261,6 +260,9 @@ public class PlayersShipModule extends AbstractModule {
 				//gameData.currentLocation = new EmptyHulk(main);
 				break;
 
+			}
+			if (gameData.currentLocation != null) {
+				gameData.enginePowerPcent = 0; // Stop engines
 			}
 		} else {
 			gameData.shipSpeed = 0;

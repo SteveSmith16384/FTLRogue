@@ -34,7 +34,7 @@ public class DefaultView implements IGameView {
 	private Terminal terminal;
 	private Screen screen;
 
-	private List<Point> stars;// = new ArrayList<>();
+	private List<Point> stars;
 
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
@@ -105,6 +105,7 @@ public class DefaultView implements IGameView {
 		tGraphics.putString(gameData.getWidth()+2, y++, "Engines: " + (int)gameData.enginePowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapons: " + (int)gameData.weaponPowerPcent + "%");
 		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
+		tGraphics.putString(gameData.getWidth()+2, y++, "Wanted Level: " + (int)gameData.wantedLevel);
 
 		if (gameData.currentLocation == null) {
 			y++;
@@ -232,8 +233,8 @@ public class DefaultView implements IGameView {
 			y++;
 		}
 		y++;
-		tGraphics.putString(0, y, "> " + cmd + "_");
-		screen.setCursorPosition(new TerminalPosition(0, y));
+		tGraphics.putString(0, y, "> " + cmd);
+		screen.setCursorPosition(new TerminalPosition(cmd.length()+2, y));
 		screen.refresh();
 
 	}

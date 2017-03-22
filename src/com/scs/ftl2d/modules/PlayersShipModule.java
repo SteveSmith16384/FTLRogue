@@ -32,26 +32,6 @@ import com.scs.ftl2d.modules.inputmodes.IInputHander;
 import com.scs.ftl2d.modules.inputmodes.PickupItemInputHandler;
 /*
 
-CONTROLS:
-Numbers - select unit
-Arrows - move unit
-? - Help
-c - close door
-d - drop
-e - examine (current/ TODO adjacent square)
-f - fire ships weapons
-h - Change current item
-i - inventory
-l - login to console
-m - TEST move to
-n - Nothing
-o - open door
-p - Pick up
-s - shoot
-t - throw
-u - Use, e.g. prime grenade
-w - wear
-
 ASCII CODES
 Numbers - Players units
 A - OxyGen (air)
@@ -114,9 +94,14 @@ public class PlayersShipModule extends AbstractModule {
 		GameData gameData = this.main.gameData;
 		gameData.turnNo++;
 
-		if (main.checkOxygenFlag) {
+		//if (main.checkOxygenFlag) {  todo - re-add
 			main.checkOxygenFlag = false;
 			gameData.checkOxygen();
+		//}
+		
+		main.gameData.wantedLevel = main.gameData.wantedLevel - 0.01f;
+		if (main.gameData.wantedLevel < 0) {
+			main.gameData.wantedLevel= 0;
 		}
 
 		// Set values to zero as they will be adjusted by the mapsquares
@@ -187,6 +172,7 @@ public class PlayersShipModule extends AbstractModule {
 				IHelpIfCarried help = (IHelpIfCarried)this.main.gameData.currentUnit.currentItem;
 				this.contextSensitiveHelpText.add(help.getHelpIfCarried());
 			}
+			this.contextSensitiveHelpText.add("Press 'd' to drop the current item.");
 		}
 
 		// todo - help based on item in square
@@ -237,6 +223,7 @@ public class PlayersShipModule extends AbstractModule {
 					gameData.distanceToDest = 0;
 					gameData.currentLocation = new Planet(main, "Rigel 7");
 					this.main.addMsg("You have reached your destination!");
+					main.gameStage = 1;
 					// todo - end?
 				}
 			}

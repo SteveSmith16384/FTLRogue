@@ -41,7 +41,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	public int type = MAP_NOTHING;
 	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
-	public boolean hasSmoke = false; // todo - use this
+	public boolean hasSmoke = false;
 	public boolean hasOxygen = true;
 	private float damage_pcent = 0;
 	public int x, y;
@@ -329,4 +329,20 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		}
 		return null;
 	}
+	
+	
+	public AbstractMob getUnit() {
+		for (DrawableEntity de : this.getEntities()) {
+			if (de instanceof AbstractMob) {
+				AbstractMob unit = (AbstractMob) de;
+				if (unit.isAlive()) {
+				return unit;
+				}
+			}
+		}
+		return null;
+	}
+
+
+
 }

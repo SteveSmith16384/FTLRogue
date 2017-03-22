@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public class Planet extends AbstractSpaceLocation {
 
@@ -31,12 +32,12 @@ public class Planet extends AbstractSpaceLocation {
 
 	
 	@Override
-	public String getHailResponse() {
-		return "Welcome to " + this.name + ".  You are cleared for launch.";
+	public void getHailResponse(AbstractConsoleModule console) {
+		console.addLine("Welcome to " + this.name + ".  You are cleared for launch.");
 	}
 
 	@Override
-	public void processCommand(String cmd) {
+	public void processCommand(String cmd, AbstractConsoleModule console) {
 	}
 
 }

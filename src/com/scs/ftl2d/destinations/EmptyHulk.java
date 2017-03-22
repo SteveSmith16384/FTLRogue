@@ -3,6 +3,7 @@ package com.scs.ftl2d.destinations;
 import java.util.List;
 
 import com.scs.ftl2d.Main;
+import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public class EmptyHulk extends AbstractAnotherShip {
 
@@ -28,12 +29,12 @@ public class EmptyHulk extends AbstractAnotherShip {
 
 	
 	@Override
-	public String getHailResponse() {
-		return "[There is no response]";
+	public void getHailResponse(AbstractConsoleModule console) {
+		console.addLine("[There is no response]");
 	}
 
 	@Override
-	public void processCommand(String cmd) {
+	public void processCommand(String cmd, AbstractConsoleModule console) {
 	}
 
 }

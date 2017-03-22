@@ -2,12 +2,12 @@ package com.scs.ftl2d.entities.items;
 
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.Settings;
-import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.mobs.Alien;
 import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IExamineable;
+import com.scs.ftl2d.entityinterfaces.IIllegal;
 
-public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
+public class AlienEgg extends AbstractItem implements ICarryable, IExamineable, IIllegal {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
 	
@@ -57,6 +57,12 @@ public class AlienEgg extends AbstractItem implements ICarryable, IExamineable {
 	@Override
 	public String getExamineText() {
 		return "It is large and green.";
+	}
+
+
+	@Override
+	public int getIllegality() {
+		return 1;
 	}
 
 }

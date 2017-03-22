@@ -39,7 +39,7 @@ public class GameData implements IAStarMapInterface {
 
 	public int turnNo = 0;
 	public int creds = 500;
-	public int wantedLevel = 0;
+	public float wantedLevel = 0;
 	public float oxygenLevel = 100f;
 
 	public int shieldPowerPcent = 33;
@@ -164,7 +164,7 @@ public class GameData implements IAStarMapInterface {
 		return null;
 	}
 
-
+/*
 	public AbstractMob getUnitAt(int x, int y) {
 		//List<DrawableEntity> list = map[x][y].items;
 		for (DrawableEntity de : map[x][y].getEntities()) {
@@ -175,7 +175,7 @@ public class GameData implements IAStarMapInterface {
 		}
 		return null;
 	}
-
+*/
 
 	public void incOxygenLevel(float f) {
 		this.oxygenLevel += f;
@@ -216,7 +216,7 @@ public class GameData implements IAStarMapInterface {
 		for (int y2=y-1 ; y2<=y+1 ; y2++) {
 			for (int x2=x-1 ; x2<=x+1 ; x2++) {
 				try {
-					if (x2 != x && y2 != y) {
+					if (x2 != x || y2 != y) {
 						list.add(map[x2][y2]);
 					}
 				} catch (ArrayIndexOutOfBoundsException ex) {
@@ -229,7 +229,7 @@ public class GameData implements IAStarMapInterface {
 	}
 
 
-	public void checkOxygen() {
+	public void checkOxygen() { // todo - check
 		// Set all as oxygen
 		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {
@@ -241,12 +241,15 @@ public class GameData implements IAStarMapInterface {
 		List<AbstractMapSquare> waiting = new ArrayList<>();
 		List<AbstractMapSquare> processed = new ArrayList<>();
 
-		waiting.add(map[0][0]);
+		waiting.add(map[0][0]); // 0,0 is always space
 
 		while (!waiting.isEmpty()) {
 			AbstractMapSquare sq = waiting.remove(0);
 			processed.add(sq);
 			sq.hasOxygen = false;
+			if (Settings.DEBUG) {
+				Main.p("No oxygen in " + sq.x + "," + sq.y);
+			}
 
 			List<AbstractMapSquare> adj = getAdjacentSquares(sq.x, sq.y);
 			for (AbstractMapSquare asq : adj) {

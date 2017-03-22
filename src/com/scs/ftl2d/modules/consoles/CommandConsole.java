@@ -102,7 +102,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				break;
 
 			case "hail":
-				// todo
+				this.main.setModule(new HailConsole(main, this));
 				break;
 
 			case "exit":
@@ -114,11 +114,11 @@ public class CommandConsole extends AbstractConsoleModule {
 
 			default:
 				super.clearLines();
-				super.addLine("Unable to understand '" + cmd + "'");
+				super.addLine("Syntax error in '" + cmd + "'");
 			}
 		} catch (Exception ex) {
 			super.clearLines();
-			super.addLine("Unable to understand '" + cmd + "': " + ex.getMessage());
+			super.addLine("Syntax error in '" + cmd + "': " + ex.getMessage());
 			ex.printStackTrace();
 		}
 		super.addLine("");

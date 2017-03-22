@@ -6,6 +6,7 @@ import java.util.List;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.entities.mobs.PoliceMob;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public class SpaceStation extends AbstractSpaceLocation {
 
@@ -56,13 +57,13 @@ public class SpaceStation extends AbstractSpaceLocation {
 
 
 	@Override
-	public String getHailResponse() {
-		return "Welcome to " + this.name + ".  You are cleared for launch.";
+	public void getHailResponse(AbstractConsoleModule console) {
+		console.addLine("Welcome to " + this.name + ".  You are cleared for launch.");
 	}
 
 
 	@Override
-	public void processCommand(String cmd) {
+	public void processCommand(String cmd, AbstractConsoleModule console) {
 	}
 
 }

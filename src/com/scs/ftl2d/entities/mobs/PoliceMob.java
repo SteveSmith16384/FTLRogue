@@ -14,14 +14,10 @@ public class PoliceMob extends AbstractMob {
 	}
 
 
-	/*@Override
-	public void preProcess() {
-
-	}*/
-
-
 	@Override
 	public void process() {
+		super.process();
+		
 		AbstractMob mob = super.getClosestVisibleEnemy();
 		if (mob != null) {
 			this.moveTowards(mob.x, mob.y);

@@ -6,6 +6,7 @@ import com.scs.ftl2d.IProcessable;
 import com.scs.ftl2d.Main;
 import com.scs.ftl2d.asciieffects.ShipLaser;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public abstract class AbstractSpaceLocation implements IProcessable {
 
@@ -49,9 +50,9 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 	}
 
 
-	public abstract String getHailResponse();
+	public abstract void getHailResponse(AbstractConsoleModule console);
 
-	public abstract void processCommand(String cmd);
+	public abstract void processCommand(String cmd, AbstractConsoleModule console);
 
 	public abstract void shotByPlayer();
 

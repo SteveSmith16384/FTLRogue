@@ -20,26 +20,24 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Police confiscate illegal items
 Add sfx lib
-Add toString()s
-loadResource instead of directly
 Don't duplicate help
 Make screen wider
 DefaultView - split up into areas
 DONE Show "alert!  meteor storm!"
 DONE Show stars moving when ship launched
-Don't add walls around airlock
+DONE Don't add walls around airlock
 DONE Improve input method for picking up
 Say "no power"
 Make stats random
 
 
 EVENTS
-Enemy ship off starboard bow
-Boarded by enemies
-Meteor storm
+DONE Enemy ship off starboard bow
+DONE Boarded by enemies
+DONE Meteor storm
 Aliens invade ship
-Installations break down over time
 Solar flare
 Encounter empty hulk
 Police search ship
@@ -80,6 +78,7 @@ Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon
 Randomly generate maps
 Load/save
+Smoke
 Cloaking device
 Escape shuttle
 Units get tired - sleep in bed to regen

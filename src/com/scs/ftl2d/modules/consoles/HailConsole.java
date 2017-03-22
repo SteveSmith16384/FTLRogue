@@ -8,17 +8,19 @@ public class HailConsole extends AbstractConsoleModule {
 
 	private AbstractSpaceLocation loc;
 
-	public HailConsole(Main main, AbstractModule prev, AbstractSpaceLocation _loc) {
+	public HailConsole(Main main, AbstractModule prev) {
 		super(main, prev);
 		
-		loc =_loc;
+		loc = main.gameData.currentLocation;
 
 		super.addLine("Hailing " + loc.name + "...");
 		super.addLine("");
 		super.addLine("(Enter 'exit' to return)");
 		super.addLine("");
-		super.addLine(loc.getHailResponse());
+		//super.addLine(loc.getHailResponse());
+		loc.getHailResponse(this);
 	}
+	
 
 	@Override
 	protected void processCommand(String cmd) {
@@ -31,14 +33,15 @@ public class HailConsole extends AbstractConsoleModule {
 				this.main.setModule(this.prevModule);
 				return;
 			default:
-				loc.processCommand(cmd);
+				loc.processCommand(cmd, this);
 			}
 		} catch (Exception ex) {
 			super.addLine("Unable to understand: " + ex.getMessage());
 			ex.printStackTrace();
 		}
 		super.addLine("");
-		super.addLine(loc.getHailResponse());
+		//super.addLine(loc.getHailResponse());
+		loc.getHailResponse(this);
 	}
 
 

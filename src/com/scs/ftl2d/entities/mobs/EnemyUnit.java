@@ -23,6 +23,7 @@ public class EnemyUnit extends AbstractMob {
 
 	@Override
 	public void process() {
+		super.process();
 		boolean shooting = false;
 		if (this.isUsingGun()) {
 			shooting = this.checkForShooting();

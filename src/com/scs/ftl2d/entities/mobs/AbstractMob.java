@@ -48,6 +48,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public ICarryable currentItem;
 	protected boolean autoOpenDoors;
 	public IWearable wearing;
+	public int unconciouseTimer = 0;
 
 	public List<Point> astarRoute;
 
@@ -72,11 +73,13 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	/*@Override
-	public void preProcess() {
-
-	}*/
-
+	@Override
+	public void process() {
+		if (this.unconciouseTimer > 0) {
+			this.unconciouseTimer--;
+		}
+	}
+	
 
 	@Override
 	public char getChar() {
@@ -138,7 +141,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
 		if (newsq.isSquareTraversable()) {
-			AbstractMob other = main.gameData.getUnitAt(x+offx, y+offy);
+			AbstractMob other = newsq.getUnit();// main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				if (newsq instanceof MapSquareDoor) {
 					if (this.autoOpenDoors) {
@@ -384,6 +387,10 @@ public abstract class AbstractMob extends DrawableEntity {
 	public String toString() {
 		return this.getClass().getSimpleName() + ":" + name;
 	}
+
 	
+	public boolean isAlive() {
+		return this.health > 0;
+	}
 }
 

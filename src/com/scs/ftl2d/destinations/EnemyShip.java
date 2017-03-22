@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.ftl2d.Main;
-import com.scs.ftl2d.asciieffects.ShipLaser;
+import com.scs.ftl2d.entities.mobs.AbstractMob;
+import com.scs.ftl2d.entities.mobs.EnemyUnit;
 import com.scs.ftl2d.map.AbstractMapSquare;
+import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public class EnemyShip extends AbstractAnotherShip {
-	
-	private enum Stage {NoContact, Hailed, Attacking, Boarding, WeSurrender }; 
+
+	private enum Stage {Hailed, Attacking, PlayerSurrendered }; //NoContact,  
 
 	private static final int SHOT_POWER = 10;
-	
-	private Stage stage = Stage.NoContact;
+	private static final int STAGE_TIMER_INTERVAL = 10;
+
+	private Stage stage = Stage.Hailed;
 	protected int totalTimer = 0;
 	protected int stageTimer = 0;
+	protected List<AbstractMob> unitsTeleported = new ArrayList<>();
 
 	public EnemyShip(Main main) {
 		super(main, "Enemy Ship");
@@ -28,45 +32,46 @@ public class EnemyShip extends AbstractAnotherShip {
 	public void process() {
 		totalTimer++;
 		stageTimer++;
-		
-		switch (stage) {
-		case NoContact:
-			break;
-		case Hailed:
-			break;
-		case Attacking:
-			break;
-		case Boarding:
-			break;
-		case WeSurrender:
-			break;
-		default:
-			break;
-		
-		}
 
-		/*todo if (this.attacked == false) {
-			if (timer == 2) { // Hail
-				main.addMsg("The ship enemy ship hails you...");
-			} if (timer == 3) { // Hail
-				main.addMsg("\"Please surrender or we will attack.\"");
-			} if (timer == 10) { // Hail
-				main.addMsg("\"We do not want to destroy you...\"");
-			} if (timer == 11) { // Hail
-				main.addMsg("\"But will if we must!\"");
-			} else if (timer > 20) { // Attack
-				if (Main.RND.nextInt(10) == 0) {
-					// Todo - If player damaged, teleport aboard
-					this.shootPlayer(SHOT_POWER);
-				}
+		switch (stage) {
+		case Hailed:
+			if (stageTimer > STAGE_TIMER_INTERVAL) {
+				stageTimer = 0;
+				stage = Stage.Attacking;
 			}
-		} else {
+			break;
+
+		case Attacking:
 			if (Main.RND.nextInt(8) == 0) {
 				this.shootPlayer(SHOT_POWER);
 			}
-		}*/
+			teleportOntoShip();
+			break;
+
+		case PlayerSurrendered:
+			teleportOntoShip(); // todo - check if dead
+			break;
+
+		default:
+			throw new RuntimeException("Unknown stage: " + stage);
+
+		}
+
 	}
 
+
+	private void teleportOntoShip() {
+		if (this.unitsTeleported.size() < 2) {
+			if (Main.RND.nextInt(5) == 0) {
+				AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+				if (sq.getUnit() == null) {
+					EnemyUnit unit = new EnemyUnit(main);
+					this.unitsTeleported.add(unit);
+					sq.addEntity(unit);
+				}
+			}
+		}
+	}
 
 	@Override
 	public List<String> getStats() {
@@ -91,13 +96,54 @@ public class EnemyShip extends AbstractAnotherShip {
 
 
 	@Override
-	public String getHailResponse() {
-		return "Prepare to be destroyed!";
+	public void getHailResponse(AbstractConsoleModule console) {
+		switch (stage) {
+		case Hailed:
+			console.addLine("We will destroy you if you do not surrender.  Do you surrender? (y/n)");
+
+		case Attacking:
+			console.addLine("We will destroy you for your insolence!");
+
+		case PlayerSurrendered:
+			console.addLine("It was a wise choice to surrender.");
+
+		default:
+			throw new RuntimeException("Unknown stage: " + stage);
+
+		}
 	}
 
 
 	@Override
-	public void processCommand(String cmd) {
+	public void processCommand(String cmd, AbstractConsoleModule console) {
+		switch (stage) {
+		case Hailed:
+			switch (cmd) {
+			case "y":
+			case "yes":
+				this.stage = Stage.PlayerSurrendered;
+				console.addLine("Surrendering was you only choice!  Prepare to be boarded.");
+				break;
+
+			case "n":
+			case "no":
+				this.stage = Stage.Attacking;
+				console.addLine("You will regret your decision!");
+				break;
+			}
+			break;
+
+		case Attacking:
+			console.addLine("We have nothing to say to you except DIE!");
+			break;
+
+		case PlayerSurrendered:
+			break;
+
+		default:
+			throw new RuntimeException("Unknown stage: " + stage);
+
+		}
 	}
 
 }

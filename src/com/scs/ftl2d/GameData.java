@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import ssmith.astar.IAStarMapInterface;
 
 import com.scs.ftl2d.destinations.AbstractSpaceLocation;
-import com.scs.ftl2d.destinations.SpaceStation;
+import com.scs.ftl2d.destinations.StartingOutpost;
 import com.scs.ftl2d.entities.DrawableEntity;
 import com.scs.ftl2d.entities.items.Knife;
 import com.scs.ftl2d.entities.items.MediKit;
@@ -34,7 +34,7 @@ public class GameData implements IAStarMapInterface {
 
 	public Unit currentUnit;
 
-	public List<AbstractEvent> currentEvents = new CopyOnWriteArrayList<>();
+	public AbstractEvent currentEvent;// = new CopyOnWriteArrayList<>();
 	public List<AbstractMission> currentMissions = new CopyOnWriteArrayList<>();
 
 	public int turnNo = 0;
@@ -96,7 +96,7 @@ public class GameData implements IAStarMapInterface {
 			this.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR).addEntity(item);
 		}
 		
-		this.currentLocation = new SpaceStation(main, "Station Zybex");
+		this.currentLocation = new StartingOutpost(main, "Station Zybex");
 	}
 
 
@@ -199,13 +199,20 @@ public class GameData implements IAStarMapInterface {
 
 
 	public AbstractMapSquare getRandomMapSquare(int _type) {
-		while (true) {
-			int x = Main.RND.nextInt(getWidth());
-			int y = Main.RND.nextInt(getHeight());
-			AbstractMapSquare sq = map[x][y];
-			if (sq.type == _type) {
-				return sq;
+		List<AbstractMapSquare> squares = new ArrayList<>();
+		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
+			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = main.gameData.map[x][y];
+				if (sq.type == _type) {
+					squares.add(sq);
+				}
 			}
+		}
+
+		if (squares.isEmpty()) {
+			return null;
+		} else {
+			return squares.get(Main.RND.nextInt(squares.size()));
 		}
 	}
 
@@ -229,7 +236,7 @@ public class GameData implements IAStarMapInterface {
 	}
 
 
-	public void checkOxygen() { // todo - check
+	public void checkOxygen() {
 		// Set all as oxygen
 		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {

@@ -8,8 +8,8 @@ import java.util.Random;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.ftl2d.asciieffects.AbstractAsciiEffect;
+import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.map.CSVMap;
-import com.scs.ftl2d.missions.TransportEggMission;
 import com.scs.ftl2d.modules.AbstractModule;
 import com.scs.ftl2d.modules.PlayersShipModule;
 import com.scs.ftl2d.views.DefaultView;
@@ -44,11 +44,6 @@ public class Main {
 		gameData.init();
 		gameData.recalcVisibleSquares();
 		this.addMsg(1, "Welcome to " + Settings.TITLE);
-
-		// Add egg
-		TransportEggMission tem = new TransportEggMission(this);
-		tem.accepted();
-		this.gameData.currentMissions.add(tem);
 
 	}
 
@@ -87,6 +82,12 @@ public class Main {
 	}
 
 
+	public void addMsgIfSeen(AbstractMapSquare sq, int pri, String s) {
+		if (sq.visible == AbstractMapSquare.VisType.Visible) {
+			addMsg(pri, s);
+		}
+	}
+	
 	public void addMsg(String s) {
 		addMsg(1, s);
 	}

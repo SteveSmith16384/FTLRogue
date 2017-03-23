@@ -20,6 +20,8 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Find random map gen
+Test oxygen
 Police confiscate illegal items
 Add sfx lib
 Don't duplicate help
@@ -45,7 +47,8 @@ Get taken prisoner
 
 
 LATER
-Taken prisoner
+Teleport either on teleoprter, or next to it to teleport something
+Incur fines
 Mobs pick up weapons if better than what they have
 Drums that explode
 All units can do all actions, but specialists are better
@@ -70,22 +73,19 @@ Create ascii images from pngs
 Choose where to fly to
 Self-destruct
 Board enemy ships
-Dungeon gen
-grenades
 Engines explode when damaged 100%
 Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode
 Torpedo bay: launch weapon
 Randomly generate maps
 Load/save
-Smoke
 Cloaking device
 Escape shuttle
 Units get tired - sleep in bed to regen
 
 
 MISSIONS
-Deliver alien egg
+DONE Deliver alien egg
 Give someone a ride (maybe fugitive?)
 Smuggle stuff
 Rescue mission

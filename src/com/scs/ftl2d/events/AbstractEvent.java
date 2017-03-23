@@ -13,7 +13,7 @@ public abstract class AbstractEvent implements IProcessable {
 
 	
 	public void remove() {
-		this.main.gameData.currentEvents.remove(this);
+		this.main.gameData.currentEvent = null;//s.remove(this);
 	}
 
 

@@ -188,7 +188,12 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		return false;
 	}
-
+	
+	
+	public void shoot(AbstractMob target, IRangedWeapon gun) {
+		this.shoot(new Line(this.x, this.y, target.x, target.y), gun);
+	}
+	
 
 	public void shoot(List<Point> line, IRangedWeapon gun) {
 		Iterator<Point> it = line.iterator();
@@ -240,6 +245,13 @@ public abstract class AbstractMob extends DrawableEntity {
 			main.addMsg(this.name + " has " + verb + " " + defender.name + " for " + dam);
 		}
 		defender.incHealth(-dam, this.getName());
+		
+		defender.attackedBy(this);
+	}
+	
+	
+	protected void attackedBy(AbstractMob attacker) {
+		// Override if req
 	}
 
 
@@ -281,14 +293,14 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void died(String reason) {
-		main.addMsg(this.getName() + " has died of " + reason);
+		main.addMsg(3, this.getName() + " has died of " + reason);
 		for(ICarryable eq : this.equipment) {
 			super.getSq().addEntity((DrawableEntity)eq); // Drop the equipment
 		}
 		super.getSq().addEntity(new Corpse(main, this.getName()));
 		main.gameData.units.remove(this); // Remove from list if ours
 		if (main.gameData.units.isEmpty()) {
-			main.addMsg("GAME OVER!");
+			main.addMsg(3, "GAME OVER!");
 			main.gameStage = 1;
 		}
 		remove();
@@ -392,5 +404,18 @@ public abstract class AbstractMob extends DrawableEntity {
 	public boolean isAlive() {
 		return this.health > 0;
 	}
+
+	
+	public IRangedWeapon getGun() {
+		if (this.currentItem instanceof IRangedWeapon) {
+			return (IRangedWeapon) currentItem;
+		}
+		return null;
+	}
+
+
+	/*public DrawableEntity getCarriedItemOfType(Class clazz) {
+		
+	}*/
 }
 

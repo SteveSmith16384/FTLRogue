@@ -11,7 +11,7 @@ import com.scs.ftl2d.modules.consoles.AbstractConsoleModule;
 
 public class EnemyShip extends AbstractAnotherShip {
 
-	private enum Stage {Hailed, Attacking, PlayerSurrendered }; //NoContact,  
+	private enum Stage {Hailed, Attacking, PlayerSurrendered };  
 
 	private static final int SHOT_POWER = 10;
 	private static final int STAGE_TIMER_INTERVAL = 10;
@@ -49,7 +49,7 @@ public class EnemyShip extends AbstractAnotherShip {
 			break;
 
 		case PlayerSurrendered:
-			teleportOntoShip(); // todo - check if dead
+			teleportOntoShip();
 			break;
 
 		default:
@@ -70,8 +70,18 @@ public class EnemyShip extends AbstractAnotherShip {
 					sq.addEntity(unit);
 				}
 			}
+		} else {
+			// Check if all dead
+			for (AbstractMob mob : this.unitsTeleported) {
+				if (mob.isAlive()) {
+					return;
+				}
+			}
+			// Got this far, all dead!
+			main.addMsg(3, "The enemy ship disappears");
 		}
 	}
+
 
 	@Override
 	public List<String> getStats() {
@@ -91,7 +101,6 @@ public class EnemyShip extends AbstractAnotherShip {
 		}
 
 		stage = Stage.Attacking;
-
 	}
 
 
@@ -100,12 +109,15 @@ public class EnemyShip extends AbstractAnotherShip {
 		switch (stage) {
 		case Hailed:
 			console.addLine("We will destroy you if you do not surrender.  Do you surrender? (y/n)");
-
+			break;
+			
 		case Attacking:
 			console.addLine("We will destroy you for your insolence!");
+			break;
 
 		case PlayerSurrendered:
 			console.addLine("It was a wise choice to surrender.");
+			break;
 
 		default:
 			throw new RuntimeException("Unknown stage: " + stage);

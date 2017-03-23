@@ -7,6 +7,7 @@ import com.scs.ftl2d.entityinterfaces.ICarryable;
 import com.scs.ftl2d.entityinterfaces.IExamineable;
 import com.scs.ftl2d.entityinterfaces.IRangedWeapon;
 import com.scs.ftl2d.entityinterfaces.IWearable;
+import com.scs.ftl2d.map.AbstractMapSquare;
 import com.scs.ftl2d.modules.PlayersShipModule;
 import com.scs.ftl2d.modules.consoles.HelpConsole;
 
@@ -72,7 +73,15 @@ public class DirectControlInputHandler implements IInputHander {
 					if (obj != null) {
 						if (obj instanceof IExamineable) {
 							IExamineable ex = (IExamineable)obj;
-							main.addMsg(1, ex.getExamineText());
+							main.addMsg(1, obj.getName() + ": " + ex.getExamineText());
+						}
+					}
+					
+					// Adjacent squares
+					for (AbstractMapSquare sq : main.gameData.getAdjacentSquares(main.gameData.currentUnit.x, main.gameData.currentUnit.y)) {
+						String s = sq.getExamineText();
+						if (s.length() > 0) {
+							main.addMsg(1, obj.getName() + ": " + sq.getExamineText());
 						}
 					}
 				}

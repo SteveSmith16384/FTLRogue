@@ -32,6 +32,7 @@ public class EnemyUnit extends AbstractMob {
 			List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.x,  this.y);
 			for (AbstractMapSquare sq : squares) {
 				if (this.isSabotagable(sq)) {
+					main.addMsgIfSeen(sq, 2, "You seen the enemy sabotaging the ship!");
 					sq.incDamage(Main.RND.nextInt(5));
 				}
 			}

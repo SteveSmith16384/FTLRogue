@@ -94,10 +94,10 @@ public class PlayersShipModule extends AbstractModule {
 		GameData gameData = this.main.gameData;
 		gameData.turnNo++;
 
-		//if (main.checkOxygenFlag) {  todo - re-add
+		if (main.checkOxygenFlag) {
 			main.checkOxygenFlag = false;
 			gameData.checkOxygen();
-		//}
+		}
 		
 		main.gameData.wantedLevel = main.gameData.wantedLevel - 0.01f;
 		if (main.gameData.wantedLevel < 0) {
@@ -125,10 +125,8 @@ public class PlayersShipModule extends AbstractModule {
 			}			
 		}
 
-		for(AbstractEvent ev : gameData.currentEvents) {
-			ev.process();
-		}
-
+		gameData.currentEvent.process();
+		
 		for(AbstractMission m : gameData.currentMissions) {
 			m.process();
 		}
@@ -229,6 +227,7 @@ public class PlayersShipModule extends AbstractModule {
 			}
 
 			// Any encounters?
+			if (main.gameData.currentEvent == null) {
 			int i = Main.RND.nextInt(10);
 			switch (i) {
 			case 0:
@@ -236,7 +235,7 @@ public class PlayersShipModule extends AbstractModule {
 				break;
 
 			case 1:
-				gameData.currentEvents.add(new MeteorStorm(main));
+				gameData.currentEvent = new MeteorStorm(main);
 				break;
 
 			case 2:
@@ -248,6 +247,8 @@ public class PlayersShipModule extends AbstractModule {
 				break;
 
 			}
+			}
+			
 			if (gameData.currentLocation != null) {
 				gameData.enginePowerPcent = 0; // Stop engines
 			}

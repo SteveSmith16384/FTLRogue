@@ -7,13 +7,13 @@ import com.scs.ftl2d.modules.PlayersShipModule;
 public abstract class AbstractSelectNumberInputHandler implements IInputHander {
 
 	protected Main main;
-	protected PlayersShipModule shipModule;
+	protected PlayersShipModule playersShipModule;
 
 	public AbstractSelectNumberInputHandler(Main _main, PlayersShipModule psm) {
 		super();
 		
 		main = _main;
-		shipModule = psm;
+		playersShipModule = psm;
 	}
 
 
@@ -36,7 +36,7 @@ public abstract class AbstractSelectNumberInputHandler implements IInputHander {
 		case 'x':
 			break;
 		}
-		this.shipModule.restoreDirectControlIH();
+		this.playersShipModule.restoreDirectControlIH();
 		return true;
 	}
 	

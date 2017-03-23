@@ -167,7 +167,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 							continue;
 						}
 					}
-						
+					
 					am.died("asphyxiation");
 				}
 			}
@@ -286,12 +286,6 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	}
 
 	
-/*	@Override
-	public int compare(DrawableEntity de1, DrawableEntity de2) {
-		return de2.z - de1.z;
-	}
-*/
-
 	public void addEntity(DrawableEntity de) {
 		de.x = x;
 		de.y = y;
@@ -344,5 +338,13 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	}
 
 
+	public String getExamineText() {
+		if (this.damage_pcent > 0) {
+			return "The " + this.getName() + " is " + damage_pcent + "% damaged.";
+		}
+		return "";
+		//String s = this.getSubExamineText();
+		//return s;
+	}
 
 }

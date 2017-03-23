@@ -16,7 +16,7 @@ public class HelpConsole extends AbstractConsoleModule {
 		this.addLine("? - Help");
 		this.addLine("c - close door");
 		this.addLine("d - drop");
-		this.addLine("e - examine (current/ TODO adjacent square)");
+		this.addLine("e - examine (current/adjacent squares)");
 		this.addLine("f - fire ships weapons");
 		this.addLine("h - Change current item");
 		this.addLine("i - inventory");

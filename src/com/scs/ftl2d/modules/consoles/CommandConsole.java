@@ -28,7 +28,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		super.addLine("'engines <0-100>' to set engine level (currently " + (int)main.gameData.enginePowerPcent + "%)");
 		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
 		if (main.gameData.currentLocation != null) {
-			super.addLine("'launch' to launch the ship");
+			super.addLine("'launch' to launch the ship towards the next destination");
 			super.addLine("'hail' to hail " + main.gameData.currentLocation.name);
 		}
 		super.addLine("'airlock open/close' to open or close the main airlock");

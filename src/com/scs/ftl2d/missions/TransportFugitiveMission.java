@@ -5,11 +5,11 @@ import com.scs.ftl2d.destinations.AbstractSpaceLocation;
 import com.scs.ftl2d.entities.items.AlienEgg;
 import com.scs.ftl2d.map.AbstractMapSquare;
 
-public class TransportEggMission extends AbstractMission {
+public class TransportFugitiveMission extends AbstractMission {
 	
 	private AbstractSpaceLocation destination;
 
-	public TransportEggMission(Main main) {
+	public TransportFugitiveMission(Main main) {
 		super(main);
 		
 		//destination = main.gameData.starmap.getRandomLocation(main.gameData.currentLocation);
@@ -18,7 +18,7 @@ public class TransportEggMission extends AbstractMission {
 
 	@Override
 	public String getDescription() {
-		return "Transport an egg to " + destination.name + " for " + this.getReward() + " creds";
+		return "Transport a fugitive to " + destination.name + " for " + this.getReward() + " creds";
 	}
 
 
@@ -30,10 +30,7 @@ public class TransportEggMission extends AbstractMission {
 
 	@Override
 	public void accepted() {
-		//main.addMsg("The egg has been teleported onto your ship.");
-		AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
-		sq.addEntity(new AlienEgg(main));
-		//main.addMsg("We look forward to receiving it.  Please treat it carefully.  ");
+		// todo
 	}
 
 

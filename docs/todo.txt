@@ -20,18 +20,13 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-Find random map gen
+Add licence
+Set up web page - add screenshots
+DONE Improve help
 Test oxygen
-Police confiscate illegal items
-Add sfx lib
 Don't duplicate help
 Make screen wider
 DefaultView - split up into areas
-DONE Show "alert!  meteor storm!"
-DONE Show stars moving when ship launched
-DONE Don't add walls around airlock
-DONE Improve input method for picking up
-Say "no power"
 Make stats random
 
 
@@ -42,15 +37,19 @@ DONE Meteor storm
 Aliens invade ship
 Solar flare
 Encounter empty hulk
-Police search ship
+DONE Police search ship
 Get taken prisoner
 
 
 LATER
 Teleport either on teleoprter, or next to it to teleport something
+Add music
+Add sfx
 Incur fines
+Find random map gen
 Mobs pick up weapons if better than what they have
 Drums that explode
+Police confiscate illegal items
 All units can do all actions, but specialists are better
 Buy crewmembers
 Can board and take control of enemy ships

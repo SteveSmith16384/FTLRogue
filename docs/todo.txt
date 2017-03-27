@@ -1,4 +1,3 @@
-FTL
 Astro Commander
 Keep it simple at first!
 
@@ -20,13 +19,20 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+<<<<<<< HEAD
 Make screen wider
 DefaultView - split up into areas
+=======
+Improve DefaultView
+>>>>>>> 2f6a4b57c156362520bebb49805350be2a62b268
 Add licence
 Set up web page - add screenshots
 DONE Improve help
-Test oxygen
 Don't duplicate help
+<<<<<<< HEAD
+=======
+Make screen wider
+>>>>>>> 2f6a4b57c156362520bebb49805350be2a62b268
 Make stats random
 
 
@@ -75,7 +81,6 @@ Board enemy ships
 Engines explode when damaged 100%
 Overlays - damage, oxygen, unit routes
 Scanners: see what's going on in flying mode
-Torpedo bay: launch weapon
 Randomly generate maps
 Load/save
 Cloaking device

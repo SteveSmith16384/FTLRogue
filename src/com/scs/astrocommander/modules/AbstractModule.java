@@ -1,12 +1,10 @@
 package com.scs.astrocommander.modules;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
 
 public abstract class AbstractModule {
 

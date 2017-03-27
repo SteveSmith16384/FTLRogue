@@ -26,6 +26,11 @@ import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.map.AbstractMapSquare;
 
+/*
+ * Map   Stats   Help
+ * 
+ * Log
+ */
 public class DefaultView implements IGameView {
 	
 	private static final int WIDTH = 70;
@@ -92,48 +97,51 @@ public class DefaultView implements IGameView {
 			effect.drawChars(this);
 		}
 
+		
 		// Draw stats
-		int y=0;
+		int x = gameData.getWidth()+2;
+		int y = 0;
 
 		if (gameData.currentLocation == null) {
-			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: Deep Space");
+			tGraphics.putString(x, y++, "LOCATION: Deep Space");
 		} else {
 			tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
-			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.name);
+			tGraphics.putString(x, y++, "LOCATION: " + gameData.currentLocation.getName());
 		}
 
 		tGraphics.setForegroundColor(TextColor.ANSI.WHITE);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Turn " + gameData.turnNo);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Engines: " + (int)gameData.enginePowerPcent + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Weapons: " + (int)gameData.weaponPowerPcent + "%");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Wanted Level: " + (int)gameData.wantedLevel);
+		tGraphics.putString(x, y++, "Turn " + gameData.turnNo);
+		tGraphics.putString(x, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
+		tGraphics.putString(x, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
+		tGraphics.putString(x, y++, "Engines: " + (int)gameData.enginePowerPcent + "%");
+		tGraphics.putString(x, y++, "Weapons: " + (int)gameData.weaponPowerPcent + "%");
+		tGraphics.putString(x, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
+		tGraphics.putString(x, y++, "Wanted Level: " + (int)gameData.wantedLevel);
 
 		if (gameData.currentLocation == null) {
 			y++;
-			tGraphics.putString(gameData.getWidth()+2, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
-			tGraphics.putString(gameData.getWidth()+2, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
+			tGraphics.putString(x, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
+			tGraphics.putString(x, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
 		}
 
 		y++;
-		tGraphics.putString(gameData.getWidth()+2, y++, "POWER");
-		tGraphics.putString(gameData.getWidth()+2, y++, "Total Power: " + (int)gameData.totalPower);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Power Gain/t: " + (int)gameData.powerGainedPerTurn);
-		tGraphics.putString(gameData.getWidth()+2, y++, "Power Used/t: " + (int)gameData.powerUsedPerTurn);
+		tGraphics.putString(x, y++, "POWER");
+		tGraphics.putString(x, y++, "Total Power: " + (int)gameData.totalPower);
+		tGraphics.putString(x, y++, "Power Gain/t: " + (int)gameData.powerGainedPerTurn);
+		tGraphics.putString(x, y++, "Power Used/t: " + (int)gameData.powerUsedPerTurn);
 
 		// Draw mapsquares key
 		y++;
 		for (String tc : seenSquares.keySet()) {
 			tGraphics.setCharacter(gameData.getWidth()+2, y, seenSquares.get(tc));
-			tGraphics.putString(gameData.getWidth()+4, y, tc);
+			tGraphics.putString(x+2, y, tc);
 			y++;
 		}
 
 		// Draw units
-		y++;
-		tGraphics.putString(gameData.getWidth()+2, y++, "CREW");
+		x = 30;
+		y=0;
+		tGraphics.putString(x, y++, "CREW");
 		for (Unit unit : gameData.units) {
 			StringBuilder str = new StringBuilder();
 			if (unit == gameData.currentUnit) {
@@ -142,11 +150,11 @@ public class DefaultView implements IGameView {
 			str.append(unit.getName()).append(" ");
 			str.append("H:" + (int)unit.health + "%").append(" ");
 			str.append("F:" + (int)unit.food);
-			tGraphics.putString(gameData.getWidth()+2, y++, str.toString());
+			tGraphics.putString(x, y++, str.toString());
 		}
 
 		if (gameData.currentUnit.wearing != null) {
-			tGraphics.putString(gameData.getWidth()+2, y++, "Unit is wearing " + gameData.currentUnit.wearing.hashCode());
+			tGraphics.putString(x, y++, "Unit is wearing " + gameData.currentUnit.wearing.hashCode());
 		}
 
 		// Say what items the unit is near 
@@ -157,16 +165,16 @@ public class DefaultView implements IGameView {
 			}
 		}
 		if (itemlist.length() > 0) {
-			tGraphics.putString(gameData.getWidth()+2, y++, "Unit can see " + itemlist.toString());
+			tGraphics.putString(x, y++, "Unit can see " + itemlist.toString());
 		}
 
 		// Location stats:
 		if (gameData.currentLocation != null) {
 			y++;
-			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.name);
+			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.getName());
 			List<String> stats = gameData.currentLocation.getStats();
 			for (String s : stats) {
-				tGraphics.putString(gameData.getWidth()+2, y++, s);
+				tGraphics.putString(x, y++, s);
 			}
 		}
 
@@ -181,7 +189,7 @@ public class DefaultView implements IGameView {
 
 
 		// Messages
-		y = Math.max(y, gameData.getHeight()+2);
+		y = Math.max(y, gameData.getHeight()) + 2;
 		tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
 		for (LogMessage msg : gameData.msgs) {
 			switch (msg.priority) {
@@ -201,18 +209,13 @@ public class DefaultView implements IGameView {
 
 		if (Settings.DEBUG) {
 			tGraphics.setForegroundColor(TextColor.ANSI.RED);
-			tGraphics.putString(0, y, "DEBUG MODE");
+			tGraphics.putString(0, 0, "DEBUG MODE");
 		}
 
 
 		screen.refresh();
 
 	}
-
-
-	/*private int drawCurrentUnit(int x, int y) {
-
-	}*/
 
 
 	@Override

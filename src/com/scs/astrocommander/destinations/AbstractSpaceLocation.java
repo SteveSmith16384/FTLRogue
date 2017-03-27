@@ -10,12 +10,10 @@ import com.scs.astrocommander.modules.consoles.AbstractConsoleModule;
 
 public abstract class AbstractSpaceLocation implements IProcessable {
 
-	public String name;
+	protected String name;
 	protected Main main;
 
 	protected float damagePcent = 0;
-	//protected boolean attacked = false;
-
 	//protected Point position;
 
 
@@ -76,12 +74,17 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 			}
 			y++;
 		}
-		this.main.asciiEffects.add(new ShipLaser(main, x, 0, 0, 1, x, y));
+		this.main.addAsciiEffect(new ShipLaser(main, x, 0, 0, 1, x, y));
 	}
 	
 	
 	protected void destroyed() {
 		main.gameData.currentLocation = null;
+	}
+	
+	
+	public String getName() {
+		return name;
 	}
 
 }

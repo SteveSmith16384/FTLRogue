@@ -164,18 +164,6 @@ public class GameData implements IAStarMapInterface {
 		return null;
 	}
 
-/*
-	public AbstractMob getUnitAt(int x, int y) {
-		//List<DrawableEntity> list = map[x][y].items;
-		for (DrawableEntity de : map[x][y].getEntities()) {
-			if (de instanceof AbstractMob) {
-				AbstractMob unit = (AbstractMob) de;
-				return unit;
-			}
-		}
-		return null;
-	}
-*/
 
 	public void incOxygenLevel(float f) {
 		this.oxygenLevel += f;
@@ -254,9 +242,9 @@ public class GameData implements IAStarMapInterface {
 			AbstractMapSquare sq = waiting.remove(0);
 			processed.add(sq);
 			sq.hasOxygen = false;
-			if (Settings.DEBUG) {
+			/*if (Settings.DEBUG) {
 				Main.p("No oxygen in " + sq.x + "," + sq.y);
-			}
+			}*/
 
 			List<AbstractMapSquare> adj = getAdjacentSquares(sq.x, sq.y);
 			for (AbstractMapSquare asq : adj) {

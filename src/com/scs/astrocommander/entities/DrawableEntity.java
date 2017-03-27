@@ -28,8 +28,6 @@ public abstract class DrawableEntity implements Comparable{//extends Entity {
 		z = _z;
 	}
 
-	//float getWeight();
-
 	public abstract void process();
 
 	public abstract String getName();

@@ -18,7 +18,7 @@ public class TransportEggMission extends AbstractMission {
 
 	@Override
 	public String getDescription() {
-		return "Transport an egg to " + destination.name + " for " + this.getReward() + " creds";
+		return "Transport an egg to " + destination.getName() + " for " + this.getReward() + " creds";
 	}
 
 

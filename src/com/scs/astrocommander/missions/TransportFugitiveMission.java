@@ -18,7 +18,7 @@ public class TransportFugitiveMission extends AbstractMission {
 
 	@Override
 	public String getDescription() {
-		return "Transport a fugitive to " + destination.name + " for " + this.getReward() + " creds";
+		return "Transport a fugitive to " + destination.getName() + " for " + this.getReward() + " creds";
 	}
 
 

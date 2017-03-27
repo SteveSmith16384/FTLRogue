@@ -42,7 +42,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	public static final int SIDE_POLICE = 3;
 
 	public char theChar;
-	public String name;
+	protected String name;
 	public int side;
 	public List<ICarryable> equipment = new ArrayList<>();
 	public ICarryable currentItem;
@@ -300,8 +300,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		super.getSq().addEntity(new Corpse(main, this.getName()));
 		main.gameData.units.remove(this); // Remove from list if ours
 		if (main.gameData.units.isEmpty()) {
-			main.addMsg(3, "GAME OVER!");
-			main.gameStage = 1;
+			main.gameOver();
 		}
 		remove();
 	}
@@ -441,5 +440,7 @@ public abstract class AbstractMob extends DrawableEntity {
 	/*public DrawableEntity getCarriedItemOfType(Class clazz) {
 
 	}*/
+
+
 }
 

@@ -13,7 +13,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		this.addLine("SHIP COMPUTER CONSOLE (v0.01 beta)");
 		this.addLine("");
 		if (main.gameData.currentLocation != null) {
-			addLine("Currently docked at " + main.gameData.currentLocation.name);
+			addLine("Currently docked at " + main.gameData.currentLocation.getName());
 			addLine("");
 		}
 
@@ -29,7 +29,7 @@ public class CommandConsole extends AbstractConsoleModule {
 		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
 		if (main.gameData.currentLocation != null) {
 			super.addLine("'launch' to launch the ship towards the next destination");
-			super.addLine("'hail' to hail " + main.gameData.currentLocation.name);
+			super.addLine("'hail' to hail " + main.gameData.currentLocation.getName());
 		}
 		super.addLine("'airlock open/close' to open or close the main airlock");
 		super.addLine("'lights on/off' to turn the ship's lights on or off");

@@ -63,8 +63,6 @@ Foreground colour shows damage (white -> grey)
  */
 public class PlayersShipModule extends AbstractModule {
 
-	//public enum InputMode {Normal, SelectDestination, Pickup, Drop, ChangeCurrentItem, SelectShotTarget, SelectThrowTarget}
-
 	public IInputHander inputHandler;
 	private DirectControlInputHandler directControlIH;
 
@@ -223,8 +221,8 @@ public class PlayersShipModule extends AbstractModule {
 					gameData.distanceToDest = 0;
 					gameData.currentLocation = new Planet(main, "Rigel 7");
 					this.main.addMsg("You have reached your destination!");
-					main.gameStage = 1;
-					// todo - end?
+					main.gameOver();
+					return;
 				}
 			}
 
@@ -284,7 +282,7 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawPlayersShipScreen(main.gameData, seenSquares, main.asciiEffects, contextSensitiveHelpText, this.route, selectedpoint);
+		view.drawPlayersShipScreen(main.gameData, seenSquares, main.getAsciiEffects(), contextSensitiveHelpText, this.route, selectedpoint);
 
 	}
 
@@ -352,13 +350,13 @@ public class PlayersShipModule extends AbstractModule {
 				// Check next to console
 				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
 				if (sq != null) {
-					main.addMsg("You have fired at " + main.gameData.currentLocation.name);
+					main.addMsg("You have fired at " + main.gameData.currentLocation.getName());
 					this.main.gameData.weaponTemp += 5;
 					this.main.gameData.currentLocation.shotByPlayer();
 
 					// create bullets
 					for (Point p : main.gameData.weaponPoints) {
-						this.main.asciiEffects.add(new ShipLaser(main, p.x, p.y, 0, -1, p.x, 0));
+						this.main.addAsciiEffect(new ShipLaser(main, p.x, p.y, 0, -1, p.x, 0));
 					}
 				} else {
 					main.addMsg("You must be next to the command console.");
@@ -376,4 +374,5 @@ public class PlayersShipModule extends AbstractModule {
 	public void restoreDirectControlIH() {
 		this.inputHandler = this.directControlIH;
 	}
+	
 }

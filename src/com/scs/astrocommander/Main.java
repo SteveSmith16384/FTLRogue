@@ -7,10 +7,10 @@
 package com.scs.astrocommander;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
@@ -22,6 +22,8 @@ import com.scs.astrocommander.views.DefaultView;
 
 
 public class Main {
+	
+	public enum GameStage {Started, Finished};
 
 	public static final Random RND = new Random();
 
@@ -30,8 +32,8 @@ public class Main {
 	private boolean stopNow = false;
 	private KeyStroke lastChar;
 	private AbstractModule currentModule;
-	public int gameStage = 0;
-	public List<AbstractAsciiEffect> asciiEffects = new ArrayList<>();
+	private GameStage gameStage = GameStage.Started;
+	private List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
 	public boolean checkOxygenFlag = false;
 
 	
@@ -116,8 +118,23 @@ public class Main {
 		this.currentModule = mod;
 	}
 
+	
+	public void gameOver() {
+		addMsg(3, "GAME OVER!");
+		gameStage = GameStage.Finished;
+		// todo - end?
+
+	}
 
 
+	public void addAsciiEffect(AbstractAsciiEffect aae) {
+		this.asciiEffects.add(aae);
+	}
+	
+	
+	public List<AbstractAsciiEffect> getAsciiEffects() {
+		return this.asciiEffects;
+	}
 	//--------------------------------------------
 
 	public static void p(String s) {

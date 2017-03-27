@@ -59,7 +59,7 @@ public class Meteor extends AbstractAsciiEffect {
 			float dam = 10 + (main.gameData.shipSpeed/100);
 			sq.incDamage(dam); // Adjust by ship speed
 			main.addMsg("Ship damaged " + (int)dam + " by meteor!");
-			this.main.asciiEffects.add(new AsciiExplosion(main, p.x, p.y));
+			this.main.addAsciiEffect(new AsciiExplosion(main, p.x, p.y));
 			return false;
 		}
 		return true;

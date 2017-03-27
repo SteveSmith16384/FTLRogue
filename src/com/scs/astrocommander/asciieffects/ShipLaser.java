@@ -26,7 +26,7 @@ public class ShipLaser extends AbstractAsciiEffect {
 	@Override
 	public boolean process() {
 		if (current.x == end.x && current.y == end.y) {
-			this.main.asciiEffects.add(new AsciiExplosion(main, current.x, current.y));
+			this.main.addAsciiEffect(new AsciiExplosion(main, current.x, current.y));
 			return false;
 		}
 		

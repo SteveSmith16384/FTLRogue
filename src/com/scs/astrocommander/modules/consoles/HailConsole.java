@@ -13,7 +13,7 @@ public class HailConsole extends AbstractConsoleModule {
 		
 		loc = main.gameData.currentLocation;
 
-		super.addLine("Hailing " + loc.name + "...");
+		super.addLine("Hailing " + loc.getName() + "...");
 		super.addLine("");
 		super.addLine("(Enter 'exit' to return)");
 		super.addLine("");

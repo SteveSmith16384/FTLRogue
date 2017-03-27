@@ -24,6 +24,12 @@ public class MapSquareFloor extends AbstractMapSquare {
 
 
 	@Override
+	public boolean isAirtight() {
+		return false;
+	}
+	
+	
+	@Override
 	public boolean isTraversable() {
 		return true;
 	}

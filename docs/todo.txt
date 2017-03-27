@@ -20,13 +20,13 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Make screen wider
+DefaultView - split up into areas
 Add licence
 Set up web page - add screenshots
 DONE Improve help
 Test oxygen
 Don't duplicate help
-Make screen wider
-DefaultView - split up into areas
 Make stats random
 
 

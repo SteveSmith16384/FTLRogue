@@ -134,6 +134,10 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		}
 	}
 	
+	public boolean isAirtight() {
+		return true;
+	}
+
 	protected abstract boolean isTraversable();
 
 	protected abstract boolean isTransparent();

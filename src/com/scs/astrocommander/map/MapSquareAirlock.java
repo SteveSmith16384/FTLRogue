@@ -50,6 +50,12 @@ public class MapSquareAirlock extends AbstractMapSquare {
 
 
 	@Override
+	public boolean isAirtight() {
+		return !isOpen;
+	}
+	
+	
+	@Override
 	public char getFloorChar() {
 		return isOpen ? '\'' : '+';
 	}

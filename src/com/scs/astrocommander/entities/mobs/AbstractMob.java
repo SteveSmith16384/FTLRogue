@@ -302,6 +302,10 @@ public abstract class AbstractMob extends DrawableEntity {
 		if (main.gameData.units.isEmpty()) {
 			main.addMsg(3, "GAME OVER!");
 			main.gameStage = 1;
+		} else {
+			if (this == main.gameData.currentUnit) {
+				main.gameData.currentUnit = main.gameData.units.get(0);
+			}
 		}
 		remove();
 	}

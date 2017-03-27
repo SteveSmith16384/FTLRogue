@@ -31,6 +31,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 	@Override
 	public boolean processInput(KeyStroke ks) {
 		if (ks.getKeyType() == KeyType.Enter) {
+			this.addLine(command);
 			processCommand(command);
 			command = "";
 		} else if (ks.getKeyType() == KeyType.Backspace) {

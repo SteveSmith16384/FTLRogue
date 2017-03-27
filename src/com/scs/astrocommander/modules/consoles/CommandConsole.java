@@ -24,13 +24,13 @@ public class CommandConsole extends AbstractConsoleModule {
 	private void showMenu() {
 		super.addLine("Please enter a command and press enter: ");
 		super.addLine("");
+		if (main.gameData.currentLocation != null) {
+			super.addLine("'hail' to hail " + main.gameData.currentLocation.name);
+			super.addLine("'launch' to launch the ship towards the next destination");
+		}
 		super.addLine("'shields <0-100>' to set shield level (currently " + (int)main.gameData.shieldPowerPcent + "%)");
 		super.addLine("'engines <0-100>' to set engine level (currently " + (int)main.gameData.enginePowerPcent + "%)");
 		super.addLine("'weapons <0-100>' to set weapon level (currently " + (int)main.gameData.weaponPowerPcent + "%)");
-		if (main.gameData.currentLocation != null) {
-			super.addLine("'launch' to launch the ship towards the next destination");
-			super.addLine("'hail' to hail " + main.gameData.currentLocation.name);
-		}
 		super.addLine("'airlock open/close' to open or close the main airlock");
 		super.addLine("'lights on/off' to turn the ship's lights on or off");
 		super.addLine("'exit' to return");
@@ -48,13 +48,13 @@ public class CommandConsole extends AbstractConsoleModule {
 			case "shields":
 				super.clearLines();
 				main.gameData.shieldPowerPcent = Integer.parseInt(tokens[1]);
-				super.addLine("Shields now at " + main.gameData.shieldPowerPcent);
+				super.addLine("Shields now at " + main.gameData.shieldPowerPcent + "%");
 				break;
 
 			case "engines":
 				super.clearLines();
 				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
-				super.addLine("Engines now at " + main.gameData.enginePowerPcent);
+				super.addLine("Engines now at " + main.gameData.enginePowerPcent + "%");
 				if (main.gameData.currentLocation != null) {
 					super.addLine("(Note: ship not launched yet)");
 				}
@@ -63,7 +63,7 @@ public class CommandConsole extends AbstractConsoleModule {
 			case "weapons":
 				super.clearLines();
 				main.gameData.weaponPowerPcent = Integer.parseInt(tokens[1]);
-				super.addLine("Weapons now at " + main.gameData.weaponPowerPcent);
+				super.addLine("Weapons now at " + main.gameData.weaponPowerPcent + "%");
 				break;
 
 			case "launch":

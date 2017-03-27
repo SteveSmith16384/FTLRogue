@@ -260,7 +260,7 @@ public class GameData implements IAStarMapInterface {
 
 			List<AbstractMapSquare> adj = getAdjacentSquares(sq.x, sq.y);
 			for (AbstractMapSquare asq : adj) {
-				if (asq.isSquareTraversable()) {
+				if (!asq.isAirtight()) {
 					if (!processed.contains(asq) && !waiting.contains(asq)) {
 						waiting.add(asq);
 					}

@@ -27,6 +27,8 @@ import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.map.AbstractMapSquare;
 
 public class DefaultView implements IGameView {
+	
+	private static final int WIDTH = 70;
 
 	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
 	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
@@ -39,7 +41,7 @@ public class DefaultView implements IGameView {
 
 	public DefaultView() throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
-		fac.setInitialTerminalSize(new TerminalSize(70, 50));
+		fac.setInitialTerminalSize(new TerminalSize(WIDTH, 50));
 		//fac.setForceTextTerminal(true);
 		terminal = fac.createTerminalEmulator(); //.createTerminal();
 		screen = new TerminalScreen(terminal);
@@ -237,6 +239,12 @@ public class DefaultView implements IGameView {
 		tGraphics.setForegroundColor(TextColor.ANSI.GREEN);
 		int y = 0;
 		for (String s : lines) {
+			while (s.length() > 70) {
+				String s2 = s.substring(0, 70);
+				tGraphics.putString(0, y, s2);
+				y++;
+				s = s.substring(70);
+			}
 			tGraphics.putString(0, y, s);
 			y++;
 		}

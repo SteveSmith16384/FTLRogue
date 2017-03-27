@@ -31,7 +31,7 @@ public class Main {
 	private KeyStroke lastChar;
 	private AbstractModule currentModule;
 	public int gameStage = 0;
-	public List<AbstractAsciiEffect> asciiEffects = new ArrayList<>();
+	private List<AbstractAsciiEffect> asciiEffects = new ArrayList<>();
 	public boolean checkOxygenFlag = false;
 
 	

@@ -33,7 +33,7 @@ import com.scs.astrocommander.map.AbstractMapSquare;
  */
 public class DefaultView implements IGameView {
 	
-	private static final int WIDTH = 70;
+	private static final int WIDTH = 120;
 
 	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
 	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
@@ -133,14 +133,14 @@ public class DefaultView implements IGameView {
 		// Draw mapsquares key
 		y++;
 		for (String tc : seenSquares.keySet()) {
-			tGraphics.setCharacter(gameData.getWidth()+2, y, seenSquares.get(tc));
+			tGraphics.setCharacter(x, y, seenSquares.get(tc));
 			tGraphics.putString(x+2, y, tc);
 			y++;
 		}
 
 		// Draw units
-		x = 30;
-		y=0;
+		x = 54;
+		y=2;
 		tGraphics.putString(x, y++, "CREW");
 		for (Unit unit : gameData.units) {
 			StringBuilder str = new StringBuilder();
@@ -171,7 +171,7 @@ public class DefaultView implements IGameView {
 		// Location stats:
 		if (gameData.currentLocation != null) {
 			y++;
-			tGraphics.putString(gameData.getWidth()+2, y++, "LOCATION: " + gameData.currentLocation.getName());
+			tGraphics.putString(x, y++, gameData.currentLocation.getName() + ":");
 			List<String> stats = gameData.currentLocation.getStats();
 			for (String s : stats) {
 				tGraphics.putString(x, y++, s);
@@ -181,9 +181,9 @@ public class DefaultView implements IGameView {
 		// Help text
 		if (helpText.size() > 0) {
 			y++;
-			tGraphics.putString(gameData.getWidth()+2, y++, "HELP");
+			tGraphics.putString(x, y++, "HELP");
 			for (String s : helpText) {
-				tGraphics.putString(gameData.getWidth()+2, y++, s);
+				tGraphics.putString(x, y++, s);
 			}
 		}
 

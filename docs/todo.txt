@@ -19,20 +19,13 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
-<<<<<<< HEAD
-Make screen wider
+Button to fly forwards
+Not exiting when window closes
 DefaultView - split up into areas
-=======
-Improve DefaultView
->>>>>>> 2f6a4b57c156362520bebb49805350be2a62b268
 Add licence
 Set up web page - add screenshots
 DONE Improve help
 Don't duplicate help
-<<<<<<< HEAD
-=======
-Make screen wider
->>>>>>> 2f6a4b57c156362520bebb49805350be2a62b268
 Make stats random
 
 

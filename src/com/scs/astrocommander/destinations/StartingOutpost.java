@@ -30,6 +30,7 @@ public class StartingOutpost extends AbstractSpaceLocation {
 	@Override
 	public List<String> getStats() {
 		List<String> stats = new ArrayList<>();
+		stats.add("[Nothing]");
 		return stats;
 	}
 
@@ -47,7 +48,7 @@ public class StartingOutpost extends AbstractSpaceLocation {
 	@Override
 	public void getHailResponse(AbstractConsoleModule console) {
 		if (this.eggTransported == false) {
-			console.addLine("We need your help.  Will you transport a delicate egg for us to the next starbase?");
+			console.addLine("We need your help.  Will you transport a delicate egg for us to the next starbase? (y/n)");
 		} else {
 			console.addLine("Please look after the egg, it is very fragile.");
 			

@@ -30,6 +30,7 @@ public class HailConsole extends AbstractConsoleModule {
 			case "quit":
 			case "logout":
 			case "x":
+				super.clearLines();
 				this.main.setModule(this.prevModule);
 				return;
 			default:

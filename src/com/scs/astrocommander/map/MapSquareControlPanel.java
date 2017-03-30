@@ -43,7 +43,12 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 
 	@Override
 	public String getHelp() {
-		return "Press 'l' to log-in, or 'f' to fire ship's weapons";
+		StringBuffer str = new StringBuffer();
+		str.append("Press 'l' to log-in");
+		if (main.gameData.currentLocation == null) {
+			str.append(", or 'f' to fire ship's weapons.\nPress space to keep flying");
+		}
+		return str.toString();
 	}
 
 

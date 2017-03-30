@@ -1,5 +1,7 @@
 package com.scs.astrocommander.modules.consoles;
 
+import ssmith.util.NumberFunctions;
+
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareAirlock;
@@ -47,13 +49,13 @@ public class CommandConsole extends AbstractConsoleModule {
 			switch (tokens[0].toLowerCase()) {
 			case "shields":
 				super.clearLines();
-				main.gameData.shieldPowerPcent = Integer.parseInt(tokens[1]);
+				main.gameData.shieldPowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
 				super.addLine("Shields now at " + main.gameData.shieldPowerPcent + "%");
 				break;
 
 			case "engines":
 				super.clearLines();
-				main.gameData.enginePowerPcent = Integer.parseInt(tokens[1]);
+				main.gameData.enginePowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
 				super.addLine("Engines now at " + main.gameData.enginePowerPcent + "%");
 				if (main.gameData.currentLocation != null) {
 					super.addLine("(Note: ship not launched yet)");
@@ -62,7 +64,7 @@ public class CommandConsole extends AbstractConsoleModule {
 
 			case "weapons":
 				super.clearLines();
-				main.gameData.weaponPowerPcent = Integer.parseInt(tokens[1]);
+				main.gameData.weaponPowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
 				super.addLine("Weapons now at " + main.gameData.weaponPowerPcent + "%");
 				break;
 
@@ -71,7 +73,9 @@ public class CommandConsole extends AbstractConsoleModule {
 				if (main.gameData.currentLocation != null) {
 					super.addLine("The ship has been launched!");
 					main.gameData.currentLocation = null;
-					//main.gameData.distanceToDest = 1000;
+					if (main.gameData.enginePowerPcent <= 0) {
+						super.addLine("Note that engine power is at 0%!");
+					}
 				} else {
 					super.addLine("The ship has already been launched.");
 				}

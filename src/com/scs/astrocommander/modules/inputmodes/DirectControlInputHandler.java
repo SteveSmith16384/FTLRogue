@@ -46,6 +46,15 @@ public class DirectControlInputHandler implements IInputHander {
 					this.main.setModule(new HelpConsole(main, shipModule));
 					return false;
 
+				case ' ':
+					if (main.gameData.currentLocation == null) {
+						main.addMsg("The ship continues flying...");
+						return true;
+					} else {
+						main.addMsg("You have an encounter!");
+						return false;
+					}
+
 				case '1':
 				case '2':
 				case '3':
@@ -76,7 +85,7 @@ public class DirectControlInputHandler implements IInputHander {
 							main.addMsg(1, obj.getName() + ": " + ex.getExamineText());
 						}
 					}
-					
+
 					// Adjacent squares
 					for (AbstractMapSquare sq : main.gameData.getAdjacentSquares(main.gameData.currentUnit.x, main.gameData.currentUnit.y)) {
 						String s = sq.getExamineText();

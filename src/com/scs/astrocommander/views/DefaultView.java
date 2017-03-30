@@ -1,6 +1,8 @@
 package com.scs.astrocommander.views;
 
 import java.awt.Point;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import com.scs.astrocommander.GameData;
 import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.LogMessage;
@@ -31,7 +34,7 @@ import com.scs.astrocommander.map.AbstractMapSquare;
  * 
  * Log
  */
-public class DefaultView implements IGameView {
+public class DefaultView implements IGameView, WindowListener {
 	
 	private static final int WIDTH = 120;
 
@@ -49,6 +52,8 @@ public class DefaultView implements IGameView {
 		fac.setInitialTerminalSize(new TerminalSize(WIDTH, 50));
 		//fac.setForceTextTerminal(true);
 		terminal = fac.createTerminalEmulator(); //.createTerminal();
+		SwingTerminalFrame frame = (SwingTerminalFrame) terminal;
+		frame.addWindowListener(this);
 		screen = new TerminalScreen(terminal);
 
 	}
@@ -137,6 +142,8 @@ public class DefaultView implements IGameView {
 			tGraphics.putString(x+2, y, tc);
 			y++;
 		}
+		
+		int col2height = y;
 
 		// Draw units
 		x = 54;
@@ -183,13 +190,18 @@ public class DefaultView implements IGameView {
 			y++;
 			tGraphics.putString(x, y++, "HELP");
 			for (String s : helpText) {
+				while (s.contains("\n")) {
+					String s2 = s.substring(0, s.indexOf("\n"));
+					tGraphics.putString(x, y++, s2);
+					s = s.substring(s2.length()+1, s.length());
+				}
 				tGraphics.putString(x, y++, s);
 			}
 		}
 
 
-		// Messages
-		y = Math.max(y, gameData.getHeight()) + 2;
+		// Messages/log
+		y = Math.max(Math.max(col2height, y), gameData.getHeight()) + 2;
 		tGraphics.setForegroundColor(TextColor.ANSI.YELLOW);
 		for (LogMessage msg : gameData.msgs) {
 			switch (msg.priority) {
@@ -291,5 +303,48 @@ public class DefaultView implements IGameView {
 		for (Point p : stars) {
 			screen.setCharacter(p.x,  p.y, STAR_CHAR);
 		}
+	}
+
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		System.exit(0);
+		
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		
 	}
 }

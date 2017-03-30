@@ -15,7 +15,7 @@ public class HailConsole extends AbstractConsoleModule {
 
 		super.addLine("Hailing " + loc.getName() + "...");
 		super.addLine("");
-		super.addLine("(Enter 'exit' to return)");
+		super.addLine("(Enter 'exit' to close comms channel)");
 		super.addLine("");
 		//super.addLine(loc.getHailResponse());
 		loc.getHailResponse(this);

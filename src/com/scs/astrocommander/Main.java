@@ -74,11 +74,14 @@ public class Main {
 					}
 
 				} else {
-					Iterator<AbstractAsciiEffect> it = asciiEffects.iterator();
-					while (it.hasNext()) {
-						AbstractAsciiEffect effect = it.next();
+					//Iterator<AbstractAsciiEffect> it = asciiEffects.iterator();
+					//while (it.hasNext()) {
+					//for (AbstractAsciiEffect effect : asciiEffects) {
+					for (int i=0 ; i<asciiEffects.size() ; i++) {
+						AbstractAsciiEffect effect = asciiEffects.get(i);
 						if (!effect.process()) {
-							it.remove();
+							asciiEffects.remove(effect);
+							i--;
 						}
 					}
 					Thread.sleep(100);
@@ -135,6 +138,8 @@ public class Main {
 	public List<AbstractAsciiEffect> getAsciiEffects() {
 		return this.asciiEffects;
 	}
+	
+	
 	//--------------------------------------------
 
 	public static void p(String s) {

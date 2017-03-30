@@ -53,6 +53,7 @@ public class HelpConsole extends AbstractConsoleModule {
 		this.addLine("Numbers - select unit");
 		this.addLine("Arrows - move unit");
 		this.addLine("? - Help");
+		this.addLine("[Space] - Continue flying");
 		this.addLine("c - Close door");
 		this.addLine("d - Drop");
 		this.addLine("e - Examine (current/adjacent squares)");

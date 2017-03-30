@@ -19,6 +19,8 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Show "dead" next to unit if killed
+DefaultView - split up into areas
 Set up web page - add screenshots
 DONE Not exiting when window closes
 DONE Button to fly forwards

@@ -15,13 +15,13 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 	public boolean isTraversable() {
 		return false;
 	}
-	
+
 
 	@Override
 	public boolean isTransparent() {
 		return true;
 	}
-	
+
 
 	@Override
 	public char getFloorChar() {
@@ -44,9 +44,11 @@ public class MapSquareControlPanel extends AbstractMapSquare {
 	@Override
 	public String getHelp() {
 		StringBuffer str = new StringBuffer();
-		str.append("Press 'l' to log-in");
+		str.append("Press 'l' to log-in or ");
 		if (main.gameData.currentLocation == null) {
-			str.append(", or 'f' to fire ship's weapons.\nPress space to keep flying");
+			str.append("press 'space' to keep flying.");
+		} else {
+			str.append("'f' to fire ship's weapons.");
 		}
 		return str.toString();
 	}

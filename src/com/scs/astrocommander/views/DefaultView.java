@@ -35,7 +35,7 @@ import com.scs.astrocommander.map.AbstractMapSquare;
  * Log
  */
 public class DefaultView implements IGameView, WindowListener {
-	
+
 	private static final int WIDTH = 120;
 
 	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
@@ -70,7 +70,7 @@ public class DefaultView implements IGameView, WindowListener {
 
 		TextGraphics tGraphics = screen.newTextGraphics();
 
-		if (gameData.shipSpeed > 0) {
+		if (gameData.shipSpeed > 0 && gameData.currentLocation == null) {
 			this.moveStars(gameData);
 		}
 		drawStars(screen);
@@ -102,7 +102,7 @@ public class DefaultView implements IGameView, WindowListener {
 			effect.drawChars(this);
 		}
 
-		
+
 		// Draw stats
 		int x = gameData.getWidth()+2;
 		int y = 0;
@@ -142,7 +142,7 @@ public class DefaultView implements IGameView, WindowListener {
 			tGraphics.putString(x+2, y, tc);
 			y++;
 		}
-		
+
 		int col2height = y;
 
 		// Draw units
@@ -155,8 +155,12 @@ public class DefaultView implements IGameView, WindowListener {
 				str.append("*");
 			}
 			str.append(unit.getName()).append(" ");
-			str.append("H:" + (int)unit.health + "%").append(" ");
-			str.append("F:" + (int)unit.food);
+			if (unit.health > 0) {
+				str.append("H:" + (int)unit.health + "%").append(" ");
+				str.append("F:" + (int)unit.food);
+			} else {
+				str.append("DEAD");
+			}
 			tGraphics.putString(x, y++, str.toString());
 		}
 
@@ -308,43 +312,43 @@ public class DefaultView implements IGameView, WindowListener {
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
-		
+
 	}
 
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		System.exit(0);
-		
+
 	}
 
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		
+
 	}
 
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		
+
 	}
 
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		
+
 	}
 
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		
+
 	}
 
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		
+
 	}
 }

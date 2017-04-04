@@ -1,38 +1,22 @@
 Astro Commander
-Keep it simple at first!
+
+TODO
+DONE Say "ship out of power"
+DONE Process after leaving console
+Set up web page - add screenshots
+DONE Space should not move stars
+DONE Dont say "press f to fire" if no target
+DONE accept "engine 33"
+
+Show "dead" next to unit if killed
+Don't duplicate help
+Make stats random
+
 
 STORY - EPISODE 1
 Start - get mission to transport egg
 Fly to planet
 Get intercepted on the way
-
-
-POWER
-Player can set values for shields/engines etc...
-The player has a certain number of powerpoints per turn (depending on batteries)
-If they allocate more power than they get, overall power will drop
-If power reaches zero, everything stops
-
-
-SPEED
-Speed is determined by the number of engines (affected by damage) * power to engines
-
-
-TODO
-Space should not move stars
-Dont say "press f to fire" if no target
-Say "ship out of power"
-accept "engine 33"
-Show "dead" next to unit if killed
-DefaultView - split up into areas
-Set up web page - add screenshots
-DONE Not exiting when window closes
-DONE Button to fly forwards
-DONE Add licence
-DONE Improve help
-Don't duplicate help
-DefaultView - split up into areas
-Make stats random
 
 
 EVENTS
@@ -47,6 +31,7 @@ Get taken prisoner
 
 
 LATER
+DefaultView - split up into areas
 Teleport either on teleoprter, or next to it to teleport something
 Add music
 Add sfx
@@ -101,3 +86,12 @@ Weapons: take control of exterior weapons
 Saboteur?
 
 
+STATS
+-POWER
+-Player can set values for shields/engines etc...
+-The player has a certain number of powerpoints per turn (depending on batteries)
+-If they allocate more power than they get, overall power will drop
+-If power reaches zero, everything stops
+
+-Speed
+-Speed is determined by the number of engines (affected by damage) * power to engines

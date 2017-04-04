@@ -6,6 +6,7 @@ import com.scs.astrocommander.Main;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareAirlock;
 import com.scs.astrocommander.modules.AbstractModule;
+import com.scs.astrocommander.modules.PlayersShipModule;
 
 public class CommandConsole extends AbstractConsoleModule {
 
@@ -47,12 +48,14 @@ public class CommandConsole extends AbstractConsoleModule {
 		try {
 			String tokens[] = cmd.split(" ");
 			switch (tokens[0].toLowerCase()) {
+			case "shield":
 			case "shields":
 				super.clearLines();
 				main.gameData.shieldPowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
 				super.addLine("Shields now at " + main.gameData.shieldPowerPcent + "%");
 				break;
 
+			case "engine":
 			case "engines":
 				super.clearLines();
 				main.gameData.enginePowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
@@ -62,6 +65,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				}
 				break;
 
+			case "weapon":
 			case "weapons":
 				super.clearLines();
 				main.gameData.weaponPowerPcent = NumberFunctions.Clamp(Integer.parseInt(tokens[1]), 0, 100);
@@ -82,6 +86,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				break;
 
 			case "airlock":
+			case "airlocks":
 				super.clearLines();
 				boolean open = tokens[1].equalsIgnoreCase("open");
 				for (int y=0 ; y<main.gameData.getHeight() ; y++) {
@@ -97,6 +102,7 @@ public class CommandConsole extends AbstractConsoleModule {
 				main.checkOxygenFlag = true;
 				break;
 
+			case "light":
 			case "lights":
 				super.clearLines();
 				boolean on = tokens[1].equalsIgnoreCase("on");
@@ -114,6 +120,10 @@ public class CommandConsole extends AbstractConsoleModule {
 			case "logout":
 			case "x":
 				this.main.setModule(this.prevModule);
+				if (prevModule instanceof PlayersShipModule) {
+					PlayersShipModule mod = (PlayersShipModule)prevModule;
+					mod.updateGame();
+				}
 				return;
 
 			default:

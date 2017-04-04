@@ -206,6 +206,7 @@ public class PlayersShipModule extends AbstractModule {
 			gameData.totalPower = 0;
 			gameData.shieldPowerPcent = 0;
 			gameData.enginePowerPcent = 0;
+			main.addMsg(3, "SHIP OUT OF POWER");
 		} else if (gameData.totalPower > 100) {
 			gameData.totalPower = 100;
 		}
@@ -224,6 +225,7 @@ public class PlayersShipModule extends AbstractModule {
 					main.gameOver();
 					return;
 				}
+				
 			}
 
 			// Any encounters?

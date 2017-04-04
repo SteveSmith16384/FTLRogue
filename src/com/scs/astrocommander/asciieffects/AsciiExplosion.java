@@ -46,11 +46,15 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 	public void drawChars(IGameView view) {
 		for (int y=p.y-1 ; y<=p.y+1 ; y++) {
 			for (int x=p.x-1 ; x<=p.x+1 ; x++) {
-				boolean seen = main.gameData.map[x][y].visible == AbstractMapSquare.VisType.Visible;
-				if (seen || Settings.DEBUG) {
-					view.drawCharacter(x, y, chars.get(Main.RND.nextInt(3)));
+				try {
+					boolean seen = main.gameData.map[x][y].visible == AbstractMapSquare.VisType.Visible;
+					if (seen || Settings.DEBUG) {
+						view.drawCharacter(x, y, chars.get(Main.RND.nextInt(3)));
+					}
+				} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+					// Do nothing
 				}
-			}			
+			}
 		}
 	}
 

@@ -19,6 +19,10 @@ Speed is determined by the number of engines (affected by damage) * power to eng
 
 
 TODO
+Space should not move stars
+Dont say "press f to fire" if no target
+Say "ship out of power"
+accept "engine 33"
 Show "dead" next to unit if killed
 DefaultView - split up into areas
 Set up web page - add screenshots

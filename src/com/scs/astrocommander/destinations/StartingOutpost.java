@@ -68,6 +68,7 @@ public class StartingOutpost extends AbstractSpaceLocation {
 				main.gameData.currentMissions.add(tem);
 				eggTransported = true;
 				console.addLine("Thank you!  The egg has been teleported onto your ship.");
+				main.sfx.playSound("teleport.mp3");
 				break;
 
 			case "n":

@@ -53,19 +53,18 @@ public class SoundCacheThread extends Thread {
 					final String filename = this.filenames.remove(0);
 					//AppletMain.p("Playing " + filename);
 					if (filename.endsWith("mp3")) {
-						new MP3Player(filename); // Can't cache mp3
+						new MP3Player(root + filename, false).start(); // Can't cache mp3
 					} else {
 						if (sounds.containsKey(filename) == false) {
 							ClassLoader cl = this.getClass().getClassLoader();
 							URL url = cl.getResource(root + filename);
 							if (url == null) {
-								//url = new URL("file:" + new File(".").getCanonicalPath() + "/" + filename);
 								url = new URL("file:./" + root + filename);
 							}
 							AudioClip clip = Applet.newAudioClip(url);
 							sounds.put(filename, clip);
 						}
-						Thread playsound = new Thread() {
+						Thread playsound = new Thread("SFX_Thread") {
 							public void run() {
 								AudioClip clip = sounds.get(filename);
 								clip.play();

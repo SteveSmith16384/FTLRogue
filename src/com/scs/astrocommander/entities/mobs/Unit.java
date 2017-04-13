@@ -115,18 +115,9 @@ public class Unit extends AbstractMob {
 	public void useConsole() {
 		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
+			main.sfx.playSound("scanner.mp3");
 			main.setModule(new CommandConsole(main, main.getCurrentModule()));
 		} else {
-			/*if (main.gameData.currentLocation != null) {
-				MapSquareWeaponsConsole wsq = (MapSquareWeaponsConsole)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_WEAPON_CONSOLE);
-				if (wsq != null) {
-					if (main.gameData.weaponTemp <= 0) {
-						main.fireShipsWeapons();
-					}
-				}
-			} else {
-				main.addMsg("There is nothing to shoot at.");
-			}*/
 			main.addMsg("No console here.");
 		}
 	}

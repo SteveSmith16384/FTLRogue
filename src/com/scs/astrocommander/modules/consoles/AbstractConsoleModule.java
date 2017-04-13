@@ -30,6 +30,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 	@Override
 	public boolean processInput(KeyStroke ks) {
+		main.sfx.playSound("typr2.mp3");
 		if (ks.getKeyType() == KeyType.Enter) {
 			this.addLine(command);
 			processCommand(command);

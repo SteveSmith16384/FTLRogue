@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ssmith.audio.SoundCacheThread;
+
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
 import com.scs.astrocommander.map.AbstractMapSquare;
@@ -35,11 +37,14 @@ public class Main {
 	private GameStage gameStage = GameStage.Started;
 	private List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
 	public boolean checkOxygenFlag = false;
+	public SoundCacheThread sfx;
 
 	
 	public Main() throws IOException, InterruptedException {
 		createGameData();
 
+		sfx = new SoundCacheThread("sfx/");
+		
 		currentModule = new PlayersShipModule(this, null);
 
 		view = new DefaultView();

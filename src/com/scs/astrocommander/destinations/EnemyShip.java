@@ -65,6 +65,7 @@ public class EnemyShip extends AbstractAnotherShip {
 			if (Main.RND.nextInt(5) == 0) {
 				AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 				if (sq.getUnit() == null) {
+					main.sfx.playSound("teleport.mp3");
 					EnemyUnit unit = new EnemyUnit(main);
 					this.unitsTeleported.add(unit);
 					sq.addEntity(unit);
@@ -93,6 +94,7 @@ public class EnemyShip extends AbstractAnotherShip {
 
 	@Override
 	public void shotByPlayer() {
+		main.sfx.playSound("explosion1.mp3");
 		int dam = Main.RND.nextInt(15)+1;
 		this.damagePcent += dam;
 		main.addMsg("You inflict " + dam + " on the enemy ship.");

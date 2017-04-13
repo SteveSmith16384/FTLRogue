@@ -17,6 +17,8 @@ public class MapSquareDoor extends AbstractMapSquare {
 
 
 	public boolean setOpen(boolean b) {
+		main.sfx.playSound("door.mp3");
+
 		boolean res = false;
 		/*if (main.gameData.totalPower > 0) {
 			main.gameData.powerUsedPerTurn += 1f;*/

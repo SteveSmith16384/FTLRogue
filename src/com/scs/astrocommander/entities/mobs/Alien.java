@@ -14,12 +14,6 @@ public class Alien extends AbstractMob {
 	}
 
 
-	/*@Override
-	public void preProcess() {
-
-	}*/
-
-
 	@Override
 	public void process() {
 		super.process();

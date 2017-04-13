@@ -10,7 +10,7 @@ import com.scs.astrocommander.entityinterfaces.IIllegal;
 public class AlienEgg extends AbstractItem implements ICarryable, IExamineable, IIllegal {
 
 	private static final int PCENT_CHANCE_HATCH = 10;
-	
+
 	private int minHatchTurn;
 
 	public AlienEgg(Main main) {
@@ -26,25 +26,21 @@ public class AlienEgg extends AbstractItem implements ICarryable, IExamineable, 
 	}
 
 
-	/*@Override
-	public void preProcess() {
-
-	}*/
-
-
 	@Override
 	public void process() {
 		if (minHatchTurn <  main.gameData.turnNo) {
-		if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
-			Alien a = new Alien(main, this.x, this.y);
-			this.getSq().addEntity(a);
-			this.remove();
+			if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
+				Alien a = new Alien(main, this.x, this.y);
+				this.getSq().addEntity(a);
+				this.remove();
 
-			if (Settings.DEBUG || this.seenByPlayer()) {
-				main.addMsg(3, "THE EGG HAS HATCHED!");
+				if (Settings.DEBUG || this.seenByPlayer()) {
+					main.addMsg(3, "THE EGG HAS HATCHED!");
+					main.sfx.playSound("horrorambience.mp3");
+
+				}
 			}
 		}
-	}
 	}
 
 

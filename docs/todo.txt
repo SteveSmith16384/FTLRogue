@@ -1,14 +1,8 @@
 Astro Commander
 
 TODO
-DONE Say "ship out of power"
-DONE Process after leaving console
+SFX for ranged weapon
 Set up web page - add screenshots
-DONE Space should not move stars
-DONE Dont say "press f to fire" if no target
-DONE accept "engine 33"
-
-Show "dead" next to unit if killed
 Don't duplicate help
 Make stats random
 
@@ -31,10 +25,11 @@ Get taken prisoner
 
 
 LATER
+Show "dead" next to unit if killed
 DefaultView - split up into areas
 Teleport either on teleoprter, or next to it to teleport something
 Add music
-Add sfx
+Add more sfx
 Incur fines
 Find random map gen
 Mobs pick up weapons if better than what they have
@@ -43,7 +38,6 @@ Police confiscate illegal items
 All units can do all actions, but specialists are better
 Buy crewmembers
 Can board and take control of enemy ships
-Scroll map
 Stock up on fuel at spacestation
 Have background stories for units
 Player can choose where installations go

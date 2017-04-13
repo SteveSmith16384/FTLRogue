@@ -157,6 +157,8 @@ public abstract class AbstractMob extends DrawableEntity {
 				x += offx;
 				y += offy;
 				newsq.addEntity(this);
+				main.sfx.playSound("footstep.wav");
+
 				return true;
 			} else {
 				if (this.side == other.side) {
@@ -293,6 +295,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void died(String reason) {
+		main.sfx.playSound("deathscream1.wav");
 		main.addMsg(3, this.getName() + " has died of " + reason);
 		for(ICarryable eq : this.equipment) {
 			super.getSq().addEntity((DrawableEntity)eq); // Drop the equipment

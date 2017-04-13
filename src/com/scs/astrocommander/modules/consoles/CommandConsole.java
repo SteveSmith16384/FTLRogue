@@ -25,6 +25,8 @@ public class CommandConsole extends AbstractConsoleModule {
 
 
 	private void showMenu() {
+		main.sfx.playSound("faxmodem.mp3");
+
 		super.addLine("Please enter a command and press enter: ");
 		super.addLine("");
 		if (main.gameData.currentLocation != null) {

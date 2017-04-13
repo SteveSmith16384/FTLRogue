@@ -352,6 +352,7 @@ public class PlayersShipModule extends AbstractModule {
 				// Check next to console
 				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
 				if (sq != null) {
+					main.sfx.playSound("laser4.mp3");
 					main.addMsg("You have fired at " + main.gameData.currentLocation.getName());
 					this.main.gameData.weaponTemp += 5;
 					this.main.gameData.currentLocation.shotByPlayer();

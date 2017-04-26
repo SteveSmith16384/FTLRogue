@@ -41,6 +41,7 @@ public class Unit extends AbstractMob {
 						main.gameData.powerUsedPerTurn += 1f;
 						this.incFood(10);
 						this.main.addMsg(this.getName() + " eats some food");
+						main.sfx.playSound("eating.mp3");
 						status = Status.Eating;
 					}
 				}
@@ -73,7 +74,7 @@ public class Unit extends AbstractMob {
 			if (sqr != null) {
 				int rep = (Main.RND.nextInt(5) + 1);
 				sqr.incDamage(-rep);
-				this.main.addMsg(this.getName() + " repairs the " + sqr.getName() + " by " + rep + "%");
+				this.main.addMsg(this.getName() + " repairs the " + sqr.getName() + " by " + rep + "% (" + sqr.getDamagePcent() + "% left)");
 				status = Status.Repairing;
 			}
 		}

@@ -1,6 +1,8 @@
 package com.scs.astrocommander.entityinterfaces;
 
+import com.scs.astrocommander.entities.mobs.AbstractMob;
+
 public interface IUseable {
 
-	void use();
+	void use(AbstractMob user);
 }

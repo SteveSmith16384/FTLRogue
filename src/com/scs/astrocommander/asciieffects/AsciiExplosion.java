@@ -29,6 +29,9 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 		chars.add(CHAR1);
 		chars.add(CHAR2);
 		chars.add(CHAR3);
+		
+		main.sfx.playSound("explosion1.mp3");
+
 	}
 
 

@@ -6,6 +6,7 @@ import com.scs.astrocommander.Main;
 import com.scs.astrocommander.entityinterfaces.ICarryable;
 import com.scs.astrocommander.entityinterfaces.IExamineable;
 import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
+import com.scs.astrocommander.entityinterfaces.IUseable;
 import com.scs.astrocommander.entityinterfaces.IWearable;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.modules.PlayersShipModule;
@@ -155,6 +156,24 @@ public class DirectControlInputHandler implements IInputHander {
 					}
 					return false;
 				}
+
+				case 'u':
+				{
+					ICarryable obj = main.gameData.currentUnit.currentItem;
+					if (obj != null) {
+						if (obj instanceof IUseable) {
+							IUseable ex = (IUseable)obj;
+							ex.use(main.gameData.currentUnit);
+							//this.main.gameData.currentUnit.wearing = ex;
+							//main.addMsg("Unit is now wearing the " + obj.getName());
+						} else {
+							main.addMsg("Unit cannot use " + obj.getName());
+						}
+					} else {
+						main.addMsg("Unit not using anything");
+					}
+				}
+				return true;
 
 				case 'w':
 				{

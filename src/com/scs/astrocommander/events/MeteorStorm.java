@@ -7,8 +7,7 @@ import com.scs.astrocommander.asciieffects.Meteor;
 
 public class MeteorStorm extends AbstractEvent {
 	
-	//private static final int TOTAL
-	private float size = 100;
+	private float size = 300;
 	private Point dir = new Point();
 
 	public MeteorStorm(Main main) {

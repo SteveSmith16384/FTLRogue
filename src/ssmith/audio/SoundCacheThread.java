@@ -20,6 +20,7 @@ public class SoundCacheThread extends Thread {
 		root = _root;
 
 		this.setDaemon(true);
+		this.start();
 	}
 
 

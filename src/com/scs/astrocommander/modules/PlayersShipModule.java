@@ -13,14 +13,12 @@ import com.scs.astrocommander.GameData;
 import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.asciieffects.ShipLaser;
-import com.scs.astrocommander.destinations.EmptyHulk;
 import com.scs.astrocommander.destinations.EnemyShip;
 import com.scs.astrocommander.destinations.Planet;
-import com.scs.astrocommander.destinations.PoliceShip;
 import com.scs.astrocommander.entities.DrawableEntity;
+import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.entityinterfaces.ICarryable;
 import com.scs.astrocommander.entityinterfaces.IHelpIfCarried;
-import com.scs.astrocommander.events.AbstractEvent;
 import com.scs.astrocommander.events.MeteorStorm;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareControlPanel;
@@ -230,7 +228,7 @@ public class PlayersShipModule extends AbstractModule {
 
 			// Any encounters?
 			if (main.gameData.currentEvent == null) {
-				int i = Main.RND.nextInt(10);
+				int i = Main.RND.nextInt(20);
 				switch (i) {
 				case 0:
 					gameData.currentLocation = new EnemyShip(main);
@@ -267,7 +265,9 @@ public class PlayersShipModule extends AbstractModule {
 			if (main.gameData.currentUnit != null) {
 				sq1 = main.gameData.currentUnit.getSq();
 			}
-			main.gameData.currentUnit = main.gameData.units.get(i);
+			Unit unit = main.gameData.units.get(i);
+			if (unit.isAlive()) {
+			main.gameData.currentUnit = unit;//main.gameData.units.get(i);
 			AbstractMapSquare sq2 = main.gameData.currentUnit.getSq();
 			main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
 
@@ -276,6 +276,9 @@ public class PlayersShipModule extends AbstractModule {
 			}
 			sq2.calcChar();
 			return true;
+			} else {
+				main.addMsg("That unit is dead");
+			}
 		}
 		return false;
 

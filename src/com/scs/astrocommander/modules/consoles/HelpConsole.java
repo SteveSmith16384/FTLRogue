@@ -67,8 +67,8 @@ public class HelpConsole extends AbstractConsoleModule {
 		this.addLine("p - Pick up");
 		this.addLine("s - Shoot");
 		this.addLine("t - Throw");
-		this.addLine("u - Use, e.g. prime grenade");
-		this.addLine("w - Wear");
+		this.addLine("u - Use current item, e.g. prime grenade");
+		this.addLine("w - Wear current item");
 
 	}
 

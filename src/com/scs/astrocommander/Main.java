@@ -43,7 +43,7 @@ public class Main {
 	public Main() throws IOException, InterruptedException {
 		createGameData();
 
-		sfx = new SoundCacheThread("sfx/");
+		sfx = new SoundCacheThread("media/sfx/");
 		
 		currentModule = new PlayersShipModule(this, null);
 

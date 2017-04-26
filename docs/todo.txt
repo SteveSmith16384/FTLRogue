@@ -1,10 +1,17 @@
 Astro Commander
 
 TODO
+'space' keeps looping until another key is pressed
+Search for todos
 SFX for ranged weapon
+SFX launch
+SFX flying
+SFX better teleport sound
+
 Set up web page - add screenshots
 Don't duplicate help
 Make stats random
+Console turn sound off
 
 
 STORY - EPISODE 1

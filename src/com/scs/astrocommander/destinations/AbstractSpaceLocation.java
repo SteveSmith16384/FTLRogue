@@ -66,7 +66,6 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 				// Take into account shields
 				dam = (dam * main.gameData.shieldPowerPcent) / 100;
 				main.addMsg(this.name + " fires and damages you " + (int)dam + "%");
-				main.sfx.playSound("explosion1.mp3");
 				sq.incDamage(dam);
 				float powerCost = main.gameData.shieldPowerPcent;
 				main.gameData.totalPower -= powerCost;

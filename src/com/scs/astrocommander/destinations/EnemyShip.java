@@ -24,7 +24,7 @@ public class EnemyShip extends AbstractAnotherShip {
 	public EnemyShip(Main main) {
 		super(main, "Enemy Ship");
 
-		main.addMsg("An enemy ship has appeared!");
+		main.addMsg("An enemy ship has appeared!".toUpperCase());
 	}
 
 
@@ -97,7 +97,7 @@ public class EnemyShip extends AbstractAnotherShip {
 		main.sfx.playSound("explosion1.mp3");
 		int dam = Main.RND.nextInt(15)+1;
 		this.damagePcent += dam;
-		main.addMsg("You inflict " + dam + " on the enemy ship.");
+		main.addMsg("You inflict " + dam + "% damage on the enemy ship.");
 		if (this.damagePcent >= 100) {
 			this.destroyed();
 		}

@@ -121,8 +121,8 @@ public abstract class AbstractMob extends DrawableEntity {
 		} else {
 			main.addMsg(2, this.getName() + " is wounded by " + (int)-f);
 		}
-		if (this.health > 100f) {
-			this.health = 100f;
+		if (this.health > this.maxHealth) {
+			this.health = maxHealth;
 		} else if (health <= 0) {
 			died(reason);
 		}
@@ -301,7 +301,7 @@ public abstract class AbstractMob extends DrawableEntity {
 			super.getSq().addEntity((DrawableEntity)eq); // Drop the equipment
 		}
 		super.getSq().addEntity(new Corpse(main, this.getName()));
-		main.gameData.units.remove(this); // Remove from list if ours
+		//main.gameData.units.remove(this); // Remove from list if ours
 		if (main.gameData.units.isEmpty()) {
 			main.gameOver();
 		} else {

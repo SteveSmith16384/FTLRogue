@@ -223,7 +223,7 @@ public class PlayersShipModule extends AbstractModule {
 					main.gameOver();
 					return;
 				}
-				
+
 			}
 
 			// Any encounters?
@@ -267,15 +267,16 @@ public class PlayersShipModule extends AbstractModule {
 			}
 			Unit unit = main.gameData.units.get(i);
 			if (unit.isAlive()) {
-			main.gameData.currentUnit = unit;//main.gameData.units.get(i);
-			AbstractMapSquare sq2 = main.gameData.currentUnit.getSq();
-			main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
+				main.gameData.currentUnit = unit;//main.gameData.units.get(i);
+				AbstractMapSquare sq2 = main.gameData.currentUnit.getSq();
+				main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
+				main.addMsg("(Press the unit number to select another)");
 
-			if (sq1 != null) {
-				sq1.calcChar();
-			}
-			sq2.calcChar();
-			return true;
+				if (sq1 != null) {
+					sq1.calcChar();
+				}
+				sq2.calcChar();
+				return true;
 			} else {
 				main.addMsg("That unit is dead");
 			}
@@ -307,37 +308,49 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public void pickupMenu() {
-		main.addMsg("What to pick up?");
-		int i=1;
-		for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
-			if (de instanceof ICarryable) {
-				main.addMsg(i + ":" + de.getName());
+		if (main.gameData.currentUnit.getSq().getEntities().isEmpty() == false) {
+			main.addMsg("What to pick up?");
+			int i=1;
+			for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
+				if (de instanceof ICarryable) {
+					main.addMsg(i + ":" + de.getName());
+				}
+				i++;
 			}
-			i++;
+			this.inputHandler = new PickupItemInputHandler(main, this);
+		} else {
+			main.addMsg("There is nothing to pick up");
 		}
-		this.inputHandler = new PickupItemInputHandler(main, this);
 	}
 
 
 	public void dropMenu() {
-		main.addMsg("What to drop?");
-		int i=1;
-		for (ICarryable de : main.gameData.currentUnit.equipment) {
-			main.addMsg(i + ":" + de.getName());
+		if (main.gameData.currentUnit.equipment.size() > 0) {
+			main.addMsg("What to drop?");
+			int i=1;
+			for (ICarryable de : main.gameData.currentUnit.equipment) {
+				main.addMsg(i + ":" + de.getName());
+			}
+			i++;
+			this.inputHandler = new DropItemInputHandler(main, this);
+		} else {
+			main.addMsg("The current unit isn't using aything");
 		}
-		i++;
-		this.inputHandler = new DropItemInputHandler(main, this);
 	}
 
 
 	public void changeCurrentItem() {
-		main.addMsg("What to use?");
-		int i=1;
-		for (ICarryable de : main.gameData.currentUnit.equipment) {
-			main.addMsg(i + ":" + de.getName());
-			i++;
+		if (main.gameData.currentUnit.equipment.size() > 0) {
+			main.addMsg("Which item do you want the unit to use?");
+			int i=1;
+			for (ICarryable de : main.gameData.currentUnit.equipment) {
+				main.addMsg(i + ":" + de.getName());
+				i++;
+			}
+			this.inputHandler = new ChangeItemInputHandler(main, this);
+		} else {
+			main.addMsg("The current unit isn't using aything");
 		}
-		this.inputHandler = new ChangeItemInputHandler(main, this);
 	}
 
 
@@ -380,5 +393,5 @@ public class PlayersShipModule extends AbstractModule {
 	public void restoreDirectControlIH() {
 		this.inputHandler = this.directControlIH;
 	}
-	
+
 }

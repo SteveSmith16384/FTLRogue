@@ -149,11 +149,13 @@ public class DefaultView implements IGameView, WindowListener {
 		x = 54;
 		y=2;
 		tGraphics.putString(x, y++, "CREW");
+		int i=1;
 		for (Unit unit : gameData.units) {
 			StringBuilder str = new StringBuilder();
 			if (unit == gameData.currentUnit) {
 				str.append("*");
 			}
+			str.append((i++) + ") ");
 			str.append(unit.getName()).append(" ");
 			if (unit.health > 0) {
 				str.append("H:" + (int)unit.health + "%").append(" ");

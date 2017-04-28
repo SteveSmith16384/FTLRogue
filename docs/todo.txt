@@ -11,7 +11,7 @@ SFX better teleport sound
 Set up web page - add screenshots
 Don't duplicate help
 Make stats random
-Console turn sound off
+Console to turn sound off
 
 
 STORY - EPISODE 1
@@ -21,9 +21,6 @@ Get intercepted on the way
 
 
 EVENTS
-DONE Enemy ship off starboard bow
-DONE Boarded by enemies
-DONE Meteor storm
 Aliens invade ship
 Solar flare
 Encounter empty hulk
@@ -32,7 +29,6 @@ Get taken prisoner
 
 
 LATER
-Show "dead" next to unit if killed
 DefaultView - split up into areas
 Teleport either on teleoprter, or next to it to teleport something
 Add music
@@ -74,7 +70,6 @@ Units get tired - sleep in bed to regen
 
 
 MISSIONS
-DONE Deliver alien egg
 Give someone a ride (maybe fugitive?)
 Smuggle stuff
 Rescue mission

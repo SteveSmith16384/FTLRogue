@@ -2,17 +2,12 @@ package com.scs.astrocommander;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-public class Line extends ArrayList<Point> {//implements Iterable<Point> {
-
-	//private List<Point> points;
+public class Line extends ArrayList<Point> {
 
 	private static final long serialVersionUID = 1L;
 
 	public Line(int x0, int y0, int x1, int y1) {
-		//points = new ArrayList<Point>();
 
 		int dx = Math.abs(x1-x0);
 		int dy = Math.abs(y1-y0);
@@ -39,23 +34,5 @@ public class Line extends ArrayList<Point> {//implements Iterable<Point> {
 		}
 	}
 
-
-/*	public List<Point> getPoints() { 
-		return points; 
-	}
-
-
-	public int length() {
-		return points.size();
-	}
-
-
-	@Override
-	public Iterator<Point> iterator() {
-		return points.iterator();
-	}
-	
-	*/
-	
 
 }

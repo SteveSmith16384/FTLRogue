@@ -5,7 +5,7 @@ import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IRangedWeapon;
 import com.scs.rogueframework.ecs.entities.AbstractItem;
 
-public class Pistol extends AbstractItem implements ICarryable, IRangedWeapon {// AbstractRangedWeapon {
+public class Pistol extends AbstractItem implements ICarryable, IRangedWeapon {
 
 	public Pistol(Main main) {
 		super(main, -1, -1);

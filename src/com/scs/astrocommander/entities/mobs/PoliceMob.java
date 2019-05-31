@@ -7,7 +7,6 @@ import com.scs.astrocommander.entities.items.Pistol;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.rogueframework.ecs.components.IIllegal;
 import com.scs.rogueframework.ecs.components.IRangedWeapon;
-import com.scs.rogueframework.ecs.entities.AbstractMob;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class PoliceMob extends AbstractMob {
@@ -28,9 +27,11 @@ public class PoliceMob extends AbstractMob {
 		super.process();
 
 		searchTurnsLeft--;
+		
+		Main m = (Main)main;
 
 		if (this.searchTurnsLeft > 0) {
-			if (main.gameData.wantedLevel > 0) {
+			if (m.gameData.wantedLevel > 0) {
 				AbstractMob mob = super.getClosestVisibleEnemy();
 				if (mob != null) {
 					searchTurnsLeft = Math.max(searchTurnsLeft, 20);
@@ -52,14 +53,14 @@ public class PoliceMob extends AbstractMob {
 			DrawableEntity de = super.getClosestEntity(IIllegal.class);
 			if (de != null) {
 				foundAnythingIllegal = true;
-				main.gameData.wantedLevel += 1;
+				m.gameData.wantedLevel += 1;
 				main.addMsg(3, "The police find an illegal item!");
 			}
 		}
 
 		if (this.searchTurnsLeft <= 0) {
 			// Leave the ship
-			if (this.getSq().type == AbstractMapSquare.MAP_TELEPORTER) {
+			if (this.getSq().getType() == AbstractMapSquare.MAP_TELEPORTER) {
 				this.remove();
 				main.addMsg("A policeman has left the ship.");
 			}
@@ -70,19 +71,21 @@ public class PoliceMob extends AbstractMob {
 
 	protected void attackedBy(AbstractMob attacker) {
 		if (attacker.side == AbstractMob.SIDE_PLAYER) {
-			main.gameData.wantedLevel += 1f;
+			Main m = (Main)main;
+			m.gameData.wantedLevel += 1f;
 		}
 	}
 
 
 	@Override
 	public Point getAStarDest() {
+		Main m = (Main)main;
 		if (this.searchTurnsLeft > 0) {
-			AbstractMapSquare sq2 =  main.gameData.map_data.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR);
+			AbstractMapSquare sq2 =  m.gameData.map_data.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR);
 			return new Point(sq2.x, sq2.y);
 		} else {
 			// Time to leave
-			AbstractMapSquare sq2 = main.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+			AbstractMapSquare sq2 = m.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 			return new Point(sq2.x, sq2.y);
 		}
 	}

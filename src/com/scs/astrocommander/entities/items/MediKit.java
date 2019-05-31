@@ -1,10 +1,10 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IUseable;
 import com.scs.rogueframework.ecs.entities.AbstractItem;
-import com.scs.rogueframework.ecs.entities.AbstractMob;
 
 public class MediKit extends AbstractItem implements ICarryable, IUseable {
 

@@ -1,13 +1,13 @@
 package com.scs.rogueframework.ecs.entities;
 
-import com.scs.astrocommander.Main;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.ecs.components.ICarryable;
 
 public abstract class AbstractItem extends DrawableEntity implements ICarryable {
 
-	protected AbstractMob carrier;
+	protected FrameworkMob carrier;
 	
-	public AbstractItem(Main main, int _x, int _y) {
+	public AbstractItem(AbstractRoguelike main, int _x, int _y) {
 		super(main, _x, _y, DrawableEntity.Z_ITEM);
 	}
 	
@@ -19,7 +19,7 @@ public abstract class AbstractItem extends DrawableEntity implements ICarryable 
 	
 	
 	@Override
-	public AbstractMob getCarrier() {
+	public FrameworkMob getCarrier() {
 		return carrier;
 	}
 	
@@ -31,7 +31,7 @@ public abstract class AbstractItem extends DrawableEntity implements ICarryable 
 
 
 	@Override
-	public void setCarriedBy(AbstractMob mob) {
+	public void setCarriedBy(FrameworkMob mob) {
 		carrier = mob;
 		
 	}

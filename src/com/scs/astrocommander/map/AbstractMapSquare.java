@@ -6,12 +6,13 @@ import java.awt.Point;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.astrocommander.Main;
-import com.scs.rogueframework.FrameworkMapSquare;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.rogueframework.ecs.components.IProcessable;
-import com.scs.rogueframework.ecs.entities.AbstractMob;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
+import com.scs.rogueframework.map.FrameworkMapSquare;
+import com.scs.rogueframework.map.IMapSquare;
 
-public abstract class AbstractMapSquare extends FrameworkMapSquare implements IProcessable {
+public abstract class AbstractMapSquare extends FrameworkMapSquare implements IMapSquare, IProcessable {
 
 	// Map codes
 	public static final int MAP_NOTHING = 0;
@@ -226,5 +227,14 @@ public abstract class AbstractMapSquare extends FrameworkMapSquare implements IP
 		}
 		return "";
 	}
+	
+	
+	public VisType isVisible() {
+		return this.visible;
+	}
 
+	
+	public int getType() {
+		return type;
+	}
 }

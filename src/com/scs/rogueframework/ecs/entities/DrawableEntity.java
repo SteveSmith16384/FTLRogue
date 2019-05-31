@@ -2,11 +2,12 @@ package com.scs.rogueframework.ecs.entities;
 
 import java.awt.Point;
 
-import com.scs.astrocommander.Main;
-import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.Line;
 import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.map.FrameworkMapSquare;
+import com.scs.rogueframework.map.IMapSquare;
+import com.sun.scenario.Settings;
 
 
 public abstract class DrawableEntity implements Comparable<Object> {
@@ -17,9 +18,9 @@ public abstract class DrawableEntity implements Comparable<Object> {
 	public static final int Z_FLOOR = 0;
 
 	public int x, y, z;
-	public Main main;
+	public AbstractRoguelike main;
 
-	public DrawableEntity(Main _main, int _x, int _y, int _z) {
+	public DrawableEntity(AbstractRoguelike _main, int _x, int _y, int _z) {
 		super();
 
 		main = _main;
@@ -35,14 +36,14 @@ public abstract class DrawableEntity implements Comparable<Object> {
 	public abstract char getChar();
 
 
-	public AbstractMapSquare getSq() {
+	public IMapSquare getSq() {
 		if (this instanceof ICarryable) {
 			ICarryable ic = (ICarryable) this;
 			if (ic.getCarrier() != null) {
-				return main.gameData.map_data.map[ic.getCarrier().x][ic.getCarrier().y];
+				return main.getSq(ic.getCarrier().x, ic.getCarrier().y);
 			}
 		}
-		return main.gameData.map_data.map[x][y];
+		return main.getSq(x, y);
 	}
 
 
@@ -52,10 +53,7 @@ public abstract class DrawableEntity implements Comparable<Object> {
 
 
 	public boolean canSee(int mx, int my) {
-		int viewRange = Settings.VIEW_RANGE_NORMAL;
-		if (main.gameData.totalPower <= 0 || main.gameData.shipLightsOn == false) {
-			viewRange = Settings.VIEW_RANGE_DARK;
-		}
+		int viewRange = main.getViewDist();
 
 		Line l = new Line(this.x, this.y, mx, my);
 		if (l.size() > viewRange) {
@@ -64,7 +62,7 @@ public abstract class DrawableEntity implements Comparable<Object> {
 		for (Point p : l) {
 			if (p.x != x || p.y != y) {
 				if (p.x != mx || p.y != my) {
-					if (!main.gameData.map_data.map[p.x][p.y].isTransparent()) {
+					if (!main.getSq(p.x, p.y).isTransparent()) {
 						return false;
 					}
 				}
@@ -75,7 +73,7 @@ public abstract class DrawableEntity implements Comparable<Object> {
 
 
 	public boolean seenByPlayer() {
-		return this.getSq().visible == AbstractMapSquare.VisType.Visible;
+		return this.getSq().isVisible() == FrameworkMapSquare.VisType.Visible;
 	}
 
 

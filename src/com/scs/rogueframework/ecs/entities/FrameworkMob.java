@@ -2,102 +2,57 @@ package com.scs.rogueframework.ecs.entities;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.asciieffects.BulletShot;
 import com.scs.astrocommander.entities.items.Corpse;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.map.MapSquareDoor;
-import com.scs.rogueframework.FrameworkMapSquare.VisType;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.Line;
+import com.scs.rogueframework.asciieffects.BulletShot;
 import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IMeleeWeapon;
 import com.scs.rogueframework.ecs.components.IRangedWeapon;
-import com.scs.rogueframework.ecs.components.IWearable;
+import com.scs.rogueframework.map.FrameworkMapSquare;
+import com.scs.rogueframework.map.FrameworkMapSquare.VisType;
+import com.scs.rogueframework.map.IMapSquare;
 
 import ssmith.astar.AStar;
 
-public abstract class AbstractMob extends DrawableEntity {
+public abstract class FrameworkMob extends DrawableEntity {
 
-	public enum Status {Waiting, Moving, Eating, Repairing, Healing}
-
-	public static List<AbstractMob> AllMobs = new ArrayList<>();
-
-
-	// Sides
-	public static final int SIDE_PLAYER = 0;
-	public static final int SIDE_ALIEN = 1;
-	public static final int SIDE_ENEMY_SHIP = 2;
-	public static final int SIDE_POLICE = 3;
+	public static List<AbstractMob> AllMobs = new ArrayList<>(); // todo - is this used?
 
 	public char theChar;
 	protected String name;
 	public int side;
 	public List<ICarryable> equipment = new ArrayList<>();
 	public ICarryable currentItem;
-	protected boolean autoOpenDoors;
-	public IWearable wearing;
-	public int unconciouseTimer = 0;
-
 	public List<Point> astarRoute;
 
 	// Stats
 	public float health, maxHealth;
 	public int meleeSkill;
+	protected boolean autoOpenDoors;
 
-	public AbstractMob(Main main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _combat, boolean _autoOpenDoors) {
-		super(main, _x, _y, _z);
+
+	public FrameworkMob(AbstractRoguelike _main, int _x, int _y, int _z, char c, String _name, int _side, float hlth, int _combat, boolean _autoOpenDoors) {
+		super(_main, _x, _y, _z);
 
 		theChar = c;
 		name = _name;
 		side = _side;
-
 		health = hlth;
 		maxHealth = health;
 		meleeSkill = _combat;
 
 		autoOpenDoors = _autoOpenDoors;
 
-		AllMobs.add(this);
-	}
 
-
-	@Override
-	public void process() {
-		if (this.unconciouseTimer > 0) {
-			this.unconciouseTimer--;
-		}
-	}
-
-
-	@Override
-	public char getChar() {
-		return theChar;
-	}
-
-
-	public static String GetRandomName() {
-		//try {
-		//Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
-		//List<String> lines = Files.readAllLines(path);
-		Scanner scanner = new Scanner(CSVMap.class.getResourceAsStream("/data/names.txt"), "UTF-8");
-		scanner.useDelimiter("\\A");
-		String text = scanner.next();
-		scanner.close();
-		
-		List<String> lines = Arrays.asList(text.split("\n"));
-		int i = Main.RND.nextInt(lines.size());
-		return "Captain " + lines.get(i).trim();
-		/*} catch (IOException ex) {
-			ex.printStackTrace();
-			return "Mr Bum.";
-		}*/
 	}
 
 
@@ -138,9 +93,9 @@ public abstract class AbstractMob extends DrawableEntity {
 			return false;
 		}
 
-		AbstractMapSquare newsq = main.gameData.map_data.map[x+offx][y+offy];
+		IMapSquare newsq = main.getSq(x+offx, y+offy);
 		if (newsq.isTraversable()) {
-			AbstractMob other = newsq.getUnit();// main.gameData.getUnitAt(x+offx, y+offy);
+			FrameworkMob other = (FrameworkMob)newsq.getUnit();
 			if (other == null) {
 				if (newsq instanceof MapSquareDoor) {
 					if (this.autoOpenDoors) {
@@ -150,7 +105,7 @@ public abstract class AbstractMob extends DrawableEntity {
 						return false;
 					}
 				}
-				AbstractMapSquare oldsq = main.gameData.map_data.map[x][y];
+				IMapSquare oldsq = main.getSq(x, y);
 				oldsq.removeEntity(this);
 
 				x += offx;
@@ -200,7 +155,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		Iterator<Point> it = line.iterator();
 		while (it.hasNext()) {
 			Point p =it.next();
-			AbstractMob mob = (AbstractMob) main.gameData.map_data.map[p.x][p.y].getEntityOfType(AbstractMob.class);
+			FrameworkMob mob = (FrameworkMob) main.getSq(p.x, p.y).getEntityOfType(AbstractMob.class);
 			if (mob != null) {
 				new BulletShot(main, this.x, this.y, p.x, p.y);
 				mob.shotBy(this, gun);
@@ -211,10 +166,10 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public void throwItem(List<Point> line, ICarryable gun) {
 		Iterator<Point> it = line.iterator();
-		AbstractMapSquare prevSq = null;
+		FrameworkMapSquare prevSq = null;
 		while (it.hasNext()) {
 			Point p =it.next();
-			AbstractMapSquare sq = main.gameData.map_data.map[p.x][p.y];
+			FrameworkMapSquare sq = (FrameworkMapSquare)main.getSq(p.x, p.y);
 			if (sq.isTraversable() == false) {
 				new BulletShot(main, this.x, this.y, prevSq.x, prevSq.y);
 				this.dropOrThrow(gun, prevSq) ;
@@ -224,12 +179,12 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void shotBy(AbstractMob shooter, IRangedWeapon gun) {
+	protected void shotBy(FrameworkMob shooter, IRangedWeapon gun) {
 		this.genericAttack(shooter, gun.getShotValue(), "shot by");
 	}
 
 
-	public void meleeCombat(AbstractMob defender) {
+	public void meleeCombat(FrameworkMob defender) {
 		float att = this.meleeSkill;
 		if (this.currentItem != null && this.currentItem instanceof IMeleeWeapon) {
 			IMeleeWeapon weapon = (IMeleeWeapon)this.currentItem;
@@ -239,10 +194,10 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void genericAttack(AbstractMob defender, float attackVal, String verb) {
+	protected void genericAttack(FrameworkMob defender, float attackVal, String verb) {
 		int tot = Math.max(1, this.meleeSkill - defender.meleeSkill);
 		int dam = Main.RND.nextInt(tot)+1;
-		if (Settings.DEBUG || this.getSq().visible == VisType.Visible) {
+		if (Settings.DEBUG || this.getSq().isVisible() == VisType.Visible) {
 			main.addMsg(this.name + " has " + verb + " " + defender.name + " for " + dam);
 		}
 		defender.incHealth(-dam, this.getName());
@@ -251,20 +206,20 @@ public abstract class AbstractMob extends DrawableEntity {
 	}
 
 
-	protected void attackedBy(AbstractMob attacker) {
+	protected void attackedBy(FrameworkMob attacker) {
 		// Override if req
 	}
 
 
 	protected void addMsgIfOurs(int pri, String s) {
-		if (this.side == SIDE_PLAYER) {
+		if (this.side == main.getPlayersSide()) {
 			main.addMsg(pri, s);
 		}
 	}
 
 
 	public void openDoor() {
-		MapSquareDoor sq = (MapSquareDoor)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
+		MapSquareDoor sq = (MapSquareDoor)main.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
 		if (sq != null) {
 			if (!sq.isOpen()) {
 				sq.setOpen(true);
@@ -279,7 +234,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void closeDoor() {
-		MapSquareDoor sq = (MapSquareDoor)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
+		MapSquareDoor sq = (MapSquareDoor)main.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
 		if (sq != null) {
 			if (sq.isOpen()) {
 				sq.setOpen(false);
@@ -302,11 +257,12 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		super.getSq().addEntity(new Corpse(main, this.getName()));
 		//main.gameData.units.remove(this); // Remove from list if ours
-		if (main.gameData.players_units.isEmpty()) {
+		Main m = (Main)main;
+		if (m.gameData.players_units.isEmpty()) {
 			main.gameOver();
 		} else {
-			if (this == main.gameData.current_unit) {
-				main.gameData.current_unit = main.gameData.players_units.get(0);
+			if (this == m.gameData.current_unit) {
+				m.gameData.current_unit = m.gameData.players_units.get(0);
 			}
 		}
 		remove();
@@ -390,16 +346,16 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public void pickup(ICarryable ic) {
 		DrawableEntity de = (DrawableEntity)ic;
-		main.gameData.current_unit.getSq().removeEntity(de);
-		main.gameData.current_unit.equipment.add(ic);
+		main.getCurrentUnit().getSq().removeEntity(de);
+		main.getCurrentUnit().equipment.add(ic);
 		ic.setCarriedBy(this);
 
 	}
 
 
-	public void dropOrThrow(ICarryable ic, AbstractMapSquare sq) {
+	public void dropOrThrow(ICarryable ic, IMapSquare sq) {
 		DrawableEntity de = (DrawableEntity)ic;
-		main.gameData.current_unit.equipment.remove(de);
+		main.getCurrentUnit().equipment.remove(de);
 		sq.addEntity(de);//main.gameData.currentUnit.getSq().addEntity(de);
 		ic.setNotCarried();
 	}
@@ -443,11 +399,4 @@ public abstract class AbstractMob extends DrawableEntity {
 		return null;
 	}
 
-
-	/*public DrawableEntity getCarriedItemOfType(Class clazz) {
-
-	}*/
-
-
 }
-

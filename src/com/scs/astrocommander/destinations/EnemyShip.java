@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.astrocommander.Main;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.astrocommander.entities.mobs.EnemyUnit;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.modules.consoles.AbstractConsoleModule;
-import com.scs.rogueframework.ecs.entities.AbstractMob;
 
 public class EnemyShip extends AbstractAnotherShip {
 

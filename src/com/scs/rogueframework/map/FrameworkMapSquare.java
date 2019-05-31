@@ -1,4 +1,4 @@
-package com.scs.rogueframework;
+package com.scs.rogueframework.map;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import java.util.List;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.astrocommander.Settings;
-import com.scs.rogueframework.FrameworkMapSquare.VisType;
-import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
+import com.scs.rogueframework.ecs.entities.FrameworkMob;
 
 import ssmith.util.SortedArrayList;
 
-public abstract class FrameworkMapSquare {
+public abstract class FrameworkMapSquare implements IMapSquare {
 
 	public enum VisType {Hidden, Seen, Visible};
 
@@ -111,7 +111,7 @@ public abstract class FrameworkMapSquare {
 	}
 
 
-	public AbstractMob getUnit() {
+	public FrameworkMob getUnit() {
 		for (DrawableEntity de : this.getEntities()) {
 			if (de instanceof AbstractMob) {
 				AbstractMob unit = (AbstractMob) de;

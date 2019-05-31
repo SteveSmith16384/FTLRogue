@@ -9,9 +9,7 @@ import java.util.Map;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 import com.scs.astrocommander.GameData;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
@@ -27,13 +25,13 @@ import com.scs.astrocommander.modules.inputmodes.ChangeItemInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DirectControlInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DropItemInputHandler;
 import com.scs.astrocommander.modules.inputmodes.PickupItemInputHandler;
-import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.IModule;
 import com.scs.rogueframework.LogMessage;
+import com.scs.rogueframework.asciieffects.AbstractAsciiEffect;
 import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IHelpIfCarried;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
-import com.scs.rogueframework.input.IInputHander;
 /*
 
 ASCII CODES
@@ -65,7 +63,7 @@ Foreground colour shows damage (white -> grey)
 
 
  */
-public class PlayersShipModule extends AbstractModule {
+public class PlayersShipModule extends AbstractModule implements IModule {
 
 	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
 	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
@@ -274,12 +272,12 @@ public class PlayersShipModule extends AbstractModule {
 		if (i < main.gameData.players_units.size()) {
 			AbstractMapSquare sq1 = null;
 			if (main.gameData.current_unit != null) {
-				sq1 = main.gameData.current_unit.getSq();
+				sq1 = (AbstractMapSquare)main.gameData.current_unit.getSq();
 			}
 			PlayersUnit unit = main.gameData.players_units.get(i);
 			if (unit.isAlive()) {
 				main.gameData.current_unit = unit;//main.gameData.units.get(i);
-				AbstractMapSquare sq2 = main.gameData.current_unit.getSq();
+				AbstractMapSquare sq2 = (AbstractMapSquare)main.gameData.current_unit.getSq();
 				main.addMsg("You are controlling " + main.gameData.current_unit.getName());
 				main.addMsg("(Press the unit number to select another)");
 
@@ -298,7 +296,7 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	@Override
-	public void drawScreen(IGameView view) throws IOException {
+	public void drawScreen(IGameView view) {
 		GameData gameData = main.gameData;
 		
 		if (stars == null) {

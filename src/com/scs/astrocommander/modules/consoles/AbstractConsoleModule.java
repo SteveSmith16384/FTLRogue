@@ -1,6 +1,5 @@
 package com.scs.astrocommander.modules.consoles;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import com.googlecode.lanterna.input.KeyType;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.IModule;
 
 public abstract class AbstractConsoleModule extends AbstractModule {
 
@@ -17,7 +17,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 	private List<String> lines = new ArrayList<>();
 	private String command = "";
 
-	public AbstractConsoleModule(Main main, AbstractModule prev) {
+	public AbstractConsoleModule(Main main, IModule prev) {
 		super(main, prev);
 	}
 
@@ -50,7 +50,7 @@ public abstract class AbstractConsoleModule extends AbstractModule {
 
 
 	@Override
-	public void drawScreen(IGameView view) throws IOException {
+	public void drawScreen(IGameView view) {
 		view.drawConsoleScreen(lines, command);
 	}
 

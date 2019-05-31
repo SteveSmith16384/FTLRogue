@@ -3,6 +3,7 @@ package com.scs.astrocommander.entities.items;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.entities.mobs.Alien;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IExamineable;
 import com.scs.rogueframework.ecs.components.IIllegal;
@@ -29,7 +30,8 @@ public class AlienEgg extends AbstractItem implements ICarryable, IExamineable, 
 
 	@Override
 	public void process() {
-		if (minHatchTurn <  main.gameData.turnNo) {
+		Main m = (Main)this.main;
+		if (minHatchTurn < m.gameData.turnNo) {
 			if (Main.RND.nextInt(100) <= PCENT_CHANCE_HATCH) {
 				Alien a = new Alien(main, this.x, this.y);
 				this.getSq().addEntity(a);

@@ -12,15 +12,18 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.astrocommander.modules.PlayersShipModule;
-import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.AbstractGameData;
 import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.IGameView;
 import com.scs.rogueframework.LogMessage;
+import com.scs.rogueframework.asciieffects.AbstractAsciiEffect;
+import com.scs.rogueframework.ecs.entities.FrameworkMob;
+import com.scs.rogueframework.map.IMapSquare;
 import com.scs.rogueframework.views.LanternaView;
 
 import ssmith.audio.SoundCacheThread;
@@ -69,6 +72,46 @@ public final class Main extends AbstractRoguelike {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public IMapSquare getSq(int x, int y) {
+		return this.gameData.map_data.map[x][y];
+	}
+
+
+	@Override
+	public FrameworkMob getCurrentUnit() {
+		return this.gameData.current_unit;
+	}
+
+
+	@Override
+	protected int getMaxMsgs() {
+		return Settings.MAX_MSGS;
+	}
+
+
+	@Override
+	public int getViewDist() {
+		int viewRange = Settings.VIEW_RANGE_NORMAL;
+		if (gameData.totalPower <= 0 || gameData.shipLightsOn == false) {
+			viewRange = Settings.VIEW_RANGE_DARK;
+		}
+		return viewRange;
+	}
+
+
+	@Override
+	public IMapSquare findAdjacentMapSquare(int x, int y, int type) {
+		return this.gameData.map_data.findAdjacentMapSquare(x, y, type);
+	}
+
+
+	@Override
+	public int getPlayersSide() {
+		return AbstractMob.SIDE_PLAYER;
 	}
 
 

@@ -21,9 +21,7 @@ public interface IGameView {
 	
 	void refresh();
 	
-	//void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route, Point selectedTarget) throws IOException;
-	
-	void drawConsoleScreen(List<String> lines, String cmd) throws IOException;
+	void drawConsoleScreen(List<String> lines, String cmd);
 	
 	void drawCharacter(int x, int y, TextCharacter ch);
 	

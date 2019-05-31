@@ -1,13 +1,12 @@
-package com.scs.astrocommander.asciieffects;
+package com.scs.rogueframework.asciieffects;
 
 import java.awt.Point;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.IGameView;
 import com.scs.rogueframework.Line;
 
@@ -17,7 +16,7 @@ public class BulletShot extends AbstractAsciiEffect {
 	private Line line;
 	private TextCharacter ch;
 
-	public BulletShot(Main main, int sx, int sy, int ex, int ey) {
+	public BulletShot(AbstractRoguelike main, int sx, int sy, int ex, int ey) {
 		super(main);
 
 		current = new Point(sx, sy);
@@ -40,7 +39,7 @@ public class BulletShot extends AbstractAsciiEffect {
 
 	@Override
 	public void drawChars(IGameView view) {
-		boolean seen = main.gameData.map_data.map[current.x][current.y].visible == AbstractMapSquare.VisType.Visible;
+		boolean seen = main.getSq(current.x, current.y).isVisible() == AbstractMapSquare.VisType.Visible;
 		if (seen || Settings.DEBUG) {
 			view.drawCharacter(current.x, current.y, ch);
 		}

@@ -1,19 +1,19 @@
 package com.scs.astrocommander.modules;
 
-import java.io.IOException;
-
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.Main;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.IModule;
 import com.scs.rogueframework.input.IInputHander;
 
-public abstract class AbstractModule {
+public abstract class AbstractModule implements IModule {
 
 	protected Main main;
-	protected AbstractModule prevModule;
+	protected IModule prevModule;
 	public IInputHander inputHandler;
 
-	public AbstractModule(Main _main, AbstractModule _prevModule) {
+	public AbstractModule(Main _main, IModule _prevModule) {
 		super();
 		
 		main = _main;
@@ -22,7 +22,7 @@ public abstract class AbstractModule {
 	
 	public abstract void updateGame();
 
-	public abstract void drawScreen(IGameView view) throws IOException;
+	public abstract void drawScreen(IGameView view);
 	
 	public abstract boolean processInput(KeyStroke ks);
 }

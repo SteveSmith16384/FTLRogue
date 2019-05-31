@@ -19,7 +19,7 @@ public class StarmapModule extends AbstractModule { // Currently unused
 	}
 
 	@Override
-	public void drawScreen(IGameView view) throws IOException {
+	public void drawScreen(IGameView view) {
 	}
 
 	@Override

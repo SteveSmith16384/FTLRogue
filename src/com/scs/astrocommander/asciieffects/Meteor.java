@@ -6,8 +6,9 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.asciieffects.AbstractAsciiEffect;
+import com.scs.rogueframework.asciieffects.AsciiExplosion;
 
 public class Meteor extends AbstractAsciiEffect {
 	
@@ -51,13 +52,14 @@ public class Meteor extends AbstractAsciiEffect {
 		p.x += dir.x;
 		p.y += dir.y;
 		
-		if (this.p.x < 0 || this.p.x > main.gameData.map_data.getWidth() || this.p.y < 0 || this.p.y > main.gameData.map_data.getHeight()) {
+		Main m = (Main)main;
+		if (this.p.x < 0 || this.p.x > m.gameData.map_data.getWidth() || this.p.y < 0 || this.p.y > m.gameData.map_data.getHeight()) {
 			return false;
 		}
 		
-		AbstractMapSquare sq = main.gameData.map_data.map[p.x][p.y]; 
+		AbstractMapSquare sq = m.gameData.map_data.map[p.x][p.y]; 
 		if (sq.isTraversable() == false) {
-			float dam = 10 + (main.gameData.shipSpeed/100);
+			float dam = 10 + (m.gameData.shipSpeed/100);
 			sq.incDamage(dam); // Adjust by ship speed
 			main.addMsg("Ship damaged " + (int)dam + " by meteor!");
 			this.main.addAsciiEffect(new AsciiExplosion(main, p.x, p.y));

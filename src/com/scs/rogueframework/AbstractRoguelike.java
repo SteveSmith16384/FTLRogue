@@ -6,18 +6,20 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.googlecode.lanterna.input.KeyStroke;
-import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.astrocommander.modules.AbstractModule;
+import com.scs.rogueframework.asciieffects.AbstractAsciiEffect;
+import com.scs.rogueframework.ecs.entities.FrameworkMob;
+import com.scs.rogueframework.map.FrameworkMapSquare;
+import com.scs.rogueframework.map.IMapSquare;
 import com.scs.rogueframework.views.LanternaView;
+import com.sun.scenario.Settings;
 
 import ssmith.audio.SoundCacheThread;
 
-public abstract class AbstractRoguelike {
+public abstract class AbstractRoguelike { // todo - add Main to the name
 
 	public static final Random RND = new Random();
 	protected IGameView view;
-	protected AbstractModule currentModule;
+	protected IModule currentModule;
 	public List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
 	private boolean stopNow = false;
 	public SoundCacheThread sfx;
@@ -29,6 +31,14 @@ public abstract class AbstractRoguelike {
 	}
 
 
+	public abstract IMapSquare getSq(int x, int y);
+	
+	public abstract IMapSquare findAdjacentMapSquare(int x, int y, int type);
+	
+	public abstract FrameworkMob getCurrentUnit();
+	
+	public abstract int getPlayersSide();
+	
 	protected void mainGameLoop() throws InterruptedException {
 		while (!stopNow) {
 			try {
@@ -56,12 +66,12 @@ public abstract class AbstractRoguelike {
 	}
 
 
-	public AbstractModule getCurrentModule() {
+	public IModule getCurrentModule() {
 		return this.currentModule;
 	}
 
 
-	public void setModule(AbstractModule mod) {
+	public void setModule(IModule mod) {
 		this.currentModule = mod;
 	}
 
@@ -76,8 +86,8 @@ public abstract class AbstractRoguelike {
 	}
 	
 	
-	public void addMsgIfSeen(AbstractMapSquare sq, int pri, String s) {
-		if (sq.visible == AbstractMapSquare.VisType.Visible) {
+	public void addMsgIfSeen(IMapSquare sq, int pri, String s) {
+		if (sq.isVisible() == FrameworkMapSquare.VisType.Visible) {
 			addMsg(pri, s);
 		}
 	}
@@ -89,13 +99,17 @@ public abstract class AbstractRoguelike {
 
 	public void addMsg(int pri, String s) {
 		getGameData().msgs.add(new LogMessage(pri, s));
-		while (getGameData().msgs.size() > Settings.MAX_MSGS) {
+		while (getGameData().msgs.size() > getMaxMsgs()) {
 			getGameData().msgs.remove(0);
 		}
 	}
 
 	
-	abstract protected AbstractGameData getGameData();
+	protected abstract int getMaxMsgs();
+	
+	protected abstract AbstractGameData getGameData();
+	
+	public abstract int getViewDist();
 
 	public void gameOver() {
 		addMsg(3, "GAME OVER!");

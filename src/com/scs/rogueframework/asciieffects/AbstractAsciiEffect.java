@@ -1,12 +1,13 @@
-package com.scs.rogueframework;
+package com.scs.rogueframework.asciieffects;
 
-import com.scs.astrocommander.Main;
+import com.scs.rogueframework.AbstractRoguelike;
+import com.scs.rogueframework.IGameView;
 
 public abstract class AbstractAsciiEffect {
 
-	protected Main main;
+	protected AbstractRoguelike main;
 
-	public AbstractAsciiEffect(Main _main) {
+	public AbstractAsciiEffect(AbstractRoguelike _main) {
 		super();
 		
 		main = _main;

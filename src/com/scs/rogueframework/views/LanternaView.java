@@ -69,28 +69,31 @@ public class LanternaView implements IGameView, WindowListener {
 
 
 	@Override
-	public void drawConsoleScreen(List<String> lines, String cmd) throws IOException {
-		screen.startScreen();
-		screen.clear();
+	public void drawConsoleScreen(List<String> lines, String cmd) {
+		try {
+			screen.startScreen();
+			screen.clear();
 
-		TextGraphics tGraphics = screen.newTextGraphics();
-		tGraphics.setForegroundColor(TextColor.ANSI.GREEN);
-		int y = 0;
-		for (String s : lines) {
-			while (s.length() > 70) {
-				String s2 = s.substring(0, 70);
-				tGraphics.putString(0, y, s2);
+			TextGraphics tGraphics = screen.newTextGraphics();
+			tGraphics.setForegroundColor(TextColor.ANSI.GREEN);
+			int y = 0;
+			for (String s : lines) {
+				while (s.length() > 70) {
+					String s2 = s.substring(0, 70);
+					tGraphics.putString(0, y, s2);
+					y++;
+					s = s.substring(70);
+				}
+				tGraphics.putString(0, y, s);
 				y++;
-				s = s.substring(70);
 			}
-			tGraphics.putString(0, y, s);
 			y++;
+			tGraphics.putString(0, y, "> " + cmd);
+			screen.setCursorPosition(new TerminalPosition(cmd.length()+2, y));
+			screen.refresh();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
-		y++;
-		tGraphics.putString(0, y, "> " + cmd);
-		screen.setCursorPosition(new TerminalPosition(cmd.length()+2, y));
-		screen.refresh();
-
 	}
 
 

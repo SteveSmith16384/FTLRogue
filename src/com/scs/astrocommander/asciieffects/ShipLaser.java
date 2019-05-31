@@ -5,8 +5,9 @@ import java.awt.Point;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.scs.astrocommander.Main;
-import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.asciieffects.AbstractAsciiEffect;
+import com.scs.rogueframework.asciieffects.AsciiExplosion;
 
 public class ShipLaser extends AbstractAsciiEffect {
 
@@ -34,7 +35,8 @@ public class ShipLaser extends AbstractAsciiEffect {
 		current.x += dir.x;
 		current.y += dir.y;
 		
-		if (this.current.x < 0 || this.current.x > main.gameData.map_data.getWidth() || this.current.y < 0 || this.current.y > main.gameData.map_data.getHeight()) {
+		Main m = (Main)main;
+		if (this.current.x < 0 || this.current.x > m.gameData.map_data.getWidth() || this.current.y < 0 || this.current.y > m.gameData.map_data.getHeight()) {
 			return false;
 		}
 		return true;

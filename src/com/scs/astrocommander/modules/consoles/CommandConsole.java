@@ -1,16 +1,16 @@
 package com.scs.astrocommander.modules.consoles;
 
-import ssmith.util.NumberFunctions;
-
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareAirlock;
-import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.astrocommander.modules.PlayersShipModule;
+import com.scs.rogueframework.IModule;
+
+import ssmith.util.NumberFunctions;
 
 public class CommandConsole extends AbstractConsoleModule {
 
-	public CommandConsole(Main main, AbstractModule prev) {
+	public CommandConsole(Main main, IModule prev) {
 		super(main, prev);
 
 		this.addLine("SHIP COMPUTER CONSOLE (v0.01 beta)");

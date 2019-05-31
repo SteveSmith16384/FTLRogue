@@ -1,6 +1,6 @@
 package com.scs.rogueframework.ecs.components;
 
-import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.astrocommander.entities.mobs.AbstractMob;
 
 public interface IUseable {
 

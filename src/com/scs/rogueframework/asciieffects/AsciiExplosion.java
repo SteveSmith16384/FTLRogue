@@ -1,4 +1,4 @@
-package com.scs.astrocommander.asciieffects;
+package com.scs.rogueframework.asciieffects;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import com.googlecode.lanterna.TextColor;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.AbstractRoguelike;
 import com.scs.rogueframework.IGameView;
 
 public class AsciiExplosion extends AbstractAsciiEffect {
@@ -22,7 +22,7 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 	private int showUntil = 10;
 	private List<TextCharacter> chars = new ArrayList<>(); 
 
-	public AsciiExplosion(Main main, int x, int y) {
+	public AsciiExplosion(AbstractRoguelike main, int x, int y) {
 		super(main);
 
 		p = new Point(x, y);
@@ -51,7 +51,7 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 		for (int y=p.y-1 ; y<=p.y+1 ; y++) {
 			for (int x=p.x-1 ; x<=p.x+1 ; x++) {
 				try {
-					boolean seen = main.gameData.map_data.map[x][y].visible == AbstractMapSquare.VisType.Visible;
+					boolean seen = main.getSq(x, y).isVisible() == AbstractMapSquare.VisType.Visible;
 					if (seen || Settings.DEBUG) {
 						view.drawCharacter(x, y, chars.get(Main.RND.nextInt(3)));
 					}

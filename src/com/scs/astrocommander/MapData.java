@@ -59,11 +59,11 @@ public class MapData implements IAStarMapInterface {
 	}
 
 
-	public AbstractMapSquare findAdjacentMapSquare(int x, int y, int _type) {
+	public AbstractMapSquare findAdjacentMapSquare(int x, int y, int type) {
 		for (int y2=y-1 ; y2<=y+1 ; y2++) {
 			for (int x2=x-1 ; x2<=x+1 ; x2++) {
 				try {
-					if (map[x2][y2].type == _type) {
+					if (map[x2][y2].type == type) {
 						return map[x2][y2];
 					}
 				} catch (ArrayIndexOutOfBoundsException ex) {

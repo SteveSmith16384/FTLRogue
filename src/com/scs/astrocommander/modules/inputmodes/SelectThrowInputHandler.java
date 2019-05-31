@@ -22,7 +22,7 @@ public class SelectThrowInputHandler extends AbstractSelectTargetInputHandler im
 	
 	@Override
 	protected void routeChanged() {
-		shipModule.route = new Line(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y);
+		shipModule.route = new Line(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selected_point.x, shipModule.selected_point.y);
 	}
 	
 

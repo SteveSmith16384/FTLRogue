@@ -95,7 +95,7 @@ public class PoliceShip extends AbstractAnotherShip {
 	private void teleportOntoShip() {
 		if (numTeleported < 2) {
 			if (Main.RND.nextInt(5) == 0) {
-				AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+				AbstractMapSquare sq = main.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 				if (sq.getUnit() == null) {
 					PoliceMob unit = new PoliceMob(main);
 					numTeleported++;

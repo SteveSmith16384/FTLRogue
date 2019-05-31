@@ -18,7 +18,7 @@ import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.asciieffects.ShipLaser;
 import com.scs.astrocommander.destinations.EnemyShip;
 import com.scs.astrocommander.destinations.Planet;
-import com.scs.astrocommander.entities.mobs.Unit;
+import com.scs.astrocommander.entities.mobs.PlayersUnit;
 import com.scs.astrocommander.events.MeteorStorm;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareControlPanel;
@@ -71,13 +71,12 @@ public class PlayersShipModule extends AbstractModule {
 	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
 	private static final TextCharacter STAR_CHAR = new TextCharacter('*', TextColor.ANSI.WHITE, TextColor.ANSI.BLACK);
 
-	public IInputHander inputHandler;
 	private DirectControlInputHandler directControlIH;
 
 	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 	private List<String> contextSensitiveHelpText = new ArrayList<>();
 
-	public Point selectedpoint; // For choosing shooting dest etc...  todo - rename with _
+	public Point selected_point; // For choosing shooting dest etc...  todo - rename with _
 	public List<Point> route;
 
 	private List<Point> stars;
@@ -104,7 +103,7 @@ public class PlayersShipModule extends AbstractModule {
 
 		if (main.checkOxygenFlag) {
 			main.checkOxygenFlag = false;
-			gameData.checkOxygen();
+			gameData.map_data.checkOxygen();
 		}
 
 		main.gameData.wantedLevel = main.gameData.wantedLevel - 0.01f;
@@ -118,17 +117,17 @@ public class PlayersShipModule extends AbstractModule {
 		gameData.powerUsedPerTurn = 0;
 
 		// Refresh items in each square - todo - does this need doing?
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
+		for (int y=0 ; y<gameData.map_data.getHeight() ; y++) { //todo - move to map
+			for (int x=0 ; x<gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map_data.map[x][y];
 				sq.updateItemList();
 			}			
 		}
 
 		// Go through map
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
+		for (int y=0 ; y<gameData.map_data.getHeight() ; y++) { // todo - move to map
+			for (int x=0 ; x<gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map_data.map[x][y];
 				sq.process();
 			}			
 		}
@@ -146,9 +145,9 @@ public class PlayersShipModule extends AbstractModule {
 		}
 
 		// Refresh items in each square
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
+		for (int y=0 ; y<gameData.map_data.getHeight() ; y++) { // todo - move to map
+			for (int x=0 ; x<gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map_data.map[x][y];
 				sq.updateItemList();
 			}			
 		}
@@ -157,9 +156,9 @@ public class PlayersShipModule extends AbstractModule {
 
 		// Create map key
 		seenSquares.clear();
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
+		for (int y=0 ; y<gameData.map_data.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map_data.map[x][y];
 				// Add to key if seen
 				if (sq.visible == AbstractMapSquare.VisType.Visible) {
 					if (!seenSquares.containsKey(sq.getName())) {
@@ -186,7 +185,7 @@ public class PlayersShipModule extends AbstractModule {
 		// todo - help based on item in square
 
 		// Help based on adjacent mapsquares
-		List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.main.gameData.current_unit.x,  this.main.gameData.current_unit.y);
+		List<AbstractMapSquare> squares = main.gameData.map_data.getAdjacentSquares(this.main.gameData.current_unit.x,  this.main.gameData.current_unit.y);
 		for (AbstractMapSquare sq : squares) {
 			String help = sq.getHelp();
 			if (help != null && help.length() > 0) {
@@ -277,7 +276,7 @@ public class PlayersShipModule extends AbstractModule {
 			if (main.gameData.current_unit != null) {
 				sq1 = main.gameData.current_unit.getSq();
 			}
-			Unit unit = main.gameData.players_units.get(i);
+			PlayersUnit unit = main.gameData.players_units.get(i);
 			if (unit.isAlive()) {
 				main.gameData.current_unit = unit;//main.gameData.units.get(i);
 				AbstractMapSquare sq2 = main.gameData.current_unit.getSq();
@@ -317,9 +316,9 @@ public class PlayersShipModule extends AbstractModule {
 		drawStars(view);
 
 		// Draw map
-		for (int y=0 ; y<gameData.getHeight() ; y++) {
-			for (int x=0 ; x<gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = gameData.map[x][y];
+		for (int y=0 ; y<gameData.map_data.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map_data.map[x][y];
 				TextCharacter tc = sq.getChar();
 				if (sq.type != AbstractMapSquare.MAP_NOTHING) {
 					view.drawCharacter(x, y, tc);
@@ -333,8 +332,8 @@ public class PlayersShipModule extends AbstractModule {
 				view.drawCharacter(p.x, p.y, ROUTE_CHAR);
 			}
 		}
-		if (selectedpoint != null) {
-			view.drawCharacter(selectedpoint.x, selectedpoint.y, TARGET_CHAR);
+		if (selected_point != null) {
+			view.drawCharacter(selected_point.x, selected_point.y, TARGET_CHAR);
 		}
 
 		// Draw effects
@@ -344,7 +343,7 @@ public class PlayersShipModule extends AbstractModule {
 
 
 		// Draw stats
-		int x = gameData.getWidth()+2;
+		int x = gameData.map_data.getWidth()+2;
 		int y = 0;
 
 		if (gameData.currentLocation == null) {
@@ -390,7 +389,7 @@ public class PlayersShipModule extends AbstractModule {
 		y=2;
 		view.drawString(x, y++, "CREW");
 		int i=1;
-		for (Unit unit : gameData.players_units) {
+		for (PlayersUnit unit : gameData.players_units) {
 			StringBuilder str = new StringBuilder();
 			if (unit == gameData.current_unit) {
 				str.append("*");
@@ -413,7 +412,7 @@ public class PlayersShipModule extends AbstractModule {
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
 		for (DrawableEntity de : gameData.current_unit.getSq().getEntities()) {
-			if (de instanceof Unit == false) {
+			if (de instanceof PlayersUnit == false) {
 				itemlist.append(de.getName() + "; ");
 			}
 		}
@@ -447,7 +446,7 @@ public class PlayersShipModule extends AbstractModule {
 
 
 		// Messages/log
-		y = Math.max(Math.max(col2height, y), gameData.getHeight()) + 2;
+		y = Math.max(Math.max(col2height, y), gameData.map_data.getHeight()) + 2;
 		view.setTextForegroundColor(TextColor.ANSI.YELLOW);
 		for (LogMessage msg : gameData.msgs) {
 			switch (msg.priority) {
@@ -548,7 +547,7 @@ public class PlayersShipModule extends AbstractModule {
 		if (this.main.gameData.weaponTemp < 100) {
 			if (this.main.gameData.currentLocation != null) {
 				// Check next to console
-				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
+				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.map_data.findAdjacentMapSquare(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
 				if (sq != null) {
 					main.sfx.playSound("laser4.mp3");
 					main.addMsg("You have fired at " + main.gameData.currentLocation.getName());
@@ -580,8 +579,8 @@ public class PlayersShipModule extends AbstractModule {
 	private void createStars(GameData gameData) {
 		stars = new ArrayList<>();
 		for (int i=0 ; i<20 ; i++) {
-			int x = Main.RND.nextInt(gameData.getMapWidth());
-			int y = Main.RND.nextInt(gameData.getMapHeight());
+			int x = Main.RND.nextInt(gameData.map_data.getMapWidth());
+			int y = Main.RND.nextInt(gameData.map_data.getMapHeight());
 			this.stars.add(new Point(x, y));
 		}
 	}
@@ -591,8 +590,8 @@ public class PlayersShipModule extends AbstractModule {
 		for (Point p : stars) {
 			p.y++;
 			// if drop of bottom, put back to top
-			if (p.y > gameData.getHeight()) {
-				p.x = Main.RND.nextInt(gameData.getMapWidth());
+			if (p.y > gameData.map_data.getHeight()) {
+				p.x = Main.RND.nextInt(gameData.map_data.getMapWidth());
 				p.y = 0;
 			}
 		}

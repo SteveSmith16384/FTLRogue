@@ -18,23 +18,23 @@ public abstract class AbstractSelectTargetInputHandler implements IInputHander {
 		main = _main;
 		shipModule = psm;
 
-		psm.selectedpoint = new Point(main.gameData.current_unit.x, main.gameData.current_unit.y);
+		psm.selected_point = new Point(main.gameData.current_unit.x, main.gameData.current_unit.y);
 }
 
 
 	@Override
 	public boolean processInput(KeyStroke ks) {
 		if (ks.getKeyType() == KeyType.ArrowUp) {
-			shipModule.selectedpoint.y--;
+			shipModule.selected_point.y--;
 			routeChanged();
 		} else if (ks.getKeyType() == KeyType.ArrowDown) {
-			shipModule.selectedpoint.y++;
+			shipModule.selected_point.y++;
 			routeChanged();
 		} else if (ks.getKeyType() == KeyType.ArrowLeft) {
-			shipModule.selectedpoint.x--;
+			shipModule.selected_point.x--;
 			routeChanged();
 		} else if (ks.getKeyType() == KeyType.ArrowRight) {
-			shipModule.selectedpoint.x++;
+			shipModule.selected_point.x++;
 			routeChanged();
 		} else if (ks.getKeyType() == KeyType.Enter) {
 			routeSelected();

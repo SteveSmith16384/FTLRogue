@@ -21,9 +21,9 @@ public class SelectDestinationInputHandler extends AbstractSelectTargetInputHand
 	@Override
 	protected void routeChanged() {
 		validRoute = false;
-		if (main.gameData.map[shipModule.selectedpoint.x][shipModule.selectedpoint.y].isTraversable()) {
-			AStar astar = new AStar(this.main.gameData);
-			astar.findPath(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y, false);
+		if (main.gameData.map_data.map[shipModule.selected_point.x][shipModule.selected_point.y].isTraversable()) {
+			AStar astar = new AStar(this.main.gameData.map_data);
+			astar.findPath(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selected_point.x, shipModule.selected_point.y, false);
 			// todo - check it only goes through visible mapsquares
 			if (astar.wasSuccessful()) {
 				shipModule.route = astar.getRoute();

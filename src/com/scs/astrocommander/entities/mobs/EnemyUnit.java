@@ -29,7 +29,7 @@ public class EnemyUnit extends AbstractMob {
 			shooting = this.checkForShooting();
 		}
 		if (!shooting) {
-			List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.x,  this.y);
+			List<AbstractMapSquare> squares = main.gameData.map_data.getAdjacentSquares(this.x,  this.y);
 			for (AbstractMapSquare sq : squares) {
 				if (this.isSabotagable(sq)) {
 					main.addMsgIfSeen(sq, 2, "You seen the enemy sabotaging the ship!");
@@ -44,9 +44,9 @@ public class EnemyUnit extends AbstractMob {
 	@Override
 	public Point getAStarDest() {
 		List<AbstractMapSquare> squares = new ArrayList<>();
-		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
-			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = main.gameData.map[x][y];
+		for (int y=0 ; y<main.gameData.map_data.getHeight() ; y++) {
+			for (int x=0 ; x<main.gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = main.gameData.map_data.map[x][y];
 				if (isSabotagable(sq)) {
 					squares.add(sq);
 				}

@@ -51,7 +51,7 @@ public class AsciiExplosion extends AbstractAsciiEffect {
 		for (int y=p.y-1 ; y<=p.y+1 ; y++) {
 			for (int x=p.x-1 ; x<=p.x+1 ; x++) {
 				try {
-					boolean seen = main.gameData.map[x][y].visible == AbstractMapSquare.VisType.Visible;
+					boolean seen = main.gameData.map_data.map[x][y].visible == AbstractMapSquare.VisType.Visible;
 					if (seen || Settings.DEBUG) {
 						view.drawCharacter(x, y, chars.get(Main.RND.nextInt(3)));
 					}

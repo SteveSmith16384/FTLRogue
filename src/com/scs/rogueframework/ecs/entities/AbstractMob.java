@@ -138,7 +138,7 @@ public abstract class AbstractMob extends DrawableEntity {
 			return false;
 		}
 
-		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
+		AbstractMapSquare newsq = main.gameData.map_data.map[x+offx][y+offy];
 		if (newsq.isTraversable()) {
 			AbstractMob other = newsq.getUnit();// main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
@@ -150,7 +150,7 @@ public abstract class AbstractMob extends DrawableEntity {
 						return false;
 					}
 				}
-				AbstractMapSquare oldsq = main.gameData.map[x][y];
+				AbstractMapSquare oldsq = main.gameData.map_data.map[x][y];
 				oldsq.removeEntity(this);
 
 				x += offx;
@@ -200,7 +200,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		Iterator<Point> it = line.iterator();
 		while (it.hasNext()) {
 			Point p =it.next();
-			AbstractMob mob = (AbstractMob) main.gameData.map[p.x][p.y].getEntityOfType(AbstractMob.class);
+			AbstractMob mob = (AbstractMob) main.gameData.map_data.map[p.x][p.y].getEntityOfType(AbstractMob.class);
 			if (mob != null) {
 				new BulletShot(main, this.x, this.y, p.x, p.y);
 				mob.shotBy(this, gun);
@@ -214,7 +214,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		AbstractMapSquare prevSq = null;
 		while (it.hasNext()) {
 			Point p =it.next();
-			AbstractMapSquare sq = main.gameData.map[p.x][p.y];
+			AbstractMapSquare sq = main.gameData.map_data.map[p.x][p.y];
 			if (sq.isTraversable() == false) {
 				new BulletShot(main, this.x, this.y, prevSq.x, prevSq.y);
 				this.dropOrThrow(gun, prevSq) ;
@@ -264,7 +264,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void openDoor() {
-		MapSquareDoor sq = (MapSquareDoor)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
+		MapSquareDoor sq = (MapSquareDoor)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
 		if (sq != null) {
 			if (!sq.isOpen()) {
 				sq.setOpen(true);
@@ -279,7 +279,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void closeDoor() {
-		MapSquareDoor sq = (MapSquareDoor)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
+		MapSquareDoor sq = (MapSquareDoor)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_DOOR);
 		if (sq != null) {
 			if (sq.isOpen()) {
 				sq.setOpen(false);
@@ -294,6 +294,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 
 	public void died(String reason) {
+		health = 0;
 		main.sfx.playSound("deathscream1.wav");
 		main.addMsg(3, this.getName() + " has died of " + reason);
 		for(ICarryable eq : this.equipment) {
@@ -316,9 +317,9 @@ public abstract class AbstractMob extends DrawableEntity {
 		AbstractMob closest = null;
 		float closestDistance = 9999;
 
-		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
-			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = main.gameData.map[x][y];
+		for (int y=0 ; y<main.gameData.map_data.getHeight() ; y++) {
+			for (int x=0 ; x<main.gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = main.gameData.map_data.map[x][y];
 				for (DrawableEntity e : sq.getEntities()) {
 					if (e instanceof AbstractMob) {
 						AbstractMob m = (AbstractMob)e;
@@ -343,9 +344,9 @@ public abstract class AbstractMob extends DrawableEntity {
 		DrawableEntity closest = null;
 		float closestDistance = 9999;
 
-		for (int y=0 ; y<main.gameData.getHeight() ; y++) {
-			for (int x=0 ; x<main.gameData.getWidth() ; x++) {
-				AbstractMapSquare sq = main.gameData.map[x][y];
+		for (int y=0 ; y<main.gameData.map_data.getHeight() ; y++) {
+			for (int x=0 ; x<main.gameData.map_data.getWidth() ; x++) {
+				AbstractMapSquare sq = main.gameData.map_data.map[x][y];
 				for (DrawableEntity e : sq.getEntities()) {
 					if (clazz.isInstance(e)) {
 						float dist = this.distanceTo(e); 
@@ -367,7 +368,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		if (this.astarRoute == null || this.astarRoute.isEmpty()) {
 			Point dest = this.getAStarDest();
 			if (dest != null) {
-				AStar astar = new AStar(this.main.gameData);
+				AStar astar = new AStar(this.main.gameData.map_data);
 				astar.findPath(x, y, dest.x, dest.y, false);
 				if (astar.wasSuccessful()) {
 					this.astarRoute = astar.getRoute();

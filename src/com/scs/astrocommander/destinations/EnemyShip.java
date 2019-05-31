@@ -63,7 +63,7 @@ public class EnemyShip extends AbstractAnotherShip {
 	private void teleportOntoShip() {
 		if (this.unitsTeleported.size() < 2) {
 			if (Main.RND.nextInt(5) == 0) {
-				AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+				AbstractMapSquare sq = main.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 				if (sq.getUnit() == null) {
 					main.sfx.playSound("teleport.mp3");
 					EnemyUnit unit = new EnemyUnit(main);

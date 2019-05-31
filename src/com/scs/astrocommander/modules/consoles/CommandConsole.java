@@ -91,9 +91,9 @@ public class CommandConsole extends AbstractConsoleModule {
 			case "airlocks":
 				super.clearLines();
 				boolean open = tokens[1].equalsIgnoreCase("open");
-				for (int y=0 ; y<main.gameData.getHeight() ; y++) {
-					for (int x=0 ; x<main.gameData.getWidth() ; x++) {
-						AbstractMapSquare sq = main.gameData.map[x][y];
+				for (int y=0 ; y<main.gameData.map_data.getHeight() ; y++) {
+					for (int x=0 ; x<main.gameData.map_data.getWidth() ; x++) {
+						AbstractMapSquare sq = main.gameData.map_data.map[x][y];
 						if (sq instanceof MapSquareAirlock) {
 							MapSquareAirlock al = (MapSquareAirlock)sq;
 							al.setOpen(open);

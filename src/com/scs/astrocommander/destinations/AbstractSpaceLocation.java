@@ -58,10 +58,10 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 
 
 	protected void shootPlayer(float dam) {
-		int x = Main.RND.nextInt(main.gameData.getMapWidth());
+		int x = Main.RND.nextInt(main.gameData.map_data.getMapWidth());
 		int y = 0;
-		while (y < main.gameData.getMapHeight()) {
-			AbstractMapSquare sq = main.gameData.map[x][y];
+		while (y < main.gameData.map_data.getMapHeight()) {
+			AbstractMapSquare sq = main.gameData.map_data.map[x][y];
 			if (sq.isTraversable() == false) {
 				// Take into account shields
 				dam = (dam * main.gameData.shieldPowerPcent) / 100;

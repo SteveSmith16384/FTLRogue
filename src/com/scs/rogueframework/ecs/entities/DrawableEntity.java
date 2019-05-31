@@ -39,10 +39,10 @@ public abstract class DrawableEntity implements Comparable<Object> {
 		if (this instanceof ICarryable) {
 			ICarryable ic = (ICarryable) this;
 			if (ic.getCarrier() != null) {
-				return main.gameData.map[ic.getCarrier().x][ic.getCarrier().y];
+				return main.gameData.map_data.map[ic.getCarrier().x][ic.getCarrier().y];
 			}
 		}
-		return main.gameData.map[x][y];
+		return main.gameData.map_data.map[x][y];
 	}
 
 
@@ -64,7 +64,7 @@ public abstract class DrawableEntity implements Comparable<Object> {
 		for (Point p : l) {
 			if (p.x != x || p.y != y) {
 				if (p.x != mx || p.y != my) {
-					if (!main.gameData.map[p.x][p.y].isTransparent()) {
+					if (!main.gameData.map_data.map[p.x][p.y].isTransparent()) {
 						return false;
 					}
 				}

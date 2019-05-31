@@ -5,12 +5,14 @@ import java.io.IOException;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.Main;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.input.IInputHander;
 
 public abstract class AbstractModule {
 
 	protected Main main;
 	protected AbstractModule prevModule;
-	
+	public IInputHander inputHandler;
+
 	public AbstractModule(Main _main, AbstractModule _prevModule) {
 		super();
 		

@@ -95,6 +95,7 @@ public abstract class AbstractMapSquare extends FrameworkMapSquare implements IP
 	}
 
 	
+	@Override
 	public boolean isTraversable() {
 		if (this.damage_pcent >= 100) {
 			return true;
@@ -104,6 +105,7 @@ public abstract class AbstractMapSquare extends FrameworkMapSquare implements IP
 	}
 	
 	
+	@Override
 	public boolean isTransparent() {
 		if (this.hasSmoke) {
 			return false;
@@ -206,7 +208,7 @@ public abstract class AbstractMapSquare extends FrameworkMapSquare implements IP
 		if (this.damage_pcent > 100) {
 			//this.damage_pcent = 100;
 			main.checkOxygenFlag = true;
-			this.main.gameData.map[x][y] = new MapSquareFloor(main, MAP_FLOOR, x, y);
+			this.main.gameData.map_data.map[x][y] = new MapSquareFloor(main, MAP_FLOOR, x, y);
 		} else {
 			// Start a fire?
 			int n = Main.RND.nextInt(100);

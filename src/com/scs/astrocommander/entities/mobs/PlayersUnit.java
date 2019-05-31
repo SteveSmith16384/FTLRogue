@@ -11,13 +11,13 @@ import com.scs.astrocommander.modules.consoles.CommandConsole;
 import com.scs.rogueframework.ecs.entities.AbstractMob;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
-public class Unit extends AbstractMob {
+public class PlayersUnit extends AbstractMob {
 
 	public float food = 100f;
 	public float tiredness = 0;
 	public Status status = Status.Waiting;
 
-	public Unit(Main main, char c, int x, int y) throws IOException {
+	public PlayersUnit(Main main, char c, int x, int y) {//throws IOException {
 		super(main, x, y, DrawableEntity.Z_UNIT, c, AbstractMob.GetRandomName(), SIDE_PLAYER, 20, 5, true);
 	}
 
@@ -35,7 +35,7 @@ public class Unit extends AbstractMob {
 		// Are we next to a replicator?
 		if (status == Status.Waiting) {
 			if (this.food < 99f) {
-				MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
+				MapSquareReplicator sqr = (MapSquareReplicator)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_REPLICATOR);
 				if (sqr != null) {
 					if (main.gameData.totalPower > 0) {
 						main.gameData.powerUsedPerTurn += 1f;
@@ -70,7 +70,7 @@ public class Unit extends AbstractMob {
 
 		// Repair something
 		if (status == Status.Waiting) {
-			AbstractMapSquare sqr = main.gameData.findAdjacentRepairableMapSquare(x, y);
+			AbstractMapSquare sqr = main.gameData.map_data.findAdjacentRepairableMapSquare(x, y);
 			if (sqr != null) {
 				int rep = (Main.RND.nextInt(5) + 1);
 				sqr.incDamage(-rep);
@@ -114,7 +114,7 @@ public class Unit extends AbstractMob {
 
 
 	public void useConsole() {
-		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
+		MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.map_data.findAdjacentMapSquare(x, y, AbstractMapSquare.MAP_CONTROL_PANEL);
 		if (sq != null) {
 			main.sfx.playSound("scanner.mp3");
 			main.setModule(new CommandConsole(main, main.getCurrentModule()));

@@ -40,7 +40,7 @@ public class BulletShot extends AbstractAsciiEffect {
 
 	@Override
 	public void drawChars(IGameView view) {
-		boolean seen = main.gameData.map[current.x][current.y].visible == AbstractMapSquare.VisType.Visible;
+		boolean seen = main.gameData.map_data.map[current.x][current.y].visible == AbstractMapSquare.VisType.Visible;
 		if (seen || Settings.DEBUG) {
 			view.drawCharacter(current.x, current.y, ch);
 		}

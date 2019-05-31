@@ -27,7 +27,7 @@ public class SpaceStation extends AbstractSpaceLocation {
 				if (this.numPoliceRequired > 0) {
 					numPoliceRequired--;
 					// Teleport onto ship
-					AbstractMapSquare sq = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+					AbstractMapSquare sq = main.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 					sq.addEntity(new PoliceMob(main));
 					main.addMsg("This is the police!  We have boarded your ship.");
 				}

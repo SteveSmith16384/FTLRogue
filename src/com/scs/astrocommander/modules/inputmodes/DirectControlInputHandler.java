@@ -89,7 +89,7 @@ public class DirectControlInputHandler implements IInputHander {
 					}
 
 					// Adjacent squares
-					for (AbstractMapSquare sq : main.gameData.getAdjacentSquares(main.gameData.current_unit.x, main.gameData.current_unit.y)) {
+					for (AbstractMapSquare sq : main.gameData.map_data.getAdjacentSquares(main.gameData.current_unit.x, main.gameData.current_unit.y)) {
 						String s = sq.getExamineText();
 						if (s.length() > 0) {
 							main.addMsg(1, obj.getName() + ": " + sq.getExamineText());

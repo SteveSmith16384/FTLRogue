@@ -30,14 +30,18 @@ public class LanternaView implements IGameView, WindowListener {
 	private Screen screen;
 	private TextGraphics tGraphics;
 
-	public LanternaView() throws IOException {
+	public LanternaView() {//throws IOException {
 		DefaultTerminalFactory fac = new DefaultTerminalFactory();
 		fac.setInitialTerminalSize(new TerminalSize(WIDTH, 50));
 		//fac.setForceTextTerminal(true);
 		terminal = fac.createTerminalEmulator(); //.createTerminal();
 		SwingTerminalFrame frame = (SwingTerminalFrame) terminal;
 		frame.addWindowListener(this);
-		screen = new TerminalScreen(terminal);
+		try {
+			screen = new TerminalScreen(terminal);
+		} catch (IOException e) {
+			throw new RuntimeException("Error", e);
+		}
 
 	}
 

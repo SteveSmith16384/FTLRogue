@@ -78,11 +78,11 @@ public class PoliceMob extends AbstractMob {
 	@Override
 	public Point getAStarDest() {
 		if (this.searchTurnsLeft > 0) {
-			AbstractMapSquare sq2 =  main.gameData.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR);
+			AbstractMapSquare sq2 =  main.gameData.map_data.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR);
 			return new Point(sq2.x, sq2.y);
 		} else {
 			// Time to leave
-			AbstractMapSquare sq2 = main.gameData.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
+			AbstractMapSquare sq2 = main.gameData.map_data.getFirstMapSquare(AbstractMapSquare.MAP_TELEPORTER);
 			return new Point(sq2.x, sq2.y);
 		}
 	}

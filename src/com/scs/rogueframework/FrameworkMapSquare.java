@@ -124,8 +124,12 @@ public abstract class FrameworkMapSquare {
 	}
 
 
+	public abstract boolean isTraversable();
+	
 	protected abstract boolean isTraversable_Sub();
 
+	public abstract boolean isTransparent();
+	
 	protected abstract boolean isTransparent_Sub();
 
 	protected abstract char getFloorChar();

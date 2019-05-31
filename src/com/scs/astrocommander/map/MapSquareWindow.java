@@ -18,13 +18,13 @@ public class MapSquareWindow extends AbstractMapSquare {
 
 
 	@Override
-	public boolean isTraversable() {
+	public boolean isTraversable_Sub() {
 		return false;
 	}
 
 
 	@Override
-	public boolean isTransparent() {
+	public boolean isTransparent_Sub() {
 		return true;
 	}
 	

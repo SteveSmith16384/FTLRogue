@@ -1,9 +1,10 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
-import com.scs.astrocommander.entityinterfaces.IExamineable;
-import com.scs.astrocommander.entityinterfaces.IWearable;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.components.IExamineable;
+import com.scs.rogueframework.ecs.components.IWearable;
+import com.scs.rogueframework.ecs.entities.AbstractItem;
 
 public class OxygenMask extends AbstractItem implements ICarryable, IWearable, IExamineable {
 

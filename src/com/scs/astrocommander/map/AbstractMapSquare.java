@@ -2,23 +2,16 @@ package com.scs.astrocommander.map;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.scs.astrocommander.IProcessable;
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.entities.DrawableEntity;
-import com.scs.astrocommander.entities.mobs.AbstractMob;
+import com.scs.rogueframework.FrameworkMapSquare;
+import com.scs.rogueframework.ecs.components.IProcessable;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
-import ssmith.util.SortedArrayList;
-
-public abstract class AbstractMapSquare implements IProcessable {//, Comparator<DrawableEntity> {
-
-	public enum VisType {Hidden, Seen, Visible};
+public abstract class AbstractMapSquare extends FrameworkMapSquare implements IProcessable {
 
 	// Map codes
 	public static final int MAP_NOTHING = 0;
@@ -38,21 +31,11 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 
 	public Main main;
 	public int type = MAP_NOTHING;
-	public VisType visible = VisType.Hidden;
 	public boolean onFire = false;
 	public boolean hasSmoke = false;
 	public boolean hasOxygen = true;
 	private float damage_pcent = 0;
-	public int x, y;
 	public String extraInfo = "";
-
-	private static TextCharacter hiddenChar = new TextCharacter(' ', TextColor.ANSI.BLACK, TextColor.ANSI.BLACK); 
-	private TextCharacter seenChar; 
-	private TextCharacter visibleChar; 
-
-	private SortedArrayList<DrawableEntity> entities = new SortedArrayList<>();
-	private List<DrawableEntity> entitiesToAdd = new ArrayList<>();
-	private List<DrawableEntity> entitiesToRemove = new ArrayList<>();
 
 	public static AbstractMapSquare Factory(Main main, int code, int x, int y) {
 		switch (code) {
@@ -97,63 +80,43 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 			return new MapSquareShipLaser(main, code, x, y);
 
 		default:
-			throw new RuntimeException("Unknown type: " + code);
+			throw new RuntimeException("Unknown mapsquare type: " + code);
 		}
 	}
 
 
-	public AbstractMapSquare(Main _main, int _code, int _x, int _y) {
-		super();
+	public AbstractMapSquare(Main _main, int _code, int x, int y) {
+		super(x, y);
 
 		main = _main;
 		type = _code;
-		x = _x;
-		y = _y;
 
 		this.calcChar();
 	}
 
 	
-	public boolean isSquareTraversable() {
+	public boolean isTraversable() {
 		if (this.damage_pcent >= 100) {
 			return true;
 		} else {
-			return this.isTraversable();
+			return isTraversable_Sub();
 		}
 	}
 	
 	
-	public boolean isSquareTransparent() {
+	public boolean isTransparent() {
 		if (this.hasSmoke) {
 			return false;
-		/*} else if (this.damage_pcent >= 100) {
-			return true;*/
 		} else {
-			return this.isTransparent();
+			return isTransparent_Sub();
 		}
 	}
+	
 	
 	public boolean isAirtight() {
 		return true;
 	}
-
-	protected abstract boolean isTraversable();
-
-	protected abstract boolean isTransparent();
-
-	protected abstract char getFloorChar();
-
-	protected abstract Color getBackgroundColour();
-
-	public abstract String getName();
 	
-	public abstract String getHelp();
-
-	/*@Override
-	public void preProcess() {
-		
-	}*/
-
 
 	@Override
 	public void process() {
@@ -183,41 +146,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	}
 
 
-	protected void processItems() {
-		for (DrawableEntity de : this.entities) {
-			de.process();
-		}
-
-	}
-
-	
-	public void updateItemList() {
-		boolean calcChar = this.entitiesToAdd.size() > 0 || this.entitiesToRemove.size() > 0;
-		this.entities.removeAll(this.entitiesToRemove);
-		entitiesToRemove.clear();
-		this.entities.addAllWithSort(this.entitiesToAdd);
-		entitiesToAdd.clear();
-		
-		if (calcChar) {
-			this.calcChar();
-		}
-	}
-
-	
-	public TextCharacter getChar() {
-		if (Settings.DEBUG) {
-			return this.visibleChar;
-		}
-		if (this.visible == VisType.Hidden) {
-			return hiddenChar;//' ';
-		} else if (this.visible == VisType.Seen) { 
-			return this.seenChar;
-		} else {
-			return this.visibleChar;
-		}
-	}
-
-
+	@Override
 	public void calcChar() {
 		Color foregroundCol = Color.white;
 		if (this.damage_pcent > 0) {
@@ -245,7 +174,7 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 		if (this.entities.size() > 0) {
 			c = entities.get(0).getChar();
 			extraInfo = entities.get(0).getName();
-			if (entities.get(0) == main.gameData.currentUnit) {
+			if (entities.get(0) == main.gameData.current_unit) {
 				isSelectedUnit = true;
 			}
 		}
@@ -289,65 +218,11 @@ public abstract class AbstractMapSquare implements IProcessable {//, Comparator<
 	}
 
 	
-	public void addEntity(DrawableEntity de) {
-		de.x = x;
-		de.y = y;
-		this.entitiesToAdd.add(de);
-		//this.calcChars();
-	}
-
-
-	public void removeEntity(DrawableEntity de) {
-		this.entitiesToRemove.add(de);
-		//this.calcChars();
-	}
-
-
-	public DrawableEntity getEntity(int i) {
-		return this.entities.get(i);
-	}
-
-
-	public List<DrawableEntity> getEntities() {
-		return this.entities;
-	}
-
-
-	public Iterator<DrawableEntity> getIterator() {
-		return this.entities.iterator();
-	}
-
-	
-	public DrawableEntity getEntityOfType(Class c) {
-		for (DrawableEntity e : getEntities()) {
-			if (e.getClass() == c) {
-				return e;
-			}
-		}
-		return null;
-	}
-	
-	
-	public AbstractMob getUnit() {
-		for (DrawableEntity de : this.getEntities()) {
-			if (de instanceof AbstractMob) {
-				AbstractMob unit = (AbstractMob) de;
-				if (unit.isAlive()) {
-				return unit;
-				}
-			}
-		}
-		return null;
-	}
-
-
 	public String getExamineText() {
 		if (this.damage_pcent > 0) {
 			return "The " + this.getName() + " is " + damage_pcent + "% damaged.";
 		}
 		return "";
-		//String s = this.getSubExamineText();
-		//return s;
 	}
 
 }

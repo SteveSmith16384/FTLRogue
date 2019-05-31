@@ -38,13 +38,13 @@ public class MapSquareAirlock extends AbstractMapSquare {
 
 
 	@Override
-	public boolean isTransparent() {
+	public boolean isTransparent_Sub() {
 		return false;
 	}
 
 
 	@Override
-	public boolean isTraversable() {
+	public boolean isTraversable_Sub() {
 		return isOpen;
 	}
 

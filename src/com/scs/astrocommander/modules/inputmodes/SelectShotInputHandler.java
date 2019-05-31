@@ -1,9 +1,11 @@
 package com.scs.astrocommander.modules.inputmodes;
 
-import com.scs.astrocommander.Line;
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
 import com.scs.astrocommander.modules.PlayersShipModule;
+import com.scs.rogueframework.Line;
+import com.scs.rogueframework.ecs.components.IRangedWeapon;
+import com.scs.rogueframework.input.AbstractSelectTargetInputHandler;
+import com.scs.rogueframework.input.IInputHander;
 
 public class SelectShotInputHandler extends AbstractSelectTargetInputHandler implements IInputHander {
 
@@ -20,13 +22,13 @@ public class SelectShotInputHandler extends AbstractSelectTargetInputHandler imp
 	
 	@Override
 	protected void routeChanged() {
-		shipModule.route = new Line(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y);
+		shipModule.route = new Line(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y);
 	}
 	
 
 	@Override
 	protected void routeSelected() {
-		this.main.gameData.currentUnit.shoot(shipModule.route, gun);
+		this.main.gameData.current_unit.shoot(shipModule.route, gun);
 		shipModule.route = null;
 		shipModule.restoreDirectControlIH();
 		

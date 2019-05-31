@@ -3,9 +3,10 @@ package com.scs.astrocommander.entities.items;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.entities.mobs.Alien;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
-import com.scs.astrocommander.entityinterfaces.IExamineable;
-import com.scs.astrocommander.entityinterfaces.IIllegal;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.components.IExamineable;
+import com.scs.rogueframework.ecs.components.IIllegal;
+import com.scs.rogueframework.ecs.entities.AbstractItem;
 
 public class AlienEgg extends AbstractItem implements ICarryable, IExamineable, IIllegal {
 

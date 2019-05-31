@@ -3,7 +3,8 @@ package com.scs.astrocommander.entities.mobs;
 import java.awt.Point;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class Alien extends AbstractMob {
 

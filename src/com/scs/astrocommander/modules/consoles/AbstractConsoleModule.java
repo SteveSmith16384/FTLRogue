@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.modules.AbstractModule;
+import com.scs.rogueframework.IGameView;
 
 public abstract class AbstractConsoleModule extends AbstractModule {
 

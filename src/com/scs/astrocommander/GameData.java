@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.scs.astrocommander.destinations.AbstractSpaceLocation;
 import com.scs.astrocommander.destinations.StartingOutpost;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.items.Knife;
 import com.scs.astrocommander.entities.items.MediKit;
 import com.scs.astrocommander.entities.items.OxygenMask;
@@ -18,6 +17,8 @@ import com.scs.astrocommander.events.AbstractEvent;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareNothing;
 import com.scs.astrocommander.missions.AbstractMission;
+import com.scs.rogueframework.LogMessage;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 import ssmith.astar.IAStarMapInterface;
 
@@ -27,13 +28,13 @@ public class GameData implements IAStarMapInterface {
 	private ILevelData mapdata;
 	
 	public AbstractMapSquare[][] map;
-	public List<Unit> units = new ArrayList<>();
+	public List<Unit> players_units = new ArrayList<>();
 	public List<LogMessage> msgs = new ArrayList<>();
 	public List<Point> weaponPoints = new ArrayList<>();
 
-	public Unit currentUnit;
+	public Unit current_unit;
 
-	public AbstractEvent currentEvent;// = new CopyOnWriteArrayList<>();
+	public AbstractEvent currentEvent;
 	public List<AbstractMission> currentMissions = new CopyOnWriteArrayList<>();
 
 	public int turnNo = 0;
@@ -78,7 +79,7 @@ public class GameData implements IAStarMapInterface {
 		for (int i=0 ; i<mapdata.getNumUnits() ; i++) {
 			Point p = mapdata.getUnitStart(i);
 			Unit unit = new Unit(main, ((i+1)+"").charAt(0), p.x, p.y);
-			units.add(unit);
+			players_units.add(unit);
 			map[p.x][p.y].addEntity(unit);
 		}
 		
@@ -110,7 +111,7 @@ public class GameData implements IAStarMapInterface {
 				if (map[x][y].visible != AbstractMapSquare.VisType.Hidden) {
 					this.map[x][y].visible = AbstractMapSquare.VisType.Seen;
 				}
-				for (Unit unit : this.units) {
+				for (Unit unit : this.players_units) {
 					if (unit.canSee(x, y)) {
 						this.map[x][y].visible = AbstractMapSquare.VisType.Visible;
 						break;
@@ -272,7 +273,7 @@ public class GameData implements IAStarMapInterface {
 
 	@Override
 	public boolean isMapSquareTraversable(int x, int z) {
-		return map[x][z].isSquareTraversable();
+		return map[x][z].isTraversable();
 	}
 
 

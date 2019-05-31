@@ -10,15 +10,11 @@ import java.util.Map;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.GameData;
-import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.asciieffects.ShipLaser;
 import com.scs.astrocommander.destinations.EnemyShip;
 import com.scs.astrocommander.destinations.Planet;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.mobs.Unit;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
-import com.scs.astrocommander.entityinterfaces.IHelpIfCarried;
 import com.scs.astrocommander.events.MeteorStorm;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareControlPanel;
@@ -26,8 +22,12 @@ import com.scs.astrocommander.missions.AbstractMission;
 import com.scs.astrocommander.modules.inputmodes.ChangeItemInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DirectControlInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DropItemInputHandler;
-import com.scs.astrocommander.modules.inputmodes.IInputHander;
 import com.scs.astrocommander.modules.inputmodes.PickupItemInputHandler;
+import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.components.IHelpIfCarried;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
+import com.scs.rogueframework.input.IInputHander;
 /*
 
 ASCII CODES
@@ -73,7 +73,7 @@ public class PlayersShipModule extends AbstractModule {
 	public PlayersShipModule(Main main, AbstractModule prev) {
 		super(main, prev);
 
-		if (main.gameData.currentUnit == null) {
+		if (main.gameData.current_unit == null) {
 			this.selectUnit(0);
 		}
 
@@ -102,7 +102,7 @@ public class PlayersShipModule extends AbstractModule {
 
 		// Set values to zero as they will be adjusted by the mapsquares
 		gameData.shipSpeed = 0;
-		gameData.powerGainedPerTurn= 0;
+		gameData.powerGainedPerTurn = 0;
 		gameData.powerUsedPerTurn = 0;
 
 		// Refresh items in each square - todo - does this need doing?
@@ -163,9 +163,9 @@ public class PlayersShipModule extends AbstractModule {
 		}
 
 		// Help based on current item
-		if (this.main.gameData.currentUnit.currentItem != null) {
-			if (this.main.gameData.currentUnit.currentItem instanceof IHelpIfCarried) {
-				IHelpIfCarried help = (IHelpIfCarried)this.main.gameData.currentUnit.currentItem;
+		if (this.main.gameData.current_unit.currentItem != null) {
+			if (this.main.gameData.current_unit.currentItem instanceof IHelpIfCarried) {
+				IHelpIfCarried help = (IHelpIfCarried)this.main.gameData.current_unit.currentItem;
 				this.contextSensitiveHelpText.add(help.getHelpIfCarried());
 			}
 			this.contextSensitiveHelpText.add("Press 'd' to drop the current item.");
@@ -174,7 +174,7 @@ public class PlayersShipModule extends AbstractModule {
 		// todo - help based on item in square
 
 		// Help based on adjacent mapsquares
-		List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.main.gameData.currentUnit.x,  this.main.gameData.currentUnit.y);
+		List<AbstractMapSquare> squares = main.gameData.getAdjacentSquares(this.main.gameData.current_unit.x,  this.main.gameData.current_unit.y);
 		for (AbstractMapSquare sq : squares) {
 			String help = sq.getHelp();
 			if (help != null && help.length() > 0) {
@@ -260,16 +260,16 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public boolean selectUnit(int i) {
-		if (i < main.gameData.units.size()) {
+		if (i < main.gameData.players_units.size()) {
 			AbstractMapSquare sq1 = null;
-			if (main.gameData.currentUnit != null) {
-				sq1 = main.gameData.currentUnit.getSq();
+			if (main.gameData.current_unit != null) {
+				sq1 = main.gameData.current_unit.getSq();
 			}
-			Unit unit = main.gameData.units.get(i);
+			Unit unit = main.gameData.players_units.get(i);
 			if (unit.isAlive()) {
-				main.gameData.currentUnit = unit;//main.gameData.units.get(i);
-				AbstractMapSquare sq2 = main.gameData.currentUnit.getSq();
-				main.addMsg("You are controlling " + main.gameData.currentUnit.getName());
+				main.gameData.current_unit = unit;//main.gameData.units.get(i);
+				AbstractMapSquare sq2 = main.gameData.current_unit.getSq();
+				main.addMsg("You are controlling " + main.gameData.current_unit.getName());
 				main.addMsg("(Press the unit number to select another)");
 
 				if (sq1 != null) {
@@ -308,10 +308,10 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public void pickupMenu() {
-		if (main.gameData.currentUnit.getSq().getEntities().isEmpty() == false) {
+		if (main.gameData.current_unit.getSq().getEntities().isEmpty() == false) {
 			main.addMsg("What to pick up?");
 			int i=1;
-			for (DrawableEntity de : main.gameData.currentUnit.getSq().getEntities()) {
+			for (DrawableEntity de : main.gameData.current_unit.getSq().getEntities()) {
 				if (de instanceof ICarryable) {
 					main.addMsg(i + ":" + de.getName());
 				}
@@ -325,10 +325,10 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public void dropMenu() {
-		if (main.gameData.currentUnit.equipment.size() > 0) {
+		if (main.gameData.current_unit.equipment.size() > 0) {
 			main.addMsg("What to drop?");
 			int i=1;
-			for (ICarryable de : main.gameData.currentUnit.equipment) {
+			for (ICarryable de : main.gameData.current_unit.equipment) {
 				main.addMsg(i + ":" + de.getName());
 			}
 			i++;
@@ -340,10 +340,10 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public void changeCurrentItem() {
-		if (main.gameData.currentUnit.equipment.size() > 0) {
+		if (main.gameData.current_unit.equipment.size() > 0) {
 			main.addMsg("Which item do you want the unit to use?");
 			int i=1;
-			for (ICarryable de : main.gameData.currentUnit.equipment) {
+			for (ICarryable de : main.gameData.current_unit.equipment) {
 				main.addMsg(i + ":" + de.getName());
 				i++;
 			}
@@ -355,8 +355,8 @@ public class PlayersShipModule extends AbstractModule {
 
 
 	public void showInventory() {
-		main.addMsg(main.gameData.currentUnit.getName() + " is carrying");
-		for (ICarryable de : main.gameData.currentUnit.equipment) {
+		main.addMsg(main.gameData.current_unit.getName() + " is carrying");
+		for (ICarryable de : main.gameData.current_unit.equipment) {
 			main.addMsg(de.getName());
 		}
 	}
@@ -366,7 +366,7 @@ public class PlayersShipModule extends AbstractModule {
 		if (this.main.gameData.weaponTemp < 100) {
 			if (this.main.gameData.currentLocation != null) {
 				// Check next to console
-				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
+				MapSquareControlPanel sq = (MapSquareControlPanel)main.gameData.findAdjacentMapSquare(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, AbstractMapSquare.MAP_CONTROL_PANEL);
 				if (sq != null) {
 					main.sfx.playSound("laser4.mp3");
 					main.addMsg("You have fired at " + main.gameData.currentLocation.getName());

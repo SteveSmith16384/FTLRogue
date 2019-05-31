@@ -1,4 +1,4 @@
-package com.scs.astrocommander.entities.mobs;
+package com.scs.rogueframework.ecs.entities;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -7,20 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import com.scs.astrocommander.Line;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.asciieffects.BulletShot;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.items.Corpse;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
-import com.scs.astrocommander.entityinterfaces.IMeleeWeapon;
-import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
-import com.scs.astrocommander.entityinterfaces.IWearable;
 import com.scs.astrocommander.map.AbstractMapSquare;
-import com.scs.astrocommander.map.AbstractMapSquare.VisType;
 import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.map.MapSquareDoor;
+import com.scs.rogueframework.FrameworkMapSquare.VisType;
+import com.scs.rogueframework.Line;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.components.IMeleeWeapon;
+import com.scs.rogueframework.ecs.components.IRangedWeapon;
+import com.scs.rogueframework.ecs.components.IWearable;
 
 import ssmith.astar.AStar;
 
@@ -140,7 +139,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 
 		AbstractMapSquare newsq = main.gameData.map[x+offx][y+offy];
-		if (newsq.isSquareTraversable()) {
+		if (newsq.isTraversable()) {
 			AbstractMob other = newsq.getUnit();// main.gameData.getUnitAt(x+offx, y+offy);
 			if (other == null) {
 				if (newsq instanceof MapSquareDoor) {
@@ -216,7 +215,7 @@ public abstract class AbstractMob extends DrawableEntity {
 		while (it.hasNext()) {
 			Point p =it.next();
 			AbstractMapSquare sq = main.gameData.map[p.x][p.y];
-			if (sq.isSquareTraversable() == false) {
+			if (sq.isTraversable() == false) {
 				new BulletShot(main, this.x, this.y, prevSq.x, prevSq.y);
 				this.dropOrThrow(gun, prevSq) ;
 			}
@@ -302,11 +301,11 @@ public abstract class AbstractMob extends DrawableEntity {
 		}
 		super.getSq().addEntity(new Corpse(main, this.getName()));
 		//main.gameData.units.remove(this); // Remove from list if ours
-		if (main.gameData.units.isEmpty()) {
+		if (main.gameData.players_units.isEmpty()) {
 			main.gameOver();
 		} else {
-			if (this == main.gameData.currentUnit) {
-				main.gameData.currentUnit = main.gameData.units.get(0);
+			if (this == main.gameData.current_unit) {
+				main.gameData.current_unit = main.gameData.players_units.get(0);
 			}
 		}
 		remove();
@@ -390,8 +389,8 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public void pickup(ICarryable ic) {
 		DrawableEntity de = (DrawableEntity)ic;
-		main.gameData.currentUnit.getSq().removeEntity(de);
-		main.gameData.currentUnit.equipment.add(ic);
+		main.gameData.current_unit.getSq().removeEntity(de);
+		main.gameData.current_unit.equipment.add(ic);
 		ic.setCarriedBy(this);
 
 	}
@@ -399,7 +398,7 @@ public abstract class AbstractMob extends DrawableEntity {
 
 	public void dropOrThrow(ICarryable ic, AbstractMapSquare sq) {
 		DrawableEntity de = (DrawableEntity)ic;
-		main.gameData.currentUnit.equipment.remove(de);
+		main.gameData.current_unit.equipment.remove(de);
 		sq.addEntity(de);//main.gameData.currentUnit.getSq().addEntity(de);
 		ic.setNotCarried();
 	}

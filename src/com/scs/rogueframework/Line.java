@@ -1,4 +1,4 @@
-package com.scs.astrocommander;
+package com.scs.rogueframework;
 
 import java.awt.Point;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.scs.astrocommander;
+package com.scs.rogueframework;
 
 public class LogMessage {
 

@@ -4,8 +4,9 @@ import java.awt.Point;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
+import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.IGameView;
 
 public class ShipLaser extends AbstractAsciiEffect {
 

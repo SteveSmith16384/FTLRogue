@@ -47,14 +47,14 @@ public class MapSquareDoor extends AbstractMapSquare {
 
 
 	@Override
-	public boolean isTransparent() {
+	public boolean isTransparent_Sub() {
 		return isOpen;
 	}
 
 
 	@Override
-	public boolean isTraversable() {
-		return true; //isOpen;
+	public boolean isTraversable_Sub() {
+		return true;
 	}
 
 

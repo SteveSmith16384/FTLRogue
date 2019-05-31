@@ -1,4 +1,4 @@
-package com.scs.astrocommander.modules.inputmodes;
+package com.scs.rogueframework.input;
 
 import java.awt.Point;
 
@@ -18,7 +18,7 @@ public abstract class AbstractSelectTargetInputHandler implements IInputHander {
 		main = _main;
 		shipModule = psm;
 
-		psm.selectedpoint = new Point(main.gameData.currentUnit.x, main.gameData.currentUnit.y);
+		psm.selectedpoint = new Point(main.gameData.current_unit.x, main.gameData.current_unit.y);
 }
 
 

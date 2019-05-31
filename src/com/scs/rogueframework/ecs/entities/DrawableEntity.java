@@ -1,12 +1,12 @@
-package com.scs.astrocommander.entities;
+package com.scs.rogueframework.ecs.entities;
 
 import java.awt.Point;
 
-import com.scs.astrocommander.Line;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.Line;
+import com.scs.rogueframework.ecs.components.ICarryable;
 
 
 public abstract class DrawableEntity implements Comparable<Object> {
@@ -64,7 +64,7 @@ public abstract class DrawableEntity implements Comparable<Object> {
 		for (Point p : l) {
 			if (p.x != x || p.y != y) {
 				if (p.x != mx || p.y != my) {
-					if (!main.gameData.map[p.x][p.y].isSquareTransparent()) {
+					if (!main.gameData.map[p.x][p.y].isTransparent()) {
 						return false;
 					}
 				}

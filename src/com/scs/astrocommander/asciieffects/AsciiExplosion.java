@@ -6,10 +6,11 @@ import java.util.List;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.IGameView;
 
 public class AsciiExplosion extends AbstractAsciiEffect {
 

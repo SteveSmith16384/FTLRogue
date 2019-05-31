@@ -6,24 +6,9 @@ import com.scs.astrocommander.Main;
 
 public class MapSquareNothing extends AbstractMapSquare {
 
-	//private char theChar = ' '; // Default
-	
 	public MapSquareNothing(Main main, int code, int x, int y) {
 		super(main, code, x, y);
 		
-		/*int i = Main.RND.nextInt(40);
-		switch (i) {
-		case 0: 
-			theChar = '.';
-			break;
-		case 1: 
-			theChar = '*';
-			break;
-		default: 
-			theChar = ' ';
-			break;
-		}*/
-		//theChar = ' ';
 		calcChar();
 		
 		this.hasOxygen = false;
@@ -43,23 +28,19 @@ public class MapSquareNothing extends AbstractMapSquare {
 	
 	
 	@Override
-	public boolean isTraversable() {
+	public boolean isTraversable_Sub() {
 		return true;
 	}
 
 
 	@Override
-	public boolean isTransparent() {
+	public boolean isTransparent_Sub() {
 		return true;
 	}
 	
 
 	@Override
 	public char getFloorChar() {
-		/*if ((int)theChar == 0) { // Not set yet
-			return ' ';
-		}
-		return theChar;*/
 		return ' ';
 	}
 

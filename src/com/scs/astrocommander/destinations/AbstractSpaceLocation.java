@@ -2,11 +2,11 @@ package com.scs.astrocommander.destinations;
 
 import java.util.List;
 
-import com.scs.astrocommander.IProcessable;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.asciieffects.ShipLaser;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.modules.consoles.AbstractConsoleModule;
+import com.scs.rogueframework.ecs.components.IProcessable;
 
 public abstract class AbstractSpaceLocation implements IProcessable {
 
@@ -62,7 +62,7 @@ public abstract class AbstractSpaceLocation implements IProcessable {
 		int y = 0;
 		while (y < main.gameData.getMapHeight()) {
 			AbstractMapSquare sq = main.gameData.map[x][y];
-			if (sq.isSquareTraversable() == false) {
+			if (sq.isTraversable() == false) {
 				// Take into account shields
 				dam = (dam * main.gameData.shieldPowerPcent) / 100;
 				main.addMsg(this.name + " fires and damages you " + (int)dam + "%");

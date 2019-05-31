@@ -1,7 +1,8 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.entities.AbstractItem;
 
 public class Grenade extends AbstractItem implements ICarryable {
 

@@ -3,11 +3,12 @@ package com.scs.astrocommander.entities.mobs;
 import java.awt.Point;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.items.Pistol;
-import com.scs.astrocommander.entityinterfaces.IIllegal;
-import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.ecs.components.IIllegal;
+import com.scs.rogueframework.ecs.components.IRangedWeapon;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class PoliceMob extends AbstractMob {
 

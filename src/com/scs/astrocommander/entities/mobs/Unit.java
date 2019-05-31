@@ -4,11 +4,12 @@ import java.awt.Point;
 import java.io.IOException;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareControlPanel;
 import com.scs.astrocommander.map.MapSquareReplicator;
 import com.scs.astrocommander.modules.consoles.CommandConsole;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class Unit extends AbstractMob {
 
@@ -26,10 +27,9 @@ public class Unit extends AbstractMob {
 		status = Status.Waiting;
 
 		// Can we see anything to shoot at?
-		if (this != this.main.gameData.currentUnit) {
+		if (this != this.main.gameData.current_unit) {
 			checkForShooting();
 		}
-
 
 		this.incFood(-0.25f);
 		// Are we next to a replicator?
@@ -80,7 +80,7 @@ public class Unit extends AbstractMob {
 		}
 
 		// Moving
-		if (status == Status.Waiting && this != this.main.gameData.currentUnit) {
+		if (status == Status.Waiting && this != this.main.gameData.current_unit) {
 			/*if (manualRoute.length() > 0) {
 				processManualRoute(manualRoute.substring(0, 1));
 				manualRoute = manualRoute.substring(1);

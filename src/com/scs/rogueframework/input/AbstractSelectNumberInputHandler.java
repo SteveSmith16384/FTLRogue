@@ -1,4 +1,4 @@
-package com.scs.astrocommander.modules.inputmodes;
+package com.scs.rogueframework.input;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.Main;

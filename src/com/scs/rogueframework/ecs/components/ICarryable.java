@@ -1,6 +1,6 @@
-package com.scs.astrocommander.entityinterfaces;
+package com.scs.rogueframework.ecs.components;
 
-import com.scs.astrocommander.entities.mobs.AbstractMob;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
 
 public interface ICarryable {
 

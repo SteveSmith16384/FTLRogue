@@ -20,14 +20,14 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import com.scs.astrocommander.GameData;
-import com.scs.astrocommander.IGameView;
-import com.scs.astrocommander.LogMessage;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
-import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.LogMessage;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 /*
  * Map   Stats   Help
@@ -81,7 +81,6 @@ public class DefaultView implements IGameView, WindowListener {
 				AbstractMapSquare sq = gameData.map[x][y];
 				TextCharacter tc = sq.getChar();
 				if (sq.type != AbstractMapSquare.MAP_NOTHING) {
-					//if (tc.getCharacter() != ' ') {
 					screen.setCharacter(x, y, tc);
 				}
 			}			
@@ -150,9 +149,9 @@ public class DefaultView implements IGameView, WindowListener {
 		y=2;
 		tGraphics.putString(x, y++, "CREW");
 		int i=1;
-		for (Unit unit : gameData.units) {
+		for (Unit unit : gameData.players_units) {
 			StringBuilder str = new StringBuilder();
-			if (unit == gameData.currentUnit) {
+			if (unit == gameData.current_unit) {
 				str.append("*");
 			}
 			str.append((i++) + ") ");
@@ -166,13 +165,13 @@ public class DefaultView implements IGameView, WindowListener {
 			tGraphics.putString(x, y++, str.toString());
 		}
 
-		if (gameData.currentUnit.wearing != null) {
-			tGraphics.putString(x, y++, "Unit is wearing " + gameData.currentUnit.wearing.hashCode());
+		if (gameData.current_unit.wearing != null) {
+			tGraphics.putString(x, y++, "Unit is wearing " + gameData.current_unit.wearing.hashCode());
 		}
 
 		// Say what items the unit is near 
 		StringBuffer itemlist = new StringBuffer();
-		for (DrawableEntity de : gameData.currentUnit.getSq().getEntities()) {
+		for (DrawableEntity de : gameData.current_unit.getSq().getEntities()) {
 			if (de instanceof Unit == false) {
 				itemlist.append(de.getName() + "; ");
 			}

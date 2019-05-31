@@ -1,4 +1,4 @@
-package com.scs.astrocommander.entityinterfaces;
+package com.scs.rogueframework.ecs.components;
 
 public interface IRangedWeapon {
 

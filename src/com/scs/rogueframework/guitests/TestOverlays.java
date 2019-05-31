@@ -1,4 +1,4 @@
-package com.scs.astrocommander.guitests;
+package com.scs.rogueframework.guitests;
 
 import java.io.IOException;
 

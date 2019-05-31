@@ -14,13 +14,6 @@ public class CSVMap extends AbstractMap implements ILevelData {
 	private List<Point> crewStart = new ArrayList<>();
 
 	public CSVMap(String filename) throws IOException {
-		/*ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(filename).getFile());
-		
-		Path path = FileSystems.getDefault().getPath("./data/maps", file);
-		List<String> lines = Files.readAllLines(path);
-*/
-		
 		Scanner scanner = new Scanner(CSVMap.class.getResourceAsStream("/data/maps/" + filename), "UTF-8");
 		scanner.useDelimiter("\\A");
 		String text = scanner.next();

@@ -1,6 +1,7 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
+import com.scs.rogueframework.ecs.entities.AbstractItem;
 
 public class Corpse extends AbstractItem {// AbstractItem {
 

@@ -3,14 +3,15 @@ package com.scs.astrocommander.modules.inputmodes;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
-import com.scs.astrocommander.entityinterfaces.IExamineable;
-import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
-import com.scs.astrocommander.entityinterfaces.IUseable;
-import com.scs.astrocommander.entityinterfaces.IWearable;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.modules.PlayersShipModule;
 import com.scs.astrocommander.modules.consoles.HelpConsole;
+import com.scs.rogueframework.ecs.components.ICarryable;
+import com.scs.rogueframework.ecs.components.IExamineable;
+import com.scs.rogueframework.ecs.components.IRangedWeapon;
+import com.scs.rogueframework.ecs.components.IUseable;
+import com.scs.rogueframework.ecs.components.IWearable;
+import com.scs.rogueframework.input.IInputHander;
 
 public class DirectControlInputHandler implements IInputHander {
 
@@ -28,16 +29,16 @@ public class DirectControlInputHandler implements IInputHander {
 	@Override
 	public boolean processInput(KeyStroke ks) {
 		if (ks.getKeyType() == KeyType.ArrowUp) {
-			main.gameData.currentUnit.attemptMove(0, -1);
+			main.gameData.current_unit.attemptMove(0, -1);
 			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowDown) {
-			main.gameData.currentUnit.attemptMove(0, 1);
+			main.gameData.current_unit.attemptMove(0, 1);
 			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowLeft) {
-			main.gameData.currentUnit.attemptMove(-1, 0);
+			main.gameData.current_unit.attemptMove(-1, 0);
 			return true;
 		} else if (ks.getKeyType() == KeyType.ArrowRight) {
-			main.gameData.currentUnit.attemptMove(1, 0);
+			main.gameData.current_unit.attemptMove(1, 0);
 			return true;
 		} else {
 			if (ks != null && ks.getCharacter() != null) {
@@ -70,7 +71,7 @@ public class DirectControlInputHandler implements IInputHander {
 					return false;
 
 				case 'c':
-					main.gameData.currentUnit.closeDoor();
+					main.gameData.current_unit.closeDoor();
 					return true;
 
 				case 'd': // Drop
@@ -79,7 +80,7 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 'e': // examine
 				{
-					ICarryable obj = main.gameData.currentUnit.currentItem;
+					ICarryable obj = main.gameData.current_unit.currentItem;
 					if (obj != null) {
 						if (obj instanceof IExamineable) {
 							IExamineable ex = (IExamineable)obj;
@@ -88,7 +89,7 @@ public class DirectControlInputHandler implements IInputHander {
 					}
 
 					// Adjacent squares
-					for (AbstractMapSquare sq : main.gameData.getAdjacentSquares(main.gameData.currentUnit.x, main.gameData.currentUnit.y)) {
+					for (AbstractMapSquare sq : main.gameData.getAdjacentSquares(main.gameData.current_unit.x, main.gameData.current_unit.y)) {
 						String s = sq.getExamineText();
 						if (s.length() > 0) {
 							main.addMsg(1, obj.getName() + ": " + sq.getExamineText());
@@ -110,7 +111,7 @@ public class DirectControlInputHandler implements IInputHander {
 					return false;
 
 				case 'l':
-					main.gameData.currentUnit.useConsole();
+					main.gameData.current_unit.useConsole();
 					return true;
 
 				case 'm':
@@ -125,7 +126,7 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 'o':
 				{
-					main.gameData.currentUnit.openDoor();
+					main.gameData.current_unit.openDoor();
 					return true;
 				}
 
@@ -137,7 +138,7 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 's':
 				{
-					ICarryable obj = main.gameData.currentUnit.currentItem;
+					ICarryable obj = main.gameData.current_unit.currentItem;
 					if (obj != null) {
 						if (obj instanceof IRangedWeapon) {
 							this.shipModule.inputHandler = new SelectShotInputHandler(main, this.shipModule, (IRangedWeapon)obj);
@@ -148,7 +149,7 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 't':
 				{
-					ICarryable obj = main.gameData.currentUnit.currentItem;
+					ICarryable obj = main.gameData.current_unit.currentItem;
 					if (obj != null) {
 						this.shipModule.inputHandler = new SelectThrowInputHandler(main, this.shipModule, obj);
 					} else {
@@ -159,11 +160,11 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 'u':
 				{
-					ICarryable obj = main.gameData.currentUnit.currentItem;
+					ICarryable obj = main.gameData.current_unit.currentItem;
 					if (obj != null) {
 						if (obj instanceof IUseable) {
 							IUseable ex = (IUseable)obj;
-							ex.use(main.gameData.currentUnit);
+							ex.use(main.gameData.current_unit);
 							//this.main.gameData.currentUnit.wearing = ex;
 							//main.addMsg("Unit is now wearing the " + obj.getName());
 						} else {
@@ -177,11 +178,11 @@ public class DirectControlInputHandler implements IInputHander {
 
 				case 'w':
 				{
-					ICarryable obj = main.gameData.currentUnit.currentItem;
+					ICarryable obj = main.gameData.current_unit.currentItem;
 					if (obj != null) {
 						if (obj instanceof IWearable) {
 							IWearable ex = (IWearable)obj;
-							this.main.gameData.currentUnit.wearing = ex;
+							this.main.gameData.current_unit.wearing = ex;
 							main.addMsg("Unit is now wearing the " + obj.getName());
 						} else {
 							main.addMsg("Unit cannot wear " + obj.getName());

@@ -3,6 +3,8 @@ package com.scs.astrocommander.modules.inputmodes;
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.entities.items.Grenade;
 import com.scs.astrocommander.modules.PlayersShipModule;
+import com.scs.rogueframework.input.AbstractSelectNumberInputHandler;
+import com.scs.rogueframework.input.IInputHander;
 
 public class PrimeGrenadeInputHandler extends AbstractSelectNumberInputHandler implements IInputHander {
 	

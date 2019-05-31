@@ -1,6 +1,5 @@
-package com.scs.astrocommander.asciieffects;
+package com.scs.rogueframework;
 
-import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
 
 public abstract class AbstractAsciiEffect {

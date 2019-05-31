@@ -3,8 +3,9 @@ package com.scs.astrocommander.entities.mobs;
 import java.awt.Point;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
-import com.scs.astrocommander.entityinterfaces.IIllegal;
+import com.scs.rogueframework.ecs.components.IIllegal;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class FugitiveMob extends AbstractMob implements IIllegal {
 

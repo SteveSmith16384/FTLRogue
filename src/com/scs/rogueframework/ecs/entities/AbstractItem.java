@@ -1,9 +1,7 @@
-package com.scs.astrocommander.entities.items;
+package com.scs.rogueframework.ecs.entities;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
-import com.scs.astrocommander.entities.mobs.AbstractMob;
-import com.scs.astrocommander.entityinterfaces.ICarryable;
+import com.scs.rogueframework.ecs.components.ICarryable;
 
 public abstract class AbstractItem extends DrawableEntity implements ICarryable {
 

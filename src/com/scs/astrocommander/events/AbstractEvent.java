@@ -1,7 +1,7 @@
 package com.scs.astrocommander.events;
 
-import com.scs.astrocommander.IProcessable;
 import com.scs.astrocommander.Main;
+import com.scs.rogueframework.ecs.components.IProcessable;
 
 public abstract class AbstractEvent implements IProcessable {
 

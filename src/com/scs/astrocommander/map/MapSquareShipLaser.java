@@ -10,16 +10,19 @@ public class MapSquareShipLaser extends AbstractMapSquare {
 		super(main, code, x, y);
 	}
 
+	
 	@Override
-	protected boolean isTraversable() {
+	protected boolean isTraversable_Sub() {
 		return false;
 	}
 
+	
 	@Override
-	protected boolean isTransparent() {
+	protected boolean isTransparent_Sub() {
 		return false;
 	}
 
+	
 	@Override
 	protected char getFloorChar() {
 		return 'W';

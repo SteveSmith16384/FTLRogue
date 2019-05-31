@@ -4,6 +4,8 @@ import ssmith.astar.AStar;
 
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.modules.PlayersShipModule;
+import com.scs.rogueframework.input.AbstractSelectTargetInputHandler;
+import com.scs.rogueframework.input.IInputHander;
 
 public class SelectDestinationInputHandler extends AbstractSelectTargetInputHandler implements IInputHander {
 
@@ -19,9 +21,9 @@ public class SelectDestinationInputHandler extends AbstractSelectTargetInputHand
 	@Override
 	protected void routeChanged() {
 		validRoute = false;
-		if (main.gameData.map[shipModule.selectedpoint.x][shipModule.selectedpoint.y].isSquareTraversable()) {
+		if (main.gameData.map[shipModule.selectedpoint.x][shipModule.selectedpoint.y].isTraversable()) {
 			AStar astar = new AStar(this.main.gameData);
-			astar.findPath(this.main.gameData.currentUnit.x, this.main.gameData.currentUnit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y, false);
+			astar.findPath(this.main.gameData.current_unit.x, this.main.gameData.current_unit.y, shipModule.selectedpoint.x, shipModule.selectedpoint.y, false);
 			// todo - check it only goes through visible mapsquares
 			if (astar.wasSuccessful()) {
 				shipModule.route = astar.getRoute();
@@ -34,7 +36,7 @@ public class SelectDestinationInputHandler extends AbstractSelectTargetInputHand
 	@Override
 	protected void routeSelected() {
 		if (validRoute) {
-			this.main.gameData.currentUnit.astarRoute = shipModule.route;
+			this.main.gameData.current_unit.astarRoute = shipModule.route;
 			shipModule.restoreDirectControlIH();
 			shipModule.route = null;
 			main.addMsg("Destination selected");

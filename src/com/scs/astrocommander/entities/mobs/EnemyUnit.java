@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.items.Pistol;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.rogueframework.ecs.entities.AbstractMob;
+import com.scs.rogueframework.ecs.entities.DrawableEntity;
 
 public class EnemyUnit extends AbstractMob {
 

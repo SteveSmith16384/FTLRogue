@@ -1,4 +1,4 @@
-package com.scs.astrocommander;
+package com.scs.rogueframework;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
+import com.scs.astrocommander.GameData;
 
 public interface IGameView {
 

@@ -12,12 +12,14 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.googlecode.lanterna.input.KeyStroke;
-import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.astrocommander.modules.PlayersShipModule;
 import com.scs.astrocommander.views.DefaultView;
+import com.scs.rogueframework.AbstractAsciiEffect;
+import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.LogMessage;
 
 import ssmith.audio.SoundCacheThread;
 
@@ -35,9 +37,9 @@ public class Main {
 	private AbstractModule currentModule;
 	private GameStage gameStage = GameStage.Started;
 	private List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
-	public boolean checkOxygenFlag = false;
 	public SoundCacheThread sfx;
 
+	public boolean checkOxygenFlag = false;
 	
 	public Main() throws IOException, InterruptedException {
 		createGameData();

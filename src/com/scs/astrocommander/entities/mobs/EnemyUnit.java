@@ -1,7 +1,6 @@
 package com.scs.astrocommander.entities.mobs;
 
 import java.awt.Point;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

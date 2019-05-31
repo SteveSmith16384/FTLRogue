@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ssmith.astar.IAStarMapInterface;
-
 import com.scs.astrocommander.destinations.AbstractSpaceLocation;
 import com.scs.astrocommander.destinations.StartingOutpost;
 import com.scs.astrocommander.entities.DrawableEntity;
@@ -15,12 +13,13 @@ import com.scs.astrocommander.entities.items.Knife;
 import com.scs.astrocommander.entities.items.MediKit;
 import com.scs.astrocommander.entities.items.OxygenMask;
 import com.scs.astrocommander.entities.items.Pistol;
-import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.events.AbstractEvent;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.MapSquareNothing;
 import com.scs.astrocommander.missions.AbstractMission;
+
+import ssmith.astar.IAStarMapInterface;
 
 public class GameData implements IAStarMapInterface {
 

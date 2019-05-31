@@ -5,9 +5,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import ssmith.util.SortedArrayList;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
@@ -16,6 +13,8 @@ import com.scs.astrocommander.Main;
 import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entities.mobs.AbstractMob;
+
+import ssmith.util.SortedArrayList;
 
 public abstract class AbstractMapSquare implements IProcessable {//, Comparator<DrawableEntity> {
 

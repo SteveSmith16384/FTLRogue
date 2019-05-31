@@ -1,7 +1,6 @@
 package com.scs.astrocommander.modules.inputmodes;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
 import com.scs.astrocommander.entityinterfaces.ICarryable;
 import com.scs.astrocommander.modules.PlayersShipModule;
 

@@ -1,7 +1,6 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
 
 public class Corpse extends AbstractItem {// AbstractItem {
 

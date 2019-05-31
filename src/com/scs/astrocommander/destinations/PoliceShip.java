@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.mobs.EnemyUnit;
 import com.scs.astrocommander.entities.mobs.PoliceMob;
 import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.modules.consoles.AbstractConsoleModule;

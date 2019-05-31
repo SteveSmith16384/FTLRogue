@@ -2,13 +2,11 @@ package com.scs.astrocommander.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.astrocommander.Main;
 
 public class MapSquareNothing extends AbstractMapSquare {
 
-	private char theChar = ' '; // Default
+	//private char theChar = ' '; // Default
 	
 	public MapSquareNothing(Main main, int code, int x, int y) {
 		super(main, code, x, y);
@@ -25,7 +23,7 @@ public class MapSquareNothing extends AbstractMapSquare {
 			theChar = ' ';
 			break;
 		}*/
-		theChar = ' ';
+		//theChar = ' ';
 		calcChar();
 		
 		this.hasOxygen = false;

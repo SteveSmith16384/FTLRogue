@@ -1,8 +1,6 @@
 package com.scs.astrocommander.entities.items;
 
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.entities.DrawableEntity;
-import com.scs.astrocommander.entities.mobs.AbstractMob;
 import com.scs.astrocommander.entityinterfaces.IMeleeWeapon;
 
 public class Knife extends AbstractItem implements IMeleeWeapon {

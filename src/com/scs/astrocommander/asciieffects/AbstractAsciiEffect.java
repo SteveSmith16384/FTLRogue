@@ -2,7 +2,6 @@ package com.scs.astrocommander.asciieffects;
 
 import com.scs.astrocommander.IGameView;
 import com.scs.astrocommander.Main;
-import com.scs.astrocommander.modules.PlayersShipModule;
 
 public abstract class AbstractAsciiEffect {
 

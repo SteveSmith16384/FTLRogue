@@ -2,8 +2,6 @@ package com.scs.astrocommander.missions;
 
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.destinations.AbstractSpaceLocation;
-import com.scs.astrocommander.entities.items.AlienEgg;
-import com.scs.astrocommander.map.AbstractMapSquare;
 
 public class TransportFugitiveMission extends AbstractMission {
 	

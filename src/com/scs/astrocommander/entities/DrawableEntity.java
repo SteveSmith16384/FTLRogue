@@ -9,7 +9,7 @@ import com.scs.astrocommander.entityinterfaces.ICarryable;
 import com.scs.astrocommander.map.AbstractMapSquare;
 
 
-public abstract class DrawableEntity implements Comparable{//extends Entity {
+public abstract class DrawableEntity implements Comparable<Object> {
 
 	// Z levels
 	public static final int Z_UNIT = 10;

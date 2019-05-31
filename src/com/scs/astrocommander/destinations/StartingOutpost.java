@@ -3,8 +3,6 @@ package com.scs.astrocommander.destinations;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.stage.Stage;
-
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.missions.TransportEggMission;
 import com.scs.astrocommander.modules.consoles.AbstractConsoleModule;

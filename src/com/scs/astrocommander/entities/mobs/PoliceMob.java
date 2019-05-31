@@ -1,8 +1,6 @@
 package com.scs.astrocommander.entities.mobs;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.scs.astrocommander.Main;
 import com.scs.astrocommander.entities.DrawableEntity;

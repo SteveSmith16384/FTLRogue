@@ -7,12 +7,9 @@
 package com.scs.astrocommander;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import ssmith.audio.SoundCacheThread;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.scs.astrocommander.asciieffects.AbstractAsciiEffect;
@@ -21,6 +18,8 @@ import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.astrocommander.modules.PlayersShipModule;
 import com.scs.astrocommander.views.DefaultView;
+
+import ssmith.audio.SoundCacheThread;
 
 
 public class Main {

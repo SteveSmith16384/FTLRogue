@@ -2,8 +2,6 @@ package com.scs.astrocommander.map;
 
 import java.awt.Color;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.TextColor.ANSI;
 import com.scs.astrocommander.Main;
 
 public class MapSquareTeleporter extends AbstractMapSquare {

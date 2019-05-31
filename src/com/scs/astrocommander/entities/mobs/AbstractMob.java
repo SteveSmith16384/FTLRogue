@@ -1,17 +1,11 @@
 package com.scs.astrocommander.entities.mobs;
 
 import java.awt.Point;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-
-import ssmith.astar.AStar;
 
 import com.scs.astrocommander.Line;
 import com.scs.astrocommander.Main;
@@ -24,9 +18,11 @@ import com.scs.astrocommander.entityinterfaces.IMeleeWeapon;
 import com.scs.astrocommander.entityinterfaces.IRangedWeapon;
 import com.scs.astrocommander.entityinterfaces.IWearable;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.astrocommander.map.AbstractMapSquare.VisType;
 import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.map.MapSquareDoor;
-import com.scs.astrocommander.map.AbstractMapSquare.VisType;
+
+import ssmith.astar.AStar;
 
 public abstract class AbstractMob extends DrawableEntity {
 
@@ -91,7 +87,11 @@ public abstract class AbstractMob extends DrawableEntity {
 		//try {
 		//Path path = FileSystems.getDefault().getPath("./data/", "names.txt");
 		//List<String> lines = Files.readAllLines(path);
-		String text = new Scanner(CSVMap.class.getResourceAsStream("/data/names.txt"), "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(CSVMap.class.getResourceAsStream("/data/names.txt"), "UTF-8");
+		scanner.useDelimiter("\\A");
+		String text = scanner.next();
+		scanner.close();
+		
 		List<String> lines = Arrays.asList(text.split("\n"));
 		int i = Main.RND.nextInt(lines.size());
 		return "Captain " + lines.get(i).trim();

@@ -21,7 +21,11 @@ public class CSVMap extends AbstractMap implements ILevelData {
 		List<String> lines = Files.readAllLines(path);
 */
 		
-		String text = new Scanner(CSVMap.class.getResourceAsStream("/data/maps/" + filename), "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(CSVMap.class.getResourceAsStream("/data/maps/" + filename), "UTF-8");
+		scanner.useDelimiter("\\A");
+		String text = scanner.next();
+		scanner.close();
+		
 		List<String> lines = Arrays.asList(text.split("\n"));
 				
 		data = new int[lines.get(0).split("\t").length][lines.size()];

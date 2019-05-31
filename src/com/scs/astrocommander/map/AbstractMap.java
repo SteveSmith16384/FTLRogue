@@ -16,18 +16,12 @@ public abstract class AbstractMap implements ILevelData {
 		for (int y=0 ; y<getHeight() ; y++) {
 			for (int x=0 ; x<getWidth() ; x++) {
 				//Main.p(x + "," + y);
-				if (x == 1 && y == 5) {
-					int g = 345;
-				}
 				if (data[x][y] == 0) { // Unset
 					boolean found_floor = false;
 					for (int y2=y-1 ; y2<=y+1 ; y2++) {
 						for (int x2=x-1 ; x2<=x+1 ; x2++) {
 							if (x2 != x || y2 != y) {
 								try {
-									/*if (data[x][y] == 12) {
-										int g = 1;
-									}*/
 									if (data[x2][y2] == AbstractMapSquare.MAP_BATTERY ||
 											data[x2][y2] == AbstractMapSquare.MAP_CONTROL_PANEL ||
 											data[x2][y2] == AbstractMapSquare.MAP_DOOR ||

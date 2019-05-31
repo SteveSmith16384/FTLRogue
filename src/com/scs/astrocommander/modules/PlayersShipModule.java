@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.screen.Screen;
 import com.scs.astrocommander.GameData;
 import com.scs.astrocommander.Main;
+import com.scs.astrocommander.Settings;
 import com.scs.astrocommander.asciieffects.ShipLaser;
 import com.scs.astrocommander.destinations.EnemyShip;
 import com.scs.astrocommander.destinations.Planet;
@@ -23,7 +27,9 @@ import com.scs.astrocommander.modules.inputmodes.ChangeItemInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DirectControlInputHandler;
 import com.scs.astrocommander.modules.inputmodes.DropItemInputHandler;
 import com.scs.astrocommander.modules.inputmodes.PickupItemInputHandler;
+import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.IGameView;
+import com.scs.rogueframework.LogMessage;
 import com.scs.rogueframework.ecs.components.ICarryable;
 import com.scs.rogueframework.ecs.components.IHelpIfCarried;
 import com.scs.rogueframework.ecs.entities.DrawableEntity;
@@ -61,14 +67,20 @@ Foreground colour shows damage (white -> grey)
  */
 public class PlayersShipModule extends AbstractModule {
 
+	private static final TextCharacter ROUTE_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.BLACK);
+	private static final TextCharacter TARGET_CHAR = new TextCharacter('#', TextColor.ANSI.GREEN, TextColor.ANSI.RED);
+	private static final TextCharacter STAR_CHAR = new TextCharacter('*', TextColor.ANSI.WHITE, TextColor.ANSI.BLACK);
+
 	public IInputHander inputHandler;
 	private DirectControlInputHandler directControlIH;
 
 	private Map<String, TextCharacter> seenSquares = new HashMap<>();
 	private List<String> contextSensitiveHelpText = new ArrayList<>();
 
-	public Point selectedpoint; // For choosing shooting dest etc...
+	public Point selectedpoint; // For choosing shooting dest etc...  todo - rename with _
 	public List<Point> route;
+
+	private List<Point> stars;
 
 	public PlayersShipModule(Main main, AbstractModule prev) {
 		super(main, prev);
@@ -288,8 +300,178 @@ public class PlayersShipModule extends AbstractModule {
 
 	@Override
 	public void drawScreen(IGameView view) throws IOException {
-		view.drawPlayersShipScreen(main.gameData, seenSquares, main.getAsciiEffects(), contextSensitiveHelpText, this.route, selectedpoint);
+		GameData gameData = main.gameData;
+		
+		if (stars == null) {
+			createStars(gameData);
+		}
 
+		view.startScreen();
+		view.clear();
+
+		//TextGraphics tGraphics = screen.newTextGraphics();
+
+		if (gameData.shipSpeed > 0 && gameData.currentLocation == null) {
+			this.moveStars(gameData);
+		}
+		drawStars(view);
+
+		// Draw map
+		for (int y=0 ; y<gameData.getHeight() ; y++) {
+			for (int x=0 ; x<gameData.getWidth() ; x++) {
+				AbstractMapSquare sq = gameData.map[x][y];
+				TextCharacter tc = sq.getChar();
+				if (sq.type != AbstractMapSquare.MAP_NOTHING) {
+					view.drawCharacter(x, y, tc);
+				}
+			}			
+		}
+
+		// Draw route
+		if (route != null) {
+			for (Point p : route) {
+				view.drawCharacter(p.x, p.y, ROUTE_CHAR);
+			}
+		}
+		if (selectedpoint != null) {
+			view.drawCharacter(selectedpoint.x, selectedpoint.y, TARGET_CHAR);
+		}
+
+		// Draw effects
+		for (AbstractAsciiEffect effect : main.asciiEffects) {
+			effect.drawChars(view);
+		}
+
+
+		// Draw stats
+		int x = gameData.getWidth()+2;
+		int y = 0;
+
+		if (gameData.currentLocation == null) {
+			view.drawString(x, y++, "LOCATION: Deep Space");
+		} else {
+			view.setTextForegroundColor(TextColor.ANSI.YELLOW);
+			view.drawString(x, y++, "LOCATION: " + gameData.currentLocation.getName());
+		}
+
+		view.setTextForegroundColor(TextColor.ANSI.WHITE);
+		view.drawString(x, y++, "Turn " + gameData.turnNo);
+		view.drawString(x, y++, "Oxygen: " + (int)gameData.oxygenLevel + "%");
+		view.drawString(x, y++, "Shields: " + (int)gameData.shieldPowerPcent + "%");
+		view.drawString(x, y++, "Engines: " + (int)gameData.enginePowerPcent + "%");
+		view.drawString(x, y++, "Weapons: " + (int)gameData.weaponPowerPcent + "%");
+		view.drawString(x, y++, "Weapon Temp: " + (int)gameData.weaponTemp + "c");
+		view.drawString(x, y++, "Wanted Level: " + (int)gameData.wantedLevel);
+
+		if (gameData.currentLocation == null) {
+			y++;
+			view.drawString(x, y++, "Ship Speed: " + (int)gameData.shipSpeed + " m/s");
+			view.drawString(x, y++, "Distance Left: " + (int)gameData.distanceToDest + " ly");
+		}
+
+		y++;
+		view.drawString(x, y++, "POWER");
+		view.drawString(x, y++, "Total Power: " + (int)gameData.totalPower);
+		view.drawString(x, y++, "Power Gain/t: " + (int)gameData.powerGainedPerTurn);
+		view.drawString(x, y++, "Power Used/t: " + (int)gameData.powerUsedPerTurn);
+
+		// Draw mapsquares key
+		y++;
+		for (String tc : seenSquares.keySet()) {
+			view.drawCharacter(x, y, seenSquares.get(tc));
+			view.drawString(x+2, y, tc);
+			y++;
+		}
+
+		int col2height = y;
+
+		// Draw units
+		x = 54;
+		y=2;
+		view.drawString(x, y++, "CREW");
+		int i=1;
+		for (Unit unit : gameData.players_units) {
+			StringBuilder str = new StringBuilder();
+			if (unit == gameData.current_unit) {
+				str.append("*");
+			}
+			str.append((i++) + ") ");
+			str.append(unit.getName()).append(" ");
+			if (unit.health > 0) {
+				str.append("H:" + (int)unit.health + "%").append(" ");
+				str.append("F:" + (int)unit.food);
+			} else {
+				str.append("DEAD");
+			}
+			view.drawString(x, y++, str.toString());
+		}
+
+		if (gameData.current_unit.wearing != null) {
+			view.drawString(x, y++, "Unit is wearing " + gameData.current_unit.wearing.hashCode());
+		}
+
+		// Say what items the unit is near 
+		StringBuffer itemlist = new StringBuffer();
+		for (DrawableEntity de : gameData.current_unit.getSq().getEntities()) {
+			if (de instanceof Unit == false) {
+				itemlist.append(de.getName() + "; ");
+			}
+		}
+		if (itemlist.length() > 0) {
+			view.drawString(x, y++, "Unit can see " + itemlist.toString());
+		}
+
+		// Location stats:
+		if (gameData.currentLocation != null) {
+			y++;
+			view.drawString(x, y++, gameData.currentLocation.getName() + ":");
+			List<String> stats = gameData.currentLocation.getStats();
+			for (String s : stats) {
+				view.drawString(x, y++, s);
+			}
+		}
+
+		// Help text
+		if (this.contextSensitiveHelpText.size() > 0) {
+			y++;
+			view.drawString(x, y++, "HELP");
+			for (String s : contextSensitiveHelpText) {
+				while (s.contains("\n")) {
+					String s2 = s.substring(0, s.indexOf("\n"));
+					view.drawString(x, y++, s2);
+					s = s.substring(s2.length()+1, s.length());
+				}
+				view.drawString(x, y++, s);
+			}
+		}
+
+
+		// Messages/log
+		y = Math.max(Math.max(col2height, y), gameData.getHeight()) + 2;
+		view.setTextForegroundColor(TextColor.ANSI.YELLOW);
+		for (LogMessage msg : gameData.msgs) {
+			switch (msg.priority) {
+			case 3:
+				view.setTextForegroundColor(TextColor.ANSI.RED);
+				break;
+			case 2:
+				view.setTextForegroundColor(TextColor.ANSI.YELLOW);
+				break;
+			default:
+				view.setTextForegroundColor(TextColor.ANSI.WHITE);
+				break;
+			}
+			view.drawString(0, y, msg.msg);
+			y++;
+		}
+
+		if (Settings.DEBUG) {
+			view.setTextForegroundColor(TextColor.ANSI.RED);
+			view.drawString(0, 0, "DEBUG MODE");
+		}
+
+
+		view.refresh();
 	}
 
 
@@ -392,6 +574,35 @@ public class PlayersShipModule extends AbstractModule {
 
 	public void restoreDirectControlIH() {
 		this.inputHandler = this.directControlIH;
+	}
+
+
+	private void createStars(GameData gameData) {
+		stars = new ArrayList<>();
+		for (int i=0 ; i<20 ; i++) {
+			int x = Main.RND.nextInt(gameData.getMapWidth());
+			int y = Main.RND.nextInt(gameData.getMapHeight());
+			this.stars.add(new Point(x, y));
+		}
+	}
+
+
+	private void moveStars(GameData gameData) {
+		for (Point p : stars) {
+			p.y++;
+			// if drop of bottom, put back to top
+			if (p.y > gameData.getHeight()) {
+				p.x = Main.RND.nextInt(gameData.getMapWidth());
+				p.y = 0;
+			}
+		}
+	}
+
+
+	private void drawStars(IGameView view) {
+		for (Point p : stars) {
+			view.drawCharacter(p.x,  p.y, STAR_CHAR);
+		}
 	}
 
 }

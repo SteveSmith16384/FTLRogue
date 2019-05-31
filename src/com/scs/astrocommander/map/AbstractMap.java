@@ -1,7 +1,5 @@
 package com.scs.astrocommander.map;
 
-import com.scs.astrocommander.ILevelData;
-
 public abstract class AbstractMap implements ILevelData {
 
 	protected int[][] data;

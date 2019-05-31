@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.scs.astrocommander.ILevelData;
-
 
 public class ArrayMap extends AbstractMap implements ILevelData {
 

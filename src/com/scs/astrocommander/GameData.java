@@ -15,6 +15,7 @@ import com.scs.astrocommander.entities.items.Pistol;
 import com.scs.astrocommander.entities.mobs.Unit;
 import com.scs.astrocommander.events.AbstractEvent;
 import com.scs.astrocommander.map.AbstractMapSquare;
+import com.scs.astrocommander.map.ILevelData;
 import com.scs.astrocommander.map.MapSquareNothing;
 import com.scs.astrocommander.missions.AbstractMission;
 import com.scs.rogueframework.LogMessage;
@@ -25,7 +26,7 @@ import ssmith.astar.IAStarMapInterface;
 public class GameData implements IAStarMapInterface {
 
 	public Main main;
-	private ILevelData mapdata;
+	//private ILevelData mapdata;
 	
 	public AbstractMapSquare[][] map;
 	public List<Unit> players_units = new ArrayList<>();
@@ -58,15 +59,15 @@ public class GameData implements IAStarMapInterface {
 
 	public float weaponTemp = 0;
 
-	public GameData(Main _main, ILevelData _mapdata) throws IOException {
+	public GameData(Main _main) throws IOException {
 		super();
 		
 		main = _main;
-		mapdata = _mapdata;
+		//mapdata = _mapdata;
 	}
 
 	
-	public void init() throws IOException { // Can't put this in the constructor since it uses a reference to gamedata
+	public void init(ILevelData mapdata) throws IOException { // Can't put this in the constructor since it uses a reference to gamedata
 		map = new AbstractMapSquare[mapdata.getWidth()][mapdata.getHeight()];
 		for (int y=0 ; y<mapdata.getHeight() ; y++) {
 			for (int x=0 ; x<mapdata.getWidth() ; x++) {
@@ -96,7 +97,7 @@ public class GameData implements IAStarMapInterface {
 			this.getRandomMapSquare(AbstractMapSquare.MAP_FLOOR).addEntity(item);
 		}
 		
-		this.currentLocation = new StartingOutpost(main, "Station Zybex");
+		this.currentLocation = new StartingOutpost(main, "Station Zythum");
 	}
 
 

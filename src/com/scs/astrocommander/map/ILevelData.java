@@ -1,4 +1,4 @@
-package com.scs.astrocommander;
+package com.scs.astrocommander.map;
 
 import java.awt.Point;
 

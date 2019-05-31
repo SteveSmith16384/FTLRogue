@@ -16,10 +16,10 @@ import com.scs.astrocommander.map.AbstractMapSquare;
 import com.scs.astrocommander.map.CSVMap;
 import com.scs.astrocommander.modules.AbstractModule;
 import com.scs.astrocommander.modules.PlayersShipModule;
-import com.scs.astrocommander.views.DefaultView;
 import com.scs.rogueframework.AbstractAsciiEffect;
 import com.scs.rogueframework.IGameView;
 import com.scs.rogueframework.LogMessage;
+import com.scs.rogueframework.views.LanternaView;
 
 import ssmith.audio.SoundCacheThread;
 
@@ -33,10 +33,9 @@ public class Main {
 	private IGameView view;
 	public GameData gameData;
 	private boolean stopNow = false;
-	private KeyStroke lastChar;
 	private AbstractModule currentModule;
 	private GameStage gameStage = GameStage.Started;
-	private List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
+	public List<AbstractAsciiEffect> asciiEffects = new CopyOnWriteArrayList<>();
 	public SoundCacheThread sfx;
 
 	public boolean checkOxygenFlag = false;
@@ -48,15 +47,15 @@ public class Main {
 		
 		currentModule = new PlayersShipModule(this, null);
 
-		view = new DefaultView();
+		view = new LanternaView();
 
 		mainGameLoop();
 	}
 
 
 	private void createGameData() throws IOException {
-		gameData = new GameData(this, new CSVMap("map1.csv"));
-		gameData.init();
+		gameData = new GameData(this);
+		gameData.init(new CSVMap("map1.csv"));
 		gameData.recalcVisibleSquares();
 		this.addMsg(1, "Welcome to " + Settings.TITLE);
 		if (Settings.DEBUG) {
@@ -73,7 +72,7 @@ public class Main {
 			try {
 				this.currentModule.drawScreen(view);
 				if (this.asciiEffects.isEmpty()) {
-					lastChar = view.getInput();
+					KeyStroke lastChar = view.getInput();
 					boolean progress = this.currentModule.processInput(lastChar);
 					if (progress) {
 						this.currentModule.updateGame();

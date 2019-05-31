@@ -1,21 +1,35 @@
 package com.scs.rogueframework;
 
-import java.awt.Point;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.scs.astrocommander.GameData;
 
+/**
+ * An abstract implementation of the game view.
+ * 
+ * @author StephenCS
+ *
+ */
 public interface IGameView {
 
-	void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route, Point selectedTarget) throws IOException;
+	void startScreen();
+	
+	void clear();
+	
+	void refresh();
+	
+	//void drawPlayersShipScreen(GameData gameData, Map<String, TextCharacter> seenSquares, List<AbstractAsciiEffect> effects, List<String> helpText, List<Point> route, Point selectedTarget) throws IOException;
 	
 	void drawConsoleScreen(List<String> lines, String cmd) throws IOException;
 	
 	void drawCharacter(int x, int y, TextCharacter ch);
+	
+	void setTextForegroundColor(ANSI ansi);
+	
+	void drawString(int x, int y, String s);
 	
 	KeyStroke getInput() throws IOException;
 

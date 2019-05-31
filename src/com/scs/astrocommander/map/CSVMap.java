@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import com.scs.astrocommander.ILevelData;
-
 public class CSVMap extends AbstractMap implements ILevelData {
 
 	private List<Point> crewStart = new ArrayList<>();
